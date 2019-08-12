@@ -5,8 +5,5 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 init	scripts/app.js	/^function init() {$/;"	f	function:reset
-installPWA	scripts/install.js	/^function installPWA(evt) {$/;"	f
-logAppInstalled	scripts/install.js	/^function logAppInstalled(evt) {$/;"	f
-saveBeforeInstallPromptEvent	scripts/install.js	/^function saveBeforeInstallPromptEvent(evt) {$/;"	f
 sleep	scripts/app.js	/^function sleep(ms) {$/;"	f	function:reset
 tapButton	scripts/app.js	/^let wtb = {$/;"	p	class:use strict
