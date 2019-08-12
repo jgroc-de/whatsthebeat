@@ -1,12 +1,11 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v2'
+const CACHE_NAME = 'static-cache-v1.0.1'
 
 // Add list of files to cache here.
 const FILES_TO_CACHE = [
   '/index.html',
-  '/manifest.json',
   '/scripts/app.js',
   '/favicon.ico',
   '/icons/icon-144x144.png',
