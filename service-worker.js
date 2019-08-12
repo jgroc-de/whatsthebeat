@@ -1,16 +1,16 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const CACHE_NAME = 'static-cache-v1'
+const CACHE_NAME = 'static-cache-v2'
 
 // Add list of files to cache here.
 const FILES_TO_CACHE = [
-  '',
   '/index.html',
   '/manifest.json',
   '/scripts/app.js',
   '/favicon.ico',
   '/icons/icon-144x144.png',
+  '/icons/icon-152x152.png',
 ];
 
 self.addEventListener('install', (evt) => {
@@ -51,7 +51,8 @@ self.addEventListener('fetch', (evt) => {
       return cache.match(evt.request)
           .then((response) => {
             return response || fetch(evt.request);
-          });
+          })
+      ;
     })
   );
 });

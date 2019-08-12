@@ -2,8 +2,8 @@
 
 let wtb = {
   tapButton: document.getElementById("tap"),
-  beatOut: document.getElementById("beat").firstChild,
-  lastBeat: document.getElementById("lastBeat").firstChild,
+  beatOut: document.getElementById("beat").getElementsByTagName("span")[0],
+  lastBeat: document.getElementById("lastBeat").getElementsByTagName("span")[0],
   count: -1,
   timeStart: 0,
   lastDelta: 1000000000000,
@@ -32,9 +32,10 @@ async function count() {
 
     wtb.beatOut.textContent = beat
     await sleep((delta * 5) / count)
-    if (count === wtb.count) {
-      reset()
+    console.log(count, wtb.count)
+    if (count === wtb.count + 1) {
       wtb.lastBeat.textContent = beat
+      reset()
     }
   }
 }
