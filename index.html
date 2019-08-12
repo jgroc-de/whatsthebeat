@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's the B**t?</title>
+  <meta name="whatstheb**t" content="beat-taking-pwa">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+	<link rel="manifest" href="/manifest.json">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="What's the B**t?">
+	<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
+	<meta name="description" content="A beat taking app">
+	<meta name="theme-color" content="#2F3BA2" />
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		header {
+      align-content: center;
+      align-items: stretch;
+      background: #3f51b5;
+      box-shadow:
+        0 4px 5px 0 rgba(0, 0, 0, 0.14),
+        0 2px 9px 1px rgba(0, 0, 0, 0.12),
+        0 4px 2px -2px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      font-size: 20px;
+      height: 56px;
+      position: fixed;
+			top: 0;
+      padding: 16px 16px 0 16px;
+      width: 100%;
+      z-index: 1000;
+    }
+
+		footer {
+      font-size: 20px;
+			height: 56px;
+      width: 100%;
+      background: #3f51b5;
+      color: #fff;
+		}
+
+		footer {
+			position: fixed;
+  		bottom: 0;
+		}
+
+		header h1 {
+      font-size: 20px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+		main {
+			height:100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-top: 60px;
+    }
+
+	</style>
+
+</head>
+<body>
+
+  <header>
+    <h1>
+      What's the b**t?
+    </h1>
+    <button id="install" aria-label="Install" hidden>install</button>
+  </header>
+
+  <main class="main">
+
+    <button id="tap" class="gg-button" aria-label="Tap">
+      <span>tap me</span>
+    </button>
+    <div id="beat" class="gg-button" aria-label="Tap"><span>0</span> bpm</div>
+    <div id="lastBeat" class="gg-button" aria-label="Tap"><span>0</span> bpm</div>
+
+  </main>
+	<footer>
+    <div id="about" class="">
+      <b>Tap the beat!</b>
+    </div>
+	</footer>
+
+  <script src="/scripts/app.js"></script>
+	<!--<script src="/scripts/install.js"></script>-->
+  <script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('/service-worker.js')
+					.then((worker) => {
+						console.log('Service worker registered.', worker)
+					});
+			});
+		}
+	</script>
+
+</body>
+</html>
