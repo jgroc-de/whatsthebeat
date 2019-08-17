@@ -4,9 +4,6 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-beatOut	scripts/app.js	/^let wtb = {$/;"	p	class:use strict
-setBurger	scripts/app.js	/^function setBurger() {$/;"	f	function:reset
-setEvent	scripts/app.js	/^function setEvent(node) {$/;"	f	function:reset
-sleep	scripts/app.js	/^function sleep(ms) {$/;"	f	function:reset
-tap	scripts/app.js	/^function tap() {$/;"	f	function:setBurger
-toggleHide	scripts/app.js	/^function toggleHide() {$/;"	f	function:reset
+audio	scripts/app.js	/^const state = {$/;"	p	class:const
+handleEvent	scripts/beatTaker.js	/^    this.handleEvent = function(event) {$/;"	c
+nav	scripts/app.js	/^  audio: null,$/;"	p	class:const
