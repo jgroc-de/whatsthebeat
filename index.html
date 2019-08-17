@@ -14,7 +14,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-title" content="What's the B**t?">
 	<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-	<meta name="description" content="A beat taking app">
+	<meta name="description" content="Take the beat of any music">
 	<meta name="theme-color" content="#2F3BA2" />
 	<style>
 
@@ -22,16 +22,18 @@
 			box-sizing: border-box;
 		}
 
+		body {
+			background: #F7E3D4;
+		}
+
 		header, footer {
-      font-size: 20px;
-			height: 70px;
+			height: 60px;
       width: 100%;
-      color: #fff;
-      background: #3f51b5;
-      background: DarkOrange;
+      color: #342E09;
+      background: #FC7307;
       position: fixed;
 			left: 0px;
-      padding: 16px 16px 0 16px;
+      padding: 8px 0 0 0;
 		}
 
 		header {
@@ -40,66 +42,171 @@
         0 2px 9px 1px rgba(0, 0, 0, 0.12),
         0 4px 2px -2px rgba(0, 0, 0, 0.2);
 			top: 0;
-    }
+		}
+
+		.gg-burger {
+      padding: 6px 0 0 12px;
+		}
+
+		.gg-bar {
+			width: 35px;
+			height: 4px;
+			background-color: #342E09;
+			margin: 5px 0;
+		}
+
+		.gg-grid {
+			display: grid;
+			grid-template-columns: 64px auto;
+		}
 
 		footer {
-  		bottom: 0;
       box-shadow:
         0 0 5px 4px rgba(0, 0, 0, 0.14),
         0 1px 9px 2px rgba(0, 0, 0, 0.12),
         0 -2px 2px 4px rgba(0, 0, 0, 0.2);
+  		bottom: 0;
+			padding: 8px 8px;
+			background: #342E09;
+			color: #FC7307;
 		}
 
 		header h1 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 400;
       margin: 0;
     }
 
 		h6 {
 			margin: 0;
+      font-size: 14px;
 		}
 
-		.gg-right {
-			position: fixed;
-			right: 20px;
-		}
-
-		a {
-			color: white;
-			text-decoration: none;
-		}
-
-		.gg-padding {
-			padding: 10px;
-		}
-
-		.gg-button {
-			text-align: center;
-      font-size: 20px;
-			padding: 16px 16px;
-		}
-
-		.gg-center {
-      font-size: 20px;
-			width: 200px;
-			margin: 16px auto;
-			text-align: center;
+		.gg-navbar {
+			height: 100vh;
+			background-color: #FC7307;
+			color: #342E09;
+			max-width: 75vw;
+			position:fixed;
+			left:0;
+			top:0;
+			z-index:100;
 		}
 
 		.gg-main {
       padding-top: 100px;
+			width: 100%;
     }
+
+		.gg-button, .gg-button-small {
+			background-color:#FBA90A;
+			text-align: center;
+			border: thick solid #FDDC22;
+		}
+
+		.gg-button {
+			font-size: 4vh;
+			height: 25vh;
+			width: 25vh;
+			border-radius: 13vh;
+			z-index:10;
+		}
+
+		.gg-button:active {
+			border-color: #FC7307;
+		}
+
+		.gg-button-small {
+			font-size: 2vh;
+			height: 10vh;
+			width: 10vh;
+			border-radius: 5vh;
+		}
+
+		.gg-button-small:active {
+			border-color: lightGreen;
+		}
 
 		.gg-center2 {
 			position: fixed;
-			top: 50vh; /* poussé de la moitié de hauteur de viewport */
-			left: 50vw; /* poussé de la moitié de hauteur de viewport */
+			top: 55vh;
+			left: 50vw;
 			transform: translate(-50%, -50%);
 		}
 
-		.gg-main {
-			width: 100%;
+		.gg-left, .gg-left2 {
+			position: absolute;
+			left: 16px;
+		}
+
+		.gg-left2 {
+			top: 12vh;
+		}
+
+		.gg-center {
+      font-size: 20px;
+			text-align: right;
+			width: 50vw;
+		}
+
+		.gg-right3, .gg-right2 {
+			position: absolute;
+			right: 16px;
+			top: 4vh;
+		}
+
+		.gg-right3 {
+			top: 16vh;
+		}
+
+		.gg-settings {
+			position: fixed;
+		}
+
+		.gg-settings2 {
+			position: fixed;
+			right: 8px;
+		}
+
+		.gg-right {
+			position: fixed;
+			right: 16px;
+		}
+
+		a {
+			text-decoration: none;
+			color: #FC7307;
+		}
+
+		nav a {
+			color: #342E09;
+			padding: 16px;
+			font-size:22px;
+		}
+
+		.gg-close {
+			font-size:22px;
+			padding: 16px;
+			background-color: #FDDC22;
+			color: #342E09;
+			height: 60px;
+			text-align: center;
+		}
+
+		.gg-close:hover, .gg-burger:hover, .gg-button:hover, .gg-button-small:hover {
+			cursor: pointer;
+		}
+
+		.gg-close:hover {
+			background: #FBA90A;
+		}
+
+		nav h2 {
+			padding: 32px;
+		}
+
+		.gg-on {
+			border-color: lightGreen;
 		}
 
 	</style>
@@ -107,19 +214,41 @@
 </head>
 <body>
 
-  <header>
-    <h1>What's the b**t?</h1>
-		<h6>tiny web app to take the beat of whatever you want</h6>
-    <button id="install" aria-label="Install" hidden>install</button>
-  </header>
+  <header class="gg-grid">
+		<div class="gg-burger" id="burger">
+			<div class="gg-bar"></div>
+			<div class="gg-bar"></div>
+			<div class="gg-bar"></div>
+		</div>
+		<div class="">
+			<h1>What's the b**t?</h1>
+			<h6>take the beat of whatever you want</h6>
+			<button id="install" aria-label="Install" hidden>install</button>
+		</div>
+	</header>
 
+	<nav class="gg-navbar" hidden>
+		<div class="gg-close">Close Menu</div>
+		<div class="">
+			<h2 class=""><b>What's<br>The B**t?</b></h2>
+		</div>
+		<a href="/">What's the beat</a>
+  	<a href="/#metronome">Metronome</a>
+  	<a href="/#tuner">Tuner</a>
+	</nav>
   <main class="gg-main">
-    <button id="tap" class="gg-button gg-center2" aria-label="Tap">tap me</button>
-    <div id="beat" class="gg-center" aria-label="Tap">current: <span>0</span> bpm</div>
-    <div id="lastBeat" class="gg-center" aria-label="Tap">last: <span>0</span> bpm</div>
+		<div class="gg-settings">
+			<button id="reset" class="gg-button-small gg-left">reset</button>
+			<button id="sound" class="gg-button-small gg-left2">sound ON/OFF</button>
+		</div>
+		<div class="gg-settings2">
+			<div id="beat" class="gg-center gg-right2" aria-label="Tap">current: <span>0</span> bpm</div>
+			<div id="lastBeat" class="gg-center gg-right3" aria-label="Tap">last: <span>0</span> bpm</div>
+		</div>
+    <button id="tap" class="gg-button gg-center2" aria-label="Tap">b**t me</button>
   </main>
 
-	<footer class="gg-black gg-padding">
+	<footer class="gg-black">
 		<hr>
 		<a href="https://jgroc-de.github.io/" class="gg-right">
 			<em class="">© jgroc-de 2019</em>
