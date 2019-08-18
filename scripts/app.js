@@ -1,5 +1,6 @@
 import { BeatTaker } from "./beatTaker.js"
 import { Metronome } from "./metronome.js"
+import { Tuner } from "./tuner.js"
 
 class App {
   constructor(state) {
@@ -10,7 +11,6 @@ class App {
       this.toggleHide()
     }
     this.setBurger()
-    this.updateMetronome()
   }
 
   toggleHide(event) {
@@ -37,6 +37,13 @@ class App {
     }
   }
 
+  updateTuner() {
+    if (this.tuner) {
+    } else if (window.location.hash === "#" + "tuner") {
+      this.tuner = new Tuner(this.state)
+    }
+  }
+
   hideSection(target) {
     for (let section of this.state.nav.sections) {
       section.setAttribute("hidden", true)
@@ -52,6 +59,7 @@ class App {
     let target = null
 
     this.updateMetronome()
+    this.updateTuner()
     target = this.hideSection(target)
     if (!target) {
       target = this.state.nav.sections[0]

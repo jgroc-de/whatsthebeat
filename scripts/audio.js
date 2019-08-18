@@ -1,6 +1,10 @@
 export class Audio {
-  constructor() {
+  constructor(ctx = false) {
     this.audioCtx = null
+    this.max = 0
+    if (ctx) {
+      this.setAudioContext()
+    }
     this.noises = []
     this.params = {
       frequency: 442,
@@ -10,6 +14,47 @@ export class Audio {
 
   setFrequency (frequency) {
     this.params.frequency = frequency
+  }
+
+  getMax(data) {
+    let i = 1
+    let max = 0
+    let value = 0
+    let tmp = 0
+
+    while (data[i]) {
+      tmp = Math.abs(data[i] - 128)
+      if (tmp > value) {
+        value = tmp
+        max = i
+      }
+      i++
+    }
+    if (value > 30) {
+      this.value = value
+      this.max = max
+      console.log(value)
+    }
+    return this.max
+  }
+
+  printData() {
+    this.analyser.getByteTimeDomainData(this.dataArray);
+
+    return this.getMax(this.dataArray)
+  }
+
+  setMediaSource(stream) {
+    this.noise = this.audioCtx.createMediaStreamSource(stream)
+    let analyser = this.audioCtx.createAnalyser()
+    analyser.fftSize = 2048
+    analyser.minDecibels = -90
+    analyser.maxDecibels = -10
+    analyser.smoothingTimeConstant = 0.95
+    this.noise
+      .connect(analyser)
+    this.dataArray = new Uint8Array(2048)
+    this.analyser = analyser
   }
 
   setAudioContext() {

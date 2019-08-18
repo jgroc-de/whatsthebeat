@@ -105,7 +105,12 @@
 		<div class="gg-button gg-center2" id="startTempo">start/stop</div>
 	</section>
 	<section id="tuner" class="gg-left" hidden>
-		<div class="gg-button gg-center2" id="startTempo">A</div>
+		<div>
+			<label for="pitch2">pitch</label>
+			<input type="range" name="pitch" id="pitch2" min="350" max="500" value="442"></input>
+			<span>442</span> Hz
+		</div>
+		<div class="gg-button gg-center2" id="startTuner">Start/Stop</div>
 	</section>
 	<section id="loader">
 		<span class="gg-center2">Loading…</span>
@@ -121,7 +126,7 @@
 	</footer>
 
 	<script>
-		/*if ('serviceWorker' in navigator) {
+		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', () => {
 				navigator.serviceWorker.register('/service-worker.js')
 					.then((worker) => {
@@ -134,7 +139,7 @@
 						}
 					})
 			})
-		}*/
+		}
 	</script>
 
 </body>
