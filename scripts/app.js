@@ -1,5 +1,5 @@
 import { BeatTaker } from "./beatTaker.js"
-import { Tempo } from "./tempo.js"
+import { Metronome } from "./metronome.js"
 
 class App {
   constructor(state) {
@@ -10,7 +10,7 @@ class App {
       this.toggleHide()
     }
     this.setBurger()
-    this.tempo = null
+    this.updateMetronome()
   }
 
   toggleHide(event) {
@@ -18,7 +18,7 @@ class App {
   }
 
   setEvent(node) {
-    node.addEventListener("click", this, false)
+    node.addEventListener("mouseup", this, false)
   }
 
   setBurger() {
@@ -28,20 +28,31 @@ class App {
     this.setEvent(this.state.nav.card)
   }
 
-  toggleSection() {
-    let target = null
-
-    if (this.tempo) {
-      this.tempo.setTempo(this.beatTaker.beat.lastBeat.innerText)
+  updateMetronome() {
+    if (this.metronome) {
+      this.metronome.setTempo(this.beatTaker.beat.lastBeat.innerText)
+      this.metronome.stop()
     } else if (window.location.hash === "#" + "metronome") {
-      this.tempo = new Tempo(this.state)
+      this.metronome = new Metronome(this.state)
     }
+  }
+
+  hideSection(target) {
     for (let section of this.state.nav.sections) {
       section.setAttribute("hidden", true)
       if ("#" + section.id === window.location.hash) {
         target = section
       }
     }
+
+    return target
+  }
+
+  toggleSection() {
+    let target = null
+
+    this.updateMetronome()
+    target = this.hideSection(target)
     if (!target) {
       target = this.state.nav.sections[0]
     }

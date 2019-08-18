@@ -36,6 +36,12 @@ export class Audio {
     return filter
   }
 
+  stop() {
+    if (this.noise) {
+      this.noise.stop(this.audioCtx.currentTime + 0)
+    }
+  }
+
   play(time = 0) {
     if (this.noises.length === 0) {
       this.setNoise()
@@ -48,21 +54,18 @@ export class Audio {
     }
     noise.start(time)
     noise.stop(time + 0.1)
+    this.lastTime = time
     this.setNoise()
-  }
-
-  stop() {
-    if (this.noise) {
-      this.noise.stop(this.audioCtx.currentTime + 0)
-    }
   }
 
   async loop(delta) {
     if (!this.audioCtx) {
       await this.start()
     }
-    this.lastTime += delta
-    this.play(this.lastTime)
+    if (this.lastTime <= this.audioCtx.currentTime - (delta / 2)) {
+      console.log(delta)
+      this.play(this.lastTime + delta)
+    }
   }
 
   async start() {

@@ -70,38 +70,50 @@
 		</div>
 	</section>
 	<section id="metronome" class="gg-left" hidden>
-		<label for="note">note</label>
-		<select name="note" id="note">
-			<option>A</option>
-			<option>A#</option>
-			<option>B</option>
-			<option>C</option>
-			<option>C#</option>
-			<option>D</option>
-			<option>D#</option>
-			<option>E</option>
-			<option>F</option>
-			<option>F#</option>
-			<option>G</option>
-			<option>G#</option>
-		</select>
-		<label for="octave">octave</label>
-		<input type="number" name="octave" id="octave" min="1" max="12" placeholder="octave"></input>
-		<label for="pitch">pitch</label>
-		<input type="number" name="pitch" id="pitch" min="350" max="700" placeholder="pitch"></input>
-		<label for="tempo">tempo</label>
-		<input type="number" name="tempo" id="tempo" min="1" max="512" placeholder="tempo"></input>
+		<form>
+			<label for="note">note</label>
+			<select name="note" id="note">
+				<option>A</option>
+				<option>A#</option>
+				<option>B</option>
+				<option>C</option>
+				<option>C#</option>
+				<option>D</option>
+				<option>D#</option>
+				<option>E</option>
+				<option>F</option>
+				<option>F#</option>
+				<option>G</option>
+				<option>G#</option>
+			</select>
+			<div>
+				<label for="octave">octave</label>
+				<input type="range" name="octave" id="octave" min="0" max="9" value="3"></input>
+				<span></span>
+			</div>
+			<div>
+				<label for="pitch">pitch</label>
+				<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+				<span></span> Hz
+			</div>
+			<div>
+				<label for="tempo">tempo</label>
+				<input type="range" name="range" id="tempo" min="1" max="480" value="60"></input>
+				<span></span> Bpm
+			</div>
+		</form>
 		<div class="gg-button gg-center2" id="startTempo">start/stop</div>
 	</section>
 	<section id="tuner" class="gg-left" hidden>
+		<div class="gg-button gg-center2" id="startTempo">A</div>
 	</section>
 	<section id="loader">
 		<span class="gg-center2">Loading…</span>
 	</section>
   </main>
 
-	<footer class="gg-black">
-		<hr>
+	<footer>
+		<hr class="gg-yellow">
 		<span class="gg-version">version: <span id="version"></span></span>
 		<a href="https://jgroc-de.github.io/" class="gg-right">
 			<em class="">© jgroc-de 2019</em>
@@ -109,7 +121,7 @@
 	</footer>
 
 	<script>
-		if ('serviceWorker' in navigator) {
+		/*if ('serviceWorker' in navigator) {
 			window.addEventListener('load', () => {
 				navigator.serviceWorker.register('/service-worker.js')
 					.then((worker) => {
@@ -122,7 +134,7 @@
 						}
 					})
 			})
-		}
+		}*/
 	</script>
 
 </body>

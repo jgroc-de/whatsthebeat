@@ -23,6 +23,7 @@ header {
 	0 2px 9px 1px rgba(0, 0, 0, 0.12),
 	0 4px 2px -2px rgba(0, 0, 0, 0.2);
 	top: 0;
+	border-bottom: thick solid yellow;
 }
 
 .gg-burger {
@@ -102,9 +103,8 @@ h6 {
 }
 
 .gg-button, .gg-button-small {
-	background-color:#FBA90A;
+	background-color:#FDDC22;
 	text-align: center;
-	border: thick solid #FDDC22;
 }
 
 .gg-button:hover, .gg-button-small:hover {
@@ -112,18 +112,22 @@ h6 {
 }
 
 .gg-button {
+	border: 10px solid #FBA90A;
 	font-size: 4vh;
 	height: 25vh;
 	width: 25vh;
 	border-radius: 25vh;
 	z-index:10;
-  height: 25vh;
-  line-height: 25vh;
+  line-height: 20vh;
   white-space: nowrap;
 }
 
 .gg-button:active {
 	border-color: #FC7307;
+}
+
+.gg-yellow {
+	border-color: yellow;
 }
 
 .textButton {
@@ -134,9 +138,10 @@ h6 {
 }
 
 .gg-button-small {
+	border: thick solid #FBA90A;
 	font-size: 2vh;
-	height: 10vh;
-	width: 10vh;
+	height: 12vh;
+	width: 12vh;
 	border-radius: 10vh;
 	margin-top: 3vh;
 }
@@ -205,6 +210,7 @@ nav a {
 nav h2 {
 	font-size:2em;
 	padding: 32px;
+	border-bottom: thick solid yellow;
 }
 
 .gg-on {
@@ -215,7 +221,7 @@ nav h2 {
 	display: block;
 }
 
-.gg-menu:hover {
+.gg-menu:hover, .gg-menu:active {
 	background: #F7E3D4;
 }
 
