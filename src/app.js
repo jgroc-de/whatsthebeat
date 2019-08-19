@@ -1,4 +1,3 @@
-import './main.css';
 import { BeatTaker } from "./beatTaker.js"
 import { Metronome } from "./metronome.js"
 import { Tuner } from "./tuner.js"
