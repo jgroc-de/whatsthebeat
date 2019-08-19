@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '0.3.0'
+const VERSION = '0.3.2'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
@@ -9,16 +9,10 @@ const FILES_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/scripts/app.js',
-  '/scripts/audio.js',
-  '/scripts/beatTaker.js',
-  '/scripts/metronome.js',
-  '/scripts/frequency.js',
-  '/scripts/tuner.js',
+  '/bundle.js',
   '/icons/favicon.ico',
   '/icons/icon-144x144.png',
   '/icons/icon-152x152.png',
-  '/css/main.css',
 ]
 
 self.addEventListener('install', (evt) => {
