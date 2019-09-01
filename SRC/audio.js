@@ -33,7 +33,6 @@ export class Audio {
     if (value > 30) {
       this.value = value
       this.max = max
-      console.log(value)
     }
     return this.max
   }
@@ -108,7 +107,6 @@ export class Audio {
       await this.start()
     }
     if (this.lastTime <= this.audioCtx.currentTime - (delta / 2)) {
-      console.log(delta)
       this.play(this.lastTime + delta)
     }
   }

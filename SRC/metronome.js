@@ -4,6 +4,7 @@ import { Frequency } from "./frequency.js"
 export class Metronome {
   constructor (state) {
     this.state = state
+    this.buildView()
     if (!this.state.audio) {
       this.state.audio = new Audio()
     }
@@ -17,39 +18,69 @@ export class Metronome {
     this.tempo = 60
   }
 
+  buildView() {
+    let template = document.getElementById('metronome')
+    let node = document.importNode(template.content, true)
+    this.state.main.appendChild(node)
+  }
+
   setNodes() {
-    this.select = this.state.nav.sections[1].getElementsByTagName("select")[0]
+    this.select = this.state.main.querySelector("select")
     this.select.addEventListener("change", this, false)
-    this.inputs = this.state.nav.sections[1].getElementsByTagName("input")
-    for (let input of this.inputs) {
-      this.updateInput(input)
-      input.addEventListener("change", this, false)
-    }
+    this.inputs = this.state.main.querySelectorAll("input")
   }
 
   updateInput(node) {
     if (node.tagName === "INPUT") {
-      node.nextSibling.textContent = node.value
+      node.parentNode.nextSibling.textContent = node.value
+    }
+  }
+
+  updateInterval() {
+    if (this.interval) {
+      this.stop(false)
+      this.setParams()
+      this.setInterval()
     }
   }
 
   eventDispatcher(event) {
     if (event.type === "change") {
       this.updateInput(event.target)
-      if (this.interval) {
-        this.stop(false)
-        this.setParams()
-        this.setInterval()
-      }
+      this.updateInterval()
     } else {
-      this.play(event)
+      let input
+      switch (event.target.textContent) {
+        case "+":
+          input = event.target.parentNode.querySelector("input")
+          input.value = parseInt(input.value, 10) + 1
+          this.updateInput(input)
+          this.updateInterval()
+          break
+        case "-":
+          input = event.target.parentNode.querySelector("input")
+          input.value -= 1
+          this.updateInput(input)
+          this.updateInterval()
+          break
+        default:
+          this.play(event)
+      }
     }
   }
 
   setEvents() {
     this.btn = document.getElementById("startTempo")
-
     this.btn.addEventListener("click", this, false)
+
+    for (let input of this.inputs) {
+      this.updateInput(input)
+      input.addEventListener("change", this, false)
+      let inputsBtns = input.parentNode.querySelectorAll("div")
+      for (let btn of inputsBtns) {
+        btn.addEventListener("click", this, false)
+      }
+    }
   }
 
   toSecond(tempo) {

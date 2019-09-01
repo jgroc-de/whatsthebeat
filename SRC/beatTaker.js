@@ -3,10 +3,11 @@ import { Audio } from "./audio.js"
 export class BeatTaker {
   constructor (state) {
     this.state = state
+    this.buildView()
     this.state.audio = new Audio()
     this.beat = {
-      beatOut: document.getElementById("beat").getElementsByTagName("span")[0],
-      lastBeat: document.getElementById("lastBeat").getElementsByTagName("span")[0],
+      beatOut: document.getElementById("beat").querySelector("span"),
+      lastBeat: document.getElementById("lastBeat").querySelector("span"),
       count: -1,
       lastDelta: 1000000000000,
       mute: true,
@@ -16,6 +17,12 @@ export class BeatTaker {
       this.eventDispatcher(event)
     }
     this.setEvents()
+  }
+
+  buildView() {
+    let template = document.getElementById('wtb')
+    let node = document.importNode(template.content, true)
+    this.state.main.appendChild(node)
   }
 
   setEvents() {

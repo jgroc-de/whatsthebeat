@@ -39,6 +39,9 @@ header {
 
 .gg-grid {
 	display: grid;
+}
+
+.gg-header {
 	grid-template-columns: 64px auto;
 }
 
@@ -223,6 +226,34 @@ nav h2 {
 
 .gg-menu:hover, .gg-menu:active {
 	background: #F7E3D4;
+}
+
+.gg-form {
+	max-width: 800px;
+	margin:auto;
+}
+
+.gg-input {
+	grid-template-columns: 80px auto 60px 60px;
+	grid-gap: 15px;
+}
+
+.gg-range {
+	background-color: lightGrey;
+	grid-template-columns: 40px auto 40px;
+}
+
+.gg-range-div {
+	text-align: center;
+	background-color: grey;
+	border-radius: 0px;
+	border-style: solid;
+	border-width: 0px 2px 0px 2px;
+}
+
+.gg-range-div:active {
+	background-color: green;
+
 }
 
 #F7E3D4 

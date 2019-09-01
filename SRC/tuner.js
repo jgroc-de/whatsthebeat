@@ -4,10 +4,17 @@ import { Frequency } from "./frequency.js"
 export class Tuner {
   constructor(state) {
     this.state = state
+    this.buildView()
     this.handleEvent = function(event) {
       this.setAudioON()
     }
     this.setEvents()
+  }
+
+  buildView() {
+    let template = document.getElementById('tuner')
+    let node = document.importNode(template.content, true)
+    this.state.main.appendChild(node)
   }
 
   setEvents() {
