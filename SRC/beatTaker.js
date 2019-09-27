@@ -6,29 +6,31 @@ export class BeatTaker {
     this.buildView()
     this.state.audio = new Audio()
     this.beat = {
-      beatOut: this.state.document.getElementById("beat").querySelector("span"),
-      lastBeat: this.state.document.getElementById("lastBeat").querySelector("span"),
+      beatOut: document.getElementById("beat").querySelector("span"),
+      lastBeat: document.getElementById("lastBeat").querySelector("span"),
       count: -1,
       lastDelta: 1000000000000,
       mute: true,
     }
 
     this.handleEvent = function(event) {
+      event.preventDefault()
+      event.stopPropagation()
       this.eventDispatcher(event)
     }
     this.setEvents()
   }
 
   buildView() {
-    let template = this.state.document.getElementById('wtb')
-    let node = this.state.document.importNode(template.content, true)
+    let template = document.getElementById('wtb')
+    let node = document.importNode(template.content, true)
     this.state.main.appendChild(node)
   }
 
   setEvents() {
-    let resetButton = this.state.document.getElementById("reset")
-    let tapButton = this.state.document.getElementById("tap")
-    let soundButton = this.state.document.getElementById("sound")
+    let resetButton = document.getElementById("reset")
+    let tapButton = document.getElementById("tap")
+    let soundButton = document.getElementById("sound")
 
     tapButton.addEventListener("mousedown", this, false)
     resetButton.addEventListener("click", this, false)

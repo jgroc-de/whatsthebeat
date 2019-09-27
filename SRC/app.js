@@ -21,7 +21,7 @@ class App {
   }
 
   setBurger() {
-    let burger = this.state.document.getElementById("burger")
+    let burger = document.getElementById("burger")
 
     this.setEvent(burger)
     this.setEvent(this.state.nav.card)
@@ -33,7 +33,7 @@ class App {
     while (this.state.main.children.length) {
       this.state.main.removeChild(this.state.main.children[0])
     }
-    switch (this.state.window.location.hash) {
+    switch (window.location.hash) {
       case "#tuner":
         this.page = new Tuner(this.state)
         break
@@ -65,8 +65,6 @@ const state = {
   ,nav: {
     card: document.querySelector("nav")
   }
-  ,window: window
-  ,document: document
 }
 
 const app = new App(state)

@@ -12,13 +12,13 @@ export class Tuner {
   }
 
   buildView() {
-    let template = this.state.document.getElementById('tuner')
-    let node = this.state.document.importNode(template.content, true)
+    let template = document.getElementById('tuner')
+    let node = document.importNode(template.content, true)
     this.state.main.appendChild(node)
   }
 
   setEvents() {
-    this.btn = this.state.document.getElementById("startTuner")
+    this.btn = document.getElementById("startTuner")
     this.btn.addEventListener("click", this, false)
   }
 
@@ -46,7 +46,7 @@ export class Tuner {
 
   setAudioON() {
     if (this.interval) {
-      this.state.window.clearInterval(this.interval)
+      window.clearInterval(this.interval)
       this.state.audio.stop()
     } else {
       this.setAudioObject()
