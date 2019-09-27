@@ -61,23 +61,6 @@
 		</a>
 	</footer>
 
-	<script>
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', () => {
-				navigator.serviceWorker.register('/service-worker.js')
-					.then((worker) => {
-						console.log('Service worker registered.', worker)
-						navigator.serviceWorker.addEventListener('message', function(event) {
-							document.getElementById("version").textContent = event.data
-						})
-						if (navigator.serviceWorker.controller) {
-							navigator.serviceWorker.controller.postMessage("hi")
-						}
-					})
-			})
-		}
-	</script>
-
 	<template id="tuner">
 		<div>
 			<label for=pitch2>pitch</label>
@@ -87,7 +70,7 @@
 		<div class='gg-button gg-center2' id=startTuner>Start/Stop</div>
 	</template>
 	<template id="wtb">
-		<div class="gg-settings">
+		<div id="settings" class="gg-settings">
 			<div id="reset" class="gg-button-small gg-left">
 				<span class="textButton">reset</span>
 			</div>
@@ -148,6 +131,23 @@
 	</template>
 	<template id="range">
 	</template>
+
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('/service-worker.js')
+					.then((worker) => {
+						console.log('Service worker registered.', worker)
+						navigator.serviceWorker.addEventListener('message', function(event) {
+							document.getElementById("version").textContent = event.data
+						})
+						if (navigator.serviceWorker.controller) {
+							navigator.serviceWorker.controller.postMessage("hi")
+						}
+					})
+			})
+		}
+	</script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '0.3.6'
+const VERSION = '0.3.7'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
@@ -9,16 +9,16 @@ const FILES_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/css/main.css',
-  '/src/app.js',
-  '/src/metronome.js',
-  '/src/beatTaker.js',
-  '/src/tuner.js',
-  '/src/audio.js',
-  '/src/frequency.js',
-  '/icons/favicon.ico',
-  '/icons/icon-144x144.png',
-  '/icons/icon-152x152.png',
+  '/CSS/main.css',
+  '/SRC/app.js',
+  '/SRC/metronome.js',
+  '/SRC/beatTaker.js',
+  '/SRC/tuner.js',
+  '/SRC/audio.js',
+  '/SRC/frequency.js',
+  '/ICONS/favicon.ico',
+  '/ICONS/icon-144x144.png',
+  '/ICONS/icon-152x152.png',
   'https://fonts.googleapis.com/css?family=Poppins',
   'https://fonts.gstatic.com/s/poppins/v8/pxiEyp8kv8JHgFVrJJfecg.woff2'
 ]

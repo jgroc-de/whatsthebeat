@@ -19,8 +19,8 @@ export class Metronome {
   }
 
   buildView() {
-    let template = document.getElementById('metronome')
-    let node = document.importNode(template.content, true)
+    let template = this.state.document.getElementById('metronome')
+    let node = this.state.document.importNode(template.content, true)
     this.state.main.appendChild(node)
   }
 
@@ -70,7 +70,7 @@ export class Metronome {
   }
 
   setEvents() {
-    this.btn = document.getElementById("startTempo")
+    this.btn = this.state.document.getElementById("startTempo")
     this.btn.addEventListener("click", this, false)
 
     for (let input of this.inputs) {
@@ -102,7 +102,7 @@ export class Metronome {
 
   stop(end = true) {
     if (this.interval) {
-      window.clearInterval(this.interval)
+      this.state.window.clearInterval(this.interval)
       this.interval = null
       if (end) {
         this.btn.removeAttribute("style")
