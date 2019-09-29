@@ -185,4 +185,12 @@ export class Metronome {
 			this.stop(true)
 		}
 	}
+
+	removeEvents() {
+		let main = document.getElementsByTagName('main')[0]
+
+		main.removeEventListener('click', this)
+		main.removeEventListener('change', this)
+		main.removeEventListener('mousedown', this)
+	}
 }

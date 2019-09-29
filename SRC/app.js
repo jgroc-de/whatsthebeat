@@ -17,20 +17,19 @@ class App {
 		this.state.nav.card.toggleAttribute('hidden')
 	}
 
-	setEvent(node) {
-		node.addEventListener('mouseup', this, false)
-	}
-
 	setBurger() {
 		let burger = document.getElementById('burger')
 
-		this.setEvent(burger)
-		this.setEvent(this.state.nav.card)
+		burger.addEventListener('mouseup', this, false)
+		this.state.nav.card.addEventListener('mouseup', this, false)
 	}
 
 	setPage() {
 		let beat = this.getBeat()
 
+		if (this.page) {
+			this.page.removeEvents()
+		}
 		while (this.state.main.children.length) {
 			this.state.main.removeChild(this.state.main.children[0])
 		}
