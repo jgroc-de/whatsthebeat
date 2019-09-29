@@ -17,6 +17,7 @@ export class Tuner {
 		}
 		this.setNodes()
 		this.setEvents()
+		this.firstEvent = true
 	}
 
 	buildView() {
@@ -48,24 +49,35 @@ export class Tuner {
 				node.valueAsNumber += value
 			}
 			node.parentNode.nextSibling.textContent = node.value
+			if (this.isPlaying) {
+				this.play(true)
+			}
 		}
 	}
 
 	eventDispatcher(event) {
+		if (this.firstEvent) {
+			let main = document.getElementsByTagName('main')[0]
+			if (event.type === 'mousedown') {
+				main.removeEventListener('touchend', this)
+				main.removeEventListener('touchstart', this)
+			} else {
+				main.removeEventListener('click', this)
+				main.removeEventListener('mousedown', this)
+			}
+			this.firstEvent = false
+		}
 		if (this.inputInterval) {
 			window.clearInterval(this.inputInterval)
 		}
 		if (event.type === 'change') {
 			this.updateInput(event.target)
-			if (this.isPlaying) {
-				this.play(true)
-			}
 
 			return
 		}
 		switch (event.target.id) {
 			case 'startTuner':
-				if (event.type === 'click') {
+				if (event.type === 'click' || event.type === 'touchstart') {
 					this.play()
 				}
 				break
@@ -88,17 +100,11 @@ export class Tuner {
 			default:
 				return
 		}
-		if (event.type === 'mousedown') {
+		if (event.type === 'mousedown' || event.type === 'touchstart') {
 			this.updateInput(input, value)
-			if (this.isPlaying) {
-				this.play(true)
-			}
 			this.inputInterval = setInterval(
 				function(that, input, value) {
-					this.updateInput(input, value)
-					if (this.isPlaying) {
-						this.play(true)
-					}
+					that.updateInput(input, value)
 				},
 				100,
 				this,
@@ -114,6 +120,8 @@ export class Tuner {
 		main.addEventListener('click', this, false)
 		main.addEventListener('change', this, false)
 		main.addEventListener('mousedown', this, false)
+		main.addEventListener('touchstart', this, false)
+		main.addEventListener('touchend', this, false)
 	}
 
 	getNote() {
@@ -183,5 +191,10 @@ export class Tuner {
 		main.removeEventListener('click', this)
 		main.removeEventListener('change', this)
 		main.removeEventListener('mousedown', this)
+		main.removeEventListener('touchstart', this)
+		main.removeEventListener('touchend', this)
+		if (this.isPlaying) {
+			this.state.audio.stopSound()
+		}
 	}
 }

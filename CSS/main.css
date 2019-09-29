@@ -155,7 +155,7 @@ h6 {
 
 .gg-center2 {
 	position: fixed;
-	top: 55vh;
+	top: 75vh;
 	left: 50vw;
 	transform: translate(-50%, -50%);
 }
@@ -227,6 +227,9 @@ nav h2 {
 .gg-input {
 	grid-template-columns: 80px auto 60px 60px;
 	grid-gap: 15px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
 }
 
 .gg-range {
@@ -235,11 +238,19 @@ nav h2 {
 }
 
 .gg-range-div {
-	text-align: center;
 	background-color: grey;
 	border-radius: 0px;
 	border-style: solid;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
 	border-width: 0px 2px 0px 2px;
+}
+
+gg-text-center, label {
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
 }
 
 .gg-range-div:active {
@@ -247,8 +258,8 @@ nav h2 {
 
 }
 
-.gg-padding-bottom {
-	padding-bottom: 8px;
+.gg-margin-bottom {
+	margin-bottom: 12px;
 }
 
 .gg-number-width {

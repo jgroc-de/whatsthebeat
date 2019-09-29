@@ -18,6 +18,7 @@ export class Metronome {
 		this.frequency = new Frequency()
 		this.tempo = 60
 		this.btn = document.getElementById('startTempo')
+		this.firstEvent = true
 	}
 
 	buildView() {
@@ -50,7 +51,17 @@ export class Metronome {
 	}
 
 	eventDispatcher(event) {
-		console.log(event)
+		if (this.firstEvent) {
+			let main = document.getElementsByTagName('main')[0]
+			if (event.type === 'mousedown') {
+				main.removeEventListener('touchstart', this)
+				main.removeEventListener('touchend', this)
+			} else {
+				main.removeEventListener('click', this)
+				main.removeEventListener('mousedown', this)
+			}
+			this.firstEvent = false
+		}
 		if (this.inputInterval) {
 			window.clearInterval(this.inputInterval)
 		}
@@ -61,7 +72,7 @@ export class Metronome {
 		}
 		switch (event.target.id) {
 			case 'startTempo':
-				if (event.type === 'click') {
+				if (event.type === 'click' || event.type === 'touchstart') {
 					this.play(event)
 				}
 				break
@@ -84,7 +95,7 @@ export class Metronome {
 			default:
 				return
 		}
-		if (event.type === 'mousedown') {
+		if (event.type === 'mousedown' || event.type === 'touchstart') {
 			this.updateInput(input, value)
 			this.inputInterval = setInterval(
 				function(that, input, value) {
@@ -104,6 +115,8 @@ export class Metronome {
 		main.addEventListener('click', this, false)
 		main.addEventListener('change', this, false)
 		main.addEventListener('mousedown', this, false)
+		main.addEventListener('touchend', this, false)
+		main.addEventListener('touchstart', this, false)
 	}
 
 	toSecond(tempo) {
@@ -192,5 +205,8 @@ export class Metronome {
 		main.removeEventListener('click', this)
 		main.removeEventListener('change', this)
 		main.removeEventListener('mousedown', this)
+		main.removeEventListener('touchstart', this)
+		main.removeEventListener('touchend', this)
+		this.stop(true)
 	}
 }
