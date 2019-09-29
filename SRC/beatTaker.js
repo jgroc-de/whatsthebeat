@@ -107,4 +107,12 @@ export class BeatTaker {
 		this.beat.mute = !this.beat.mute
 		node.classList.toggle('gg-on')
 	}
+
+	removeEvents() {
+		let body = document.getElementsByTagName('main')[0]
+		let tapButton = document.getElementById('tap')
+
+		tapButton.removeEventListener('mousedown', this)
+		body.removeEventListener('click', this)
+	}
 }

@@ -9,4 +9,7 @@ export class About {
 		let node = document.importNode(template.content, true)
 		this.state.main.appendChild(node)
 	}
+
+	removeEvents() {
+	}
 }

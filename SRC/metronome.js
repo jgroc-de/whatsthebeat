@@ -85,7 +85,7 @@ export class Metronome {
 				return
 		}
 		if (event.type === 'mousedown') {
-      this.updateInput(input, value)
+			this.updateInput(input, value)
 			this.inputInterval = setInterval(
 				function(that, input, value) {
 					that.updateInput(input, value)

@@ -1,12 +1,12 @@
-import { Audio } from "./audio.js"
-import { Frequency } from "./frequency.js"
+import { Audio } from './audio.js'
+import { Frequency } from './frequency.js'
 
 export class Tuner {
-  constructor(state) {
+	constructor(state) {
 		this.state = state
-    this.buildView()
-    this.isPlaying = false
-    this.frequency = new Frequency()
+		this.buildView()
+		this.isPlaying = false
+		this.frequency = new Frequency()
 		this.btn = document.getElementById('startTuner')
 		if (!this.state.audio) {
 			this.state.audio = new Audio()
@@ -17,23 +17,23 @@ export class Tuner {
 		}
 		this.setNodes()
 		this.setEvents()
-  }
+	}
 
-  buildView() {
-    let template = document.getElementById('tuner')
-    let node = document.importNode(template.content, true)
-    this.state.main.appendChild(node)
-  }
+	buildView() {
+		let template = document.getElementById('tuner')
+		let node = document.importNode(template.content, true)
+		this.state.main.appendChild(node)
+	}
 
-  async setAudioObject() {
-    if (!this.state.audio) {
-      this.state.audio = await new Audio(true)
-    } else {
-      this.state.audio.setAudioContext()
-    }
-  }
+	async setAudioObject() {
+		if (!this.state.audio) {
+			this.state.audio = await new Audio(true)
+		} else {
+			this.state.audio.setAudioContext()
+		}
+	}
 
-  setNodes() {
+	setNodes() {
 		this.select = this.state.main.querySelector('select')
 		this.select.addEventListener('change', this, false)
 		this.inputs = this.state.main.querySelectorAll('input')
@@ -56,10 +56,10 @@ export class Tuner {
 			window.clearInterval(this.inputInterval)
 		}
 		if (event.type === 'change') {
-      this.updateInput(event.target)
-      if (this.isPlaying) {
-        this.play(true)
-      }
+			this.updateInput(event.target)
+			if (this.isPlaying) {
+				this.play(true)
+			}
 
 			return
 		}
@@ -87,18 +87,18 @@ export class Tuner {
 				break
 			default:
 				return
-    }
+		}
 		if (event.type === 'mousedown') {
-      this.updateInput(input, value)
-      if (this.isPlaying) {
-        this.play(true)
-      }
+			this.updateInput(input, value)
+			if (this.isPlaying) {
+				this.play(true)
+			}
 			this.inputInterval = setInterval(
 				function(that, input, value) {
-          this.updateInput(input, value)
-          if (this.isPlaying) {
-            this.play(true)
-          }
+					this.updateInput(input, value)
+					if (this.isPlaying) {
+						this.play(true)
+					}
 				},
 				100,
 				this,
@@ -145,32 +145,43 @@ export class Tuner {
 	}
 
 	async play(keep = false) {
-    this.setParams()
-    if (keep && this.isPlaying) {
-      this.state.audio.stopSound()
-      this.btn.removeAttribute('style')
-      this.isPlaying = false      
-    }
+		this.setParams()
+		if (keep && this.isPlaying) {
+			this.state.audio.stopSound()
+			this.btn.removeAttribute('style')
+			this.isPlaying = false
+		}
 		if (!this.isPlaying) {
 			this.btn.setAttribute('style', 'border-color:lightGreen')
-      this.state.audio.startSound()
-    } else {
-      this.state.audio.stopSound()
-      this.btn.removeAttribute('style')
-    }
-    this.isPlaying = !this.isPlaying
+			this.state.audio.startSound()
+		} else {
+			this.state.audio.stopSound()
+			this.btn.removeAttribute('style')
+		}
+		this.isPlaying = !this.isPlaying
 	}
 
-  openMic() {
-    let audio = this.state.audio
+	openMic() {
+		let audio = this.state.audio
 
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream) {
-        audio.setMediaSource(stream)
-      }).catch(function(err) {
-        console.log(err)
-      });
-    }
-    this.mic = true
-  }
+		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices
+				.getUserMedia({ audio: true })
+				.then(function(stream) {
+					audio.setMediaSource(stream)
+				})
+				.catch(function(err) {
+					console.log(err)
+				})
+		}
+		this.mic = true
+	}
+
+	removeEvents() {
+		let main = document.getElementsByTagName('main')[0]
+
+		main.removeEventListener('click', this)
+		main.removeEventListener('change', this)
+		main.removeEventListener('mousedown', this)
+	}
 }
