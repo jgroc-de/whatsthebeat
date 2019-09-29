@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What's the B**t?</title>
-  <meta name="whatstheb**t" content="beat-taking-pwa">
-  <link rel="icon" href="/ICONS/favicon.ico" type="image/x-icon" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>What's the B**t?</title>
+	<meta name="whatstheb**t" content="beat-taking-pwa">
+	<link rel="icon" href="/ICONS/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="./CSS/main.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 	<script type="module" src="./SRC/app.js" async></script>
@@ -23,9 +24,10 @@
 	</style>
 
 </head>
+
 <body>
 
-  <header class="gg-grid gg-header">
+	<header class="gg-grid gg-header">
 		<div class="gg-burger" id="burger">
 			<div class="gg-bar"></div>
 			<div class="gg-bar"></div>
@@ -33,25 +35,22 @@
 		</div>
 		<div class="">
 			<h1>What's the b**t?</h1>
-			<h6>take the beat of whatever you want</h6>
-			<button id="install" aria-label="Install" hidden>install</button>
 		</div>
 	</header>
 
 	<nav class="gg-modal" hidden>
 		<div class="gg-navbar">
-			<div>
-				<h2><b>What's The B**t?</b></h2>
-			</div>
+			<h2><b>What's The B**t?</b></h2>
 			<a class="gg-menu" href="/#">What's the beat</a>
-			<a class= "gg-menu" href="/#metronome">Metronome</a>
+			<a class="gg-menu" href="/#metronome">Metronome</a>
 			<a class="gg-menu" href="/#tuner">Tuner</a>
+			<a class="gg-menu" href="/#about">About</a>
 		</div>
 		<div class="gg-modal"></div>
 	</nav>
 
 	<main class="gg-main">
-  </main>
+	</main>
 
 	<footer>
 		<hr class="gg-yellow">
@@ -61,14 +60,6 @@
 		</a>
 	</footer>
 
-	<template id="tuner">
-		<div>
-			<label for=pitch2>pitch</label>
-			<input type=range name=pitch id=pitch2 min=350 max=500 value=442></input>
-			<span>442</span> Hz
-		</div>
-		<div class='gg-button gg-center2' id=startTuner>Start/Stop</div>
-	</template>
 	<template id="wtb">
 		<div id="settings" class="gg-settings">
 			<button id="reset" class="gg-button-small gg-left">
@@ -78,9 +69,17 @@
 				<span class="textButton">sound ON/OFF</span>
 			</button>
 		</div>
-		<div class="gg-settings2">
-			<div id="beat" class="gg-center gg-right2" aria-label="Tap">current: <span>0</span> bpm</div>
-			<div id="lastBeat" class="gg-center gg-right3" aria-label="Tap">last: <span>0</span> bpm</div>
+		<div class="gg-settings gg-right2">
+			<div id="beat" class="gg-center" aria-label="Tap">
+				<span>current:</span>
+				<div class="gg-number-width">0</div>
+				bpm
+			</div>
+			<div id="lastBeat" class="gg-center" aria-label="Tap">
+				<span>last:</span>
+				<div class="gg-number-width">0</div>
+				bpm
+			</div>
 		</div>
 		<div id="tap" class="gg-button gg-center2" aria-label="Tap">
 			b**t me
@@ -88,21 +87,23 @@
 	</template>
 	<template id="metronome" class="gg-left">
 		<form class="gg-form">
-			<label for="note">note</label>
-			<select name="note" id="note">
-				<option>A</option>
-				<option>A#</option>
-				<option>B</option>
-				<option>C</option>
-				<option>C#</option>
-				<option>D</option>
-				<option>D#</option>
-				<option>E</option>
-				<option>F</option>
-				<option>F#</option>
-				<option>G</option>
-				<option>G#</option>
-			</select>
+			<div class="gg-grid gg-input gg-padding-bottom">
+				<label for="note">note</label>
+				<select name="note" id="note">
+					<option>A</option>
+					<option>A#</option>
+					<option>B</option>
+					<option>C</option>
+					<option>C#</option>
+					<option>D</option>
+					<option>D#</option>
+					<option>E</option>
+					<option>F</option>
+					<option>F#</option>
+					<option>G</option>
+					<option>G#</option>
+				</select>
+			</div>
 			<div class="gg-grid gg-input">
 				<label for=octave>octave</label>
 				<div class="gg-range gg-grid">
@@ -114,7 +115,7 @@
 				<label for="pitch">pitch</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
-					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442" ></input>
+					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
 					<div class="gg-range-div">+</div>
 				</div>
 				<span>Hz</span>
@@ -129,7 +130,55 @@
 		</form>
 		<div class="gg-button gg-center2" id="startTempo">start/stop</div>
 	</template>
-	<template id="range">
+	<template id="tuner">
+		<form class="gg-form">
+			<div class="gg-grid gg-input gg-padding-bottom">
+				<label for="note">note</label>
+				<select name="note" id="note">
+					<option>A</option>
+					<option>A#</option>
+					<option>B</option>
+					<option>C</option>
+					<option>C#</option>
+					<option>D</option>
+					<option>D#</option>
+					<option>E</option>
+					<option>F</option>
+					<option>F#</option>
+					<option>G</option>
+					<option>G#</option>
+				</select>
+			</div>
+			<div class="gg-grid gg-input">
+				<label for=octave>octave</label>
+				<div class="gg-range gg-grid">
+					<div class="gg-range-div">-</div>
+					<input type=range name=octave id=octave min=0 max=9 value=3></input>
+					<div class="gg-range-div">+</div>
+				</div>
+				<span></span>
+				<label for="pitch">pitch</label>
+				<div class="gg-range gg-grid">
+					<div class="gg-range-div">-</div>
+					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+					<div class="gg-range-div">+</div>
+				</div>
+				<span>Hz</span>
+			</div>
+		</form>
+		<div class="gg-button gg-center2" id="startTuner">start/stop</div>
+	</template>
+	<template id="about">
+		<div>
+			<span>
+				Welcome on this webApp!<br>
+				<br>You can find here some very basic music tools as something to give you the current beat you are
+				tapping, a metronome and a sound emitter to help you to tune you instrument.
+				<br>If ever you would like to discuss about this work, click contact me on my github account (link in
+				the footer).
+				<br><br>Enjoy!
+			</span>
+		</div>
 	</template>
 
 	<script>
@@ -138,7 +187,7 @@
 				navigator.serviceWorker.register('/service-worker.js')
 					.then((worker) => {
 						console.log('Service worker registered.', worker)
-						navigator.serviceWorker.addEventListener('message', function(event) {
+						navigator.serviceWorker.addEventListener('message', function (event) {
 							document.getElementById("version").textContent = event.data
 						})
 						if (navigator.serviceWorker.controller) {
@@ -150,4 +199,5 @@
 	</script>
 
 </body>
+
 </html>

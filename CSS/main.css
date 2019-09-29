@@ -27,6 +27,7 @@ header {
 }
 
 .gg-burger {
+	cursor:pointer;
 	padding: 6px 0 0 12px;
 }
 
@@ -68,7 +69,6 @@ h6 {
 	margin: 0;
 	font-size: 1em;
 	position: relative;
-	top: -20px;
 }
 
 .gg-navbar {
@@ -175,23 +175,14 @@ h6 {
 	width: 50vw;
 }
 
-.gg-right3, .gg-right2 {
+.gg-right2 {
 	position: absolute;
 	right: 16px;
-	top: 4vh;
-}
-
-.gg-right3 {
 	top: 16vh;
 }
 
 .gg-settings {
 	position: fixed;
-}
-
-.gg-settings2 {
-	position: fixed;
-	right: 8px;
 }
 
 .gg-right {
@@ -256,9 +247,17 @@ nav h2 {
 
 }
 
+.gg-padding-bottom {
+	padding-bottom: 8px;
+}
+
+.gg-number-width {
+	display: inline-block;
+	width: 40px;
+}
+
 #F7E3D4 
 #FC7307
 #FBA90A
 #FDDC22
 #342E09
-

@@ -80,13 +80,13 @@ export class Audio {
     return filter
   }
 
-  stop() {
+  removeSound() {
     if (this.noise) {
       this.noise.stop(this.audioCtx.currentTime + 0)
     }
   }
 
-  play(time = 0) {
+  play(time = 0, stop = true) {
     if (this.noises.length === 0) {
       this.setNoise()
     }
@@ -97,8 +97,27 @@ export class Audio {
       this.lastTime = time
     }
     noise.start(time)
-    noise.stop(time + 0.1)
-    this.lastTime = time
+    if (stop) {
+      noise.stop(time + 0.1)
+      this.lastTime = time
+      this.setNoise()
+    } else {
+      this.noises.push(noise)
+    }
+  }
+
+  async startSound() {
+    if (!this.audioCtx) {
+      await this.start()
+    }
+    this.play(0, false)
+  }
+
+  stopSound() { 
+    let noise = this.noises.shift()
+    let time = this.audioCtx.currentTime
+    
+    noise.stop(time + 0.01)
     this.setNoise()
   }
 
@@ -113,6 +132,7 @@ export class Audio {
 
   async start() {
     await this.setAudioContext()
+    //there is always a node ready to use in the array
     this.setNoise()
   }
 
