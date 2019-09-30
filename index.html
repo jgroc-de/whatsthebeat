@@ -89,43 +89,44 @@
 		<form class="gg-form">
 			<div class="gg-grid gg-input gg-margin-bottom">
 				<label for="note">note</label>
-				<select name="note" id="note">
-					<option>A</option>
-					<option>A#</option>
-					<option>B</option>
-					<option>C</option>
-					<option>C#</option>
-					<option>D</option>
-					<option>D#</option>
-					<option>E</option>
-					<option>F</option>
-					<option>F#</option>
-					<option>G</option>
-					<option>G#</option>
-				</select>
+				<div class="gg-grid gg-range">
+					<div class="gg-range-div">-</div>
+					<select name="note" id="note">
+						<option>A</option>
+						<option>A#</option>
+						<option>B</option>
+						<option>C</option>
+						<option>C#</option>
+						<option>D</option>
+						<option>D#</option>
+						<option>E</option>
+						<option>F</option>
+						<option>F#</option>
+						<option>G</option>
+						<option>G#</option>
+					</select>
+					<div class="gg-range-div">+</div>
+				</div>
 			</div>
 			<div class="gg-grid gg-input">
 				<label for=octave>octave</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
-					<input type=range name=octave id=octave min=0 max=9 value=3></input>
+					<input type=range name=octave id=octave min=0 max=7 value=3></input>
 					<div class="gg-range-div">+</div>
 				</div>
-				<span></span>
-				<label for="pitch">pitch</label>
+				<label for="pitch">pitch (Hz)</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
 					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
 					<div class="gg-range-div">+</div>
 				</div>
-				<span>Hz</span>
-				<label for="tempo">tempo</label>
+				<label for="tempo">tempo (BPM)</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
 					<input type="range" name="range" id="tempo" min="1" max="480" value="60"></input>
 					<div class="gg-range-div">+</div>
 				</div>
-				<span>Bpm</span>
 			</div>
 		</form>
 		<div class="gg-button gg-center2" id="startTempo">start/stop</div>
@@ -134,36 +135,38 @@
 		<form class="gg-form">
 			<div class="gg-grid gg-input gg-margin-bottom">
 				<label for="note">note</label>
-				<select name="note" id="note">
-					<option>A</option>
-					<option>A#</option>
-					<option>B</option>
-					<option>C</option>
-					<option>C#</option>
-					<option>D</option>
-					<option>D#</option>
-					<option>E</option>
-					<option>F</option>
-					<option>F#</option>
-					<option>G</option>
-					<option>G#</option>
-				</select>
+				<div class="gg-grid gg-range">
+					<div class="gg-range-div">-</div>
+					<select name="note" id="note">
+						<option>A</option>
+						<option>A#</option>
+						<option>B</option>
+						<option>C</option>
+						<option>C#</option>
+						<option>D</option>
+						<option>D#</option>
+						<option>E</option>
+						<option>F</option>
+						<option>F#</option>
+						<option>G</option>
+						<option>G#</option>
+					</select>
+					<div class="gg-range-div">+</div>
+				</div>
 			</div>
 			<div class="gg-grid gg-input">
 				<label for=octave>octave</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
-					<input type=range name=octave id=octave min=0 max=9 value=3></input>
+					<input type=range name=octave id=octave min=0 max=7 value=3></input>
 					<div class="gg-range-div">+</div>
 				</div>
-				<span></span>
-				<label for="pitch">pitch</label>
+				<label for="pitch">pitch (Hz)</label>
 				<div class="gg-range gg-grid">
 					<div class="gg-range-div">-</div>
 					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
 					<div class="gg-range-div">+</div>
 				</div>
-				<span>Hz</span>
 			</div>
 		</form>
 		<div class="gg-button gg-center2" id="startTuner">start/stop</div>
@@ -194,7 +197,7 @@
 							navigator.serviceWorker.controller.postMessage("hi")
 						}
 					})
-					})
+			})
 		}
 	</script>
 

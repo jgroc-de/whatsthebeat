@@ -43,15 +43,22 @@ export class Tuner {
 		}
 	}
 
+	modifyValue(node, value) {
+		node.valueAsNumber += value
+		node.parentNode.nextSibling.textContent = node.valueAsNumber
+		if (node.name === 'octave') {
+			this.frequency.octave = node.valueAsNumber
+		}
+	}
+
 	updateInput(node, value = 0) {
 		if (node.tagName === 'INPUT') {
-			if (value) {
-				node.valueAsNumber += value
-			}
-			node.parentNode.nextSibling.textContent = node.value
-			if (this.isPlaying) {
-				this.play(true)
-			}
+			this.modifyValue(node, value)
+		} else if (node.tagName === 'SELECT') {
+			this.modifyNote(value)
+		}
+		if (this.isPlaying) {
+			this.play(true)
 		}
 	}
 
@@ -77,7 +84,7 @@ export class Tuner {
 		}
 		switch (event.target.id) {
 			case 'startTuner':
-				if (event.type === 'click' || event.type === 'touchstart') {
+				if (event.type === 'mousedown' || event.type === 'touchstart') {
 					this.play()
 				}
 				break
@@ -87,7 +94,7 @@ export class Tuner {
 	}
 
 	manageInputEvent(event) {
-		let input = event.target.parentNode.querySelector('input')
+		let target = event.target.parentNode.querySelectorAll('input, select')[0]
 		let value = 0
 
 		switch (event.target.textContent) {
@@ -101,14 +108,14 @@ export class Tuner {
 				return
 		}
 		if (event.type === 'mousedown' || event.type === 'touchstart') {
-			this.updateInput(input, value)
+			this.updateInput(target, value)
 			this.inputInterval = setInterval(
-				function(that, input, value) {
-					that.updateInput(input, value)
+				function(that, target, value) {
+					that.updateInput(target, value)
 				},
 				100,
 				this,
-				input,
+				target,
 				value
 			)
 		}
@@ -122,6 +129,35 @@ export class Tuner {
 		main.addEventListener('mousedown', this, false)
 		main.addEventListener('touchstart', this, false)
 		main.addEventListener('touchend', this, false)
+	}
+
+	modifyNote(add) {
+		let i = 0
+		let node = null
+		let value = this.select.value
+
+		while ((node = this.select.children[i])) {
+			if (value === node.value) {
+				let j = i + add
+				let last = this.select.children.length - 1
+				let node = this.inputs[0]
+				if (j < 0) {
+					j = last
+					if (this.frequency.octave > 0) {
+						this.modifyValue(node, -1)
+					}
+				} else if (j > last) {
+					j = 0
+					if (this.frequency.octave < 7) {
+						this.modifyValue(node, 1)
+					}
+				}
+				this.select.value = this.select.children[j].value
+
+				return
+			}
+			i++
+		}
 	}
 
 	getNote() {
