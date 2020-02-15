@@ -19,167 +19,179 @@
 	<link rel="apple-touch-icon" href="/ICONS/icon-152x152.png">
 	<meta name="description" content="Take the beat of any music">
 	<meta name="theme-color" content="#2F3BA2" />
-	<style>
-
-	</style>
-
 </head>
 
 <body>
 
-	<header class="gg-grid gg-header">
-		<div class="gg-burger" id="burger">
+	<header>
+		<div id="burger">
 			<div class="gg-bar"></div>
 			<div class="gg-bar"></div>
 			<div class="gg-bar"></div>
 		</div>
-		<div class="">
+		<div>
 			<h1>What's the b**t?</h1>
 		</div>
 	</header>
 
-	<nav class="gg-modal" hidden>
+	<nav hidden>
 		<div class="gg-navbar">
 			<h2><b>What's The B**t?</b></h2>
-			<a class="gg-menu" href="/#">What's the beat</a>
-			<a class="gg-menu" href="/#metronome">Metronome</a>
-			<a class="gg-menu" href="/#tuner">Tuner</a>
-			<a class="gg-menu" href="/#about">About</a>
+			<a href="/#">What's the beat</a>
+			<a href="/#metronome">Metronome</a>
+			<a href="/#tuner">Tuner</a>
+			<a href="/#about">About</a>
 		</div>
 		<div class="gg-modal"></div>
 	</nav>
 
-	<main class="gg-main">
+	<main>
 	</main>
 
 	<footer>
-		<hr class="gg-yellow">
-		<span class="gg-version">version: <span id="version"></span></span>
-		<a href="https://jgroc-de.github.io/" class="gg-right">
-			<em class="">© jgroc-de 2019</em>
+		<hr>
+		<span>version: <span id="version"></span></span>
+		<a href="https://jgroc-de.github.io/" class="gg-pad-right">
+			<em>© jgroc-de 2019</em>
 		</a>
 	</footer>
 
 	<template id="wtb">
-		<div id="settings" class="gg-settings">
-			<button id="reset" class="gg-button-small gg-left">
-				<span class="textButton">reset</span>
-			</button>
-			<button id="sound" class="gg-button-small gg-left2">
-				<span class="textButton">sound ON/OFF</span>
-			</button>
+		<div class="gg-left-panel">
+			<div id="settings" class="gg-pad-left gg-2-rows">
+				<button id="reset" class="gg-button-small">Reset</button>
+				<button id="sound" class="gg-button-small">Sound</button>
+			</div>
+			<div class="gg-pad-right">
+				<div class="gg-right">
+					<div id="beat" class="" aria-label="Tap">
+						<span>current:</span>
+						<div class="gg-number">0</div>
+						bpm
+					</div>
+					<div id="lastBeat" class="" aria-label="Tap">
+						<span>last:</span>
+						<div class="gg-number">0</div>
+						bpm
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="gg-settings gg-right2">
-			<div id="beat" class="gg-center" aria-label="Tap">
-				<span>current:</span>
-				<div class="gg-number-width">0</div>
-				bpm
-			</div>
-			<div id="lastBeat" class="gg-center" aria-label="Tap">
-				<span>last:</span>
-				<div class="gg-number-width">0</div>
-				bpm
-			</div>
-		</div>
-		<div id="tap" class="gg-button gg-center2" aria-label="Tap">
-			b**t me
-		</div>
-	</template>
-	<template id="metronome" class="gg-left">
-		<form class="gg-form">
-			<div class="gg-grid gg-input gg-margin-bottom">
-				<label for="note">note</label>
-				<div class="gg-grid gg-range">
-					<div class="gg-range-div">-</div>
-					<select name="note" id="note">
-						<option>A</option>
-						<option>A#</option>
-						<option>B</option>
-						<option>C</option>
-						<option>C#</option>
-						<option>D</option>
-						<option>D#</option>
-						<option>E</option>
-						<option>F</option>
-						<option>F#</option>
-						<option>G</option>
-						<option>G#</option>
-					</select>
-					<div class="gg-range-div">+</div>
-				</div>
-			</div>
-			<div class="gg-grid gg-input">
-				<label for=octave>octave</label>
-				<div class="gg-range gg-grid">
-					<div class="gg-range-div">-</div>
-					<input type=range name=octave id=octave min=0 max=7 value=3></input>
-					<div class="gg-range-div">+</div>
-				</div>
-				<label for="pitch">pitch (Hz)</label>
-				<div class="gg-range gg-grid">
-					<div class="gg-range-div">-</div>
-					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
-					<div class="gg-range-div">+</div>
-				</div>
-				<label for="tempo">tempo (BPM)</label>
-				<div class="gg-range gg-grid">
-					<div class="gg-range-div">-</div>
-					<input type="range" name="range" id="tempo" min="1" max="480" value="60"></input>
-					<div class="gg-range-div">+</div>
-				</div>
-			</div>
-		</form>
-		<div class="gg-button gg-center2" id="startTempo">start/stop</div>
-	</template>
-	<template id="tuner">
-		<form class="gg-form">
-			<div class="gg-grid gg-input gg-margin-bottom">
-				<label for="note">note</label>
-				<div class="gg-grid gg-range">
-					<div class="gg-range-div">-</div>
-					<select name="note" id="note">
-						<option>A</option>
-						<option>A#</option>
-						<option>B</option>
-						<option>C</option>
-						<option>C#</option>
-						<option>D</option>
-						<option>D#</option>
-						<option>E</option>
-						<option>F</option>
-						<option>F#</option>
-						<option>G</option>
-						<option>G#</option>
-					</select>
-					<div class="gg-range-div">+</div>
-				</div>
-			</div>
-			<div class="gg-grid gg-input">
-				<label for=octave>octave</label>
-				<div class="gg-range gg-grid">
-					<div class="gg-range-div">-</div>
-					<input type=range name=octave id=octave min=0 max=7 value=3></input>
-					<div class="gg-range-div">+</div>
-				</div>
-				<label for="pitch">pitch (Hz)</label>
-				<div class="gg-range gg-grid">
-					<div class="gg-range-div">-</div>
-					<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
-					<div class="gg-range-div">+</div>
-				</div>
-			</div>
-		</form>
-		<div class="gg-button gg-center2" id="startTuner">start/stop</div>
-	</template>
-	<template id="about">
 		<div>
+			<button id="tap" class="gg-button gg-center" aria-label="Tap">B**t me</button>
+		</div>
+	</template>
+
+	<template id="metronome">
+		<div>
+			<form class="gg-4-rows gg-pad">
+				<div class="gg-3-cols ">
+					<label for="note">Note</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<select name="note" id="note">
+							<option>A</option>
+							<option>A#</option>
+							<option>B</option>
+							<option>C</option>
+							<option>C#</option>
+							<option>D</option>
+							<option>D#</option>
+							<option>E</option>
+							<option>F</option>
+							<option>F#</option>
+							<option>G</option>
+							<option>G#</option>
+						</select>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+				<div class="gg-3-cols">
+					<label for=octave>Octave</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<input type="range" name="octave" id="octave" min=0 max=7 value=3></input>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+				<div class="gg-3-cols">
+					<label for="pitch">Pitch (Hz)</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+				<div class="gg-3-cols">
+					<label for="tempo">Tempo (BPM)</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<input type="range" name="range" id="tempo" min="1" max="480" value="60"></input>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div>
+			<button id="startTempo" class="gg-button gg-center" aria-label="startTempo">ON/OFF</button>
+		</div>
+	</template>
+
+	<template id="tuner">
+		<div>
+			<form class="gg-3-rows gg-pad">
+				<div class="gg-3-cols">
+					<label for="note">Note</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<select name="note" id="note">
+							<option>A</option>
+							<option>A#</option>
+							<option>B</option>
+							<option>C</option>
+							<option>C#</option>
+							<option>D</option>
+							<option>D#</option>
+							<option>E</option>
+							<option>F</option>
+							<option>F#</option>
+							<option>G</option>
+							<option>G#</option>
+						</select>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+				<div class="gg-3-cols">
+					<label for=octave>Octave</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<input type="range" name="octave" id="octave" min=0 max=7 value=3></input>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+				<div class="gg-3-cols">
+					<label for="pitch">Pitch (Hz)</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div>
+			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+		</div>
+	</template>
+
+	<template id="about">
+		<div class="gg-pad">
 			<span>
 				Welcome on this webApp!<br>
 				<br>You can find here some very basic music tools as something to give you the current beat you are
 				tapping, a metronome and a sound emitter to help you to tune you instrument.
-				<br>If ever you would like to discuss about this work, click contact me on my github account (link in
-				the footer).
-				<br><br>Enjoy!
+				<br>If ever you would like to discuss about this work, click <a
+					href="https://jgroc-de.github.io/">here</a><br><br>Enjoy!
 			</span>
 		</div>
 	</template>
