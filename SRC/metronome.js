@@ -112,6 +112,12 @@ export class Metronome {
 					this.play(event)
 				}
 				break
+			case 'random':
+				if (event.type === 'click' || event.type === 'touchstart') {
+					this.setTempo(Math.floor(Math.random() * 160) + 40)
+					this.updateInput(event.target)
+				}
+				break
 			default:
 				this.manageInputEvent(event)
 		}

@@ -88,6 +88,17 @@ export class Tuner {
 					this.play()
 				}
 				break
+			case 'random':
+				if (event.type === 'click' || event.type === 'touchstart') {
+					let rand = Math.floor(Math.random() * 12)
+					let note = this.getNote()
+					if (note + rand > 11) {
+						rand -= note
+					}
+					this.modifyNote(rand)
+					this.updateInput(event.target)
+				}
+				break
 			default:
 				this.manageInputEvent(event)
 		}
@@ -168,10 +179,12 @@ export class Tuner {
 		while ((node = this.select.children[i])) {
 			if (value === node.value) {
 				this.frequency.note = i
-				return
+				return i
 			}
 			i++
 		}
+
+		return i
 	}
 
 	getFrequency() {

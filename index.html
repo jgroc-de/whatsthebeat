@@ -40,6 +40,8 @@
 			<a href="/#">What's the beat</a>
 			<a href="/#metronome">Metronome</a>
 			<a href="/#tuner">Tuner</a>
+			<a href="/#scales">Scales</a>
+			<a href="/#chords">Chords</a>
 			<a href="/#about">About</a>
 		</div>
 		<div class="gg-modal"></div>
@@ -59,8 +61,8 @@
 	<template id="wtb">
 		<div class="gg-left-panel">
 			<div id="settings" class="gg-pad-left gg-2-rows">
-				<button id="reset" class="gg-button-small">Reset</button>
-				<button id="sound" class="gg-button-small">Sound</button>
+				<button id="reset" class="gg-button-s">Reset</button>
+				<button id="sound" class="gg-button-s">Sound</button>
 			</div>
 			<div class="gg-pad-right">
 				<div class="gg-right">
@@ -85,43 +87,9 @@
 	<template id="metronome">
 		<div>
 			<form class="gg-4-rows gg-pad">
-				<div class="gg-3-cols ">
-					<label for="note">Note</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<select name="note" id="note">
-							<option>A</option>
-							<option>A#</option>
-							<option>B</option>
-							<option>C</option>
-							<option>C#</option>
-							<option>D</option>
-							<option>D#</option>
-							<option>E</option>
-							<option>F</option>
-							<option>F#</option>
-							<option>G</option>
-							<option>G#</option>
-						</select>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
-				<div class="gg-3-cols">
-					<label for=octave>Octave</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<input type="range" name="octave" id="octave" min=0 max=7 value=3></input>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
-				<div class="gg-3-cols">
-					<label for="pitch">Pitch (Hz)</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
+				<note-select class="gg-3-cols"></note-select>
+				<octave-input class="gg-3-cols"></octave-input>
+				<pitch-input class="gg-3-cols"></pitch-input>
 				<div class="gg-3-cols">
 					<label for="tempo">Tempo (BPM)</label>
 					<div class="gg-3-cols">
@@ -134,46 +102,38 @@
 		</div>
 		<div>
 			<button id="startTempo" class="gg-button gg-center" aria-label="startTempo">ON/OFF</button>
+			<button id="random" class="gg-button-xs gg-corner">random Tempo</button>
 		</div>
 	</template>
 
 	<template id="tuner">
 		<div>
 			<form class="gg-3-rows gg-pad">
+				<note-select class="gg-3-cols"></note-select>
+				<octave-input class="gg-3-cols"></octave-input>
+				<pitch-input class="gg-3-cols"></pitch-input>
+			</form>
+		</div>
+		<div>
+			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+			<button id="random" class="gg-button-xs gg-corner">random Note</button>
+		</div>
+	</template>
+
+	<template id="scale">
+		<div>
+			<form class="gg-3-rows gg-pad">
+				<note-select class="gg-3-cols"></note-select>
+				<octave-input class="gg-3-cols"></octave-input>
+				<pitch-input class="gg-3-cols"></pitch-input>
 				<div class="gg-3-cols">
-					<label for="note">Note</label>
+					<label for="note">Scale</label>
 					<div class="gg-3-cols">
 						<div class="gg-range-div">-</div>
-						<select name="note" id="note">
-							<option>A</option>
-							<option>A#</option>
-							<option>B</option>
-							<option>C</option>
-							<option>C#</option>
-							<option>D</option>
-							<option>D#</option>
-							<option>E</option>
-							<option>F</option>
-							<option>F#</option>
-							<option>G</option>
-							<option>G#</option>
+						<select name="mode" id="mode">
+							<option>Major</option>
+							<option>minor</option>
 						</select>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
-				<div class="gg-3-cols">
-					<label for=octave>Octave</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<input type="range" name="octave" id="octave" min=0 max=7 value=3></input>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
-				<div class="gg-3-cols">
-					<label for="pitch">Pitch (Hz)</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
 						<div class="gg-range-div">+</div>
 					</div>
 				</div>
@@ -181,6 +141,36 @@
 		</div>
 		<div>
 			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+			<button id="random" class="gg-button-xs gg-corner">random Note</button>
+		</div>
+	</template>
+
+	<template id="chords">
+		<div>
+			<form class="gg-3-rows gg-pad">
+				<note-select class="gg-3-cols"></note-select>
+				<octave-input class="gg-3-cols"></octave-input>
+				<pitch-input class="gg-3-cols"></pitch-input>
+				<div class="gg-3-cols">
+					<label for="note">Chord</label>
+					<div class="gg-3-cols">
+						<div class="gg-range-div">-</div>
+						<select name="mode" id="mode">
+							<option>Major</option>
+							<option>minor</option>
+							<option>dim</option>
+							<option>sup</option>
+							<option>6th</option>
+							<option>7th</option>
+						</select>
+						<div class="gg-range-div">+</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div>
+			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+			<button id="random" class="gg-button-xs gg-corner">random Note</button>
 		</div>
 	</template>
 
@@ -193,6 +183,46 @@
 				<br>If ever you would like to discuss about this work, click <a
 					href="https://jgroc-de.github.io/">here</a><br><br>Enjoy!
 			</span>
+		</div>
+	</template>
+
+	<template id="noteSelect">
+		<label for="note">Note</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<select name="note" id="note">
+				<option>A</option>
+				<option>A#</option>
+				<option>B</option>
+				<option>C</option>
+				<option>C#</option>
+				<option>D</option>
+				<option>D#</option>
+				<option>E</option>
+				<option>F</option>
+				<option>F#</option>
+				<option>G</option>
+				<option>G#</option>
+			</select>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
+	<template id="octaveInput">
+		<label for=octave>Octave</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<input type="range" name="octave" id="octave" min=0 max=7 value=3></input>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
+	<template id="pitchInput">
+		<label for="pitch">Pitch (Hz)</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+			<div class="gg-range-div">+</div>
 		</div>
 	</template>
 
@@ -211,6 +241,32 @@
 					})
 			})
 		}
+
+		class NoteSelect extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#noteSelect').innerHTML;
+			}
+		}
+
+		class OctaveInput extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#octaveInput').innerHTML;
+			}
+		}
+
+		class PitchInput extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#pitchInput').innerHTML;
+			}
+		}
+
+		window.customElements.define('note-select', NoteSelect);
+		window.customElements.define('octave-input', OctaveInput);
+		window.customElements.define('pitch-input', PitchInput);
+
 	</script>
 
 </body>

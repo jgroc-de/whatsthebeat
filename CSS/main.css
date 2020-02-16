@@ -124,6 +124,12 @@ main {
 	.gg-2-rows {
 		align-content: space-around;
 	}
+
+	.gg-corner {
+		position: fixed;
+		right: 16px;
+		top: 50vh;
+	}
 }
 
 @media screen and (orientation: landscape) {
@@ -134,6 +140,12 @@ main {
 	.gg-2-rows {
 		align-content: center;
 		row-gap: 16px;
+	}
+
+	.gg-corner {
+		position: fixed;
+		right: 16px;
+		top: 25vh;
 	}
 }
 
@@ -176,12 +188,21 @@ button:active {
 	width: 30vh;
 	line-height: 20vh;
 	white-space: nowrap;
+	border-width: ;
 }
 
-.gg-button-small {
+.gg-button-s {
+	border: medium solid #fba90a;
 	font-size: 3vh;
 	height: 15vh;
 	width: 15vh;
+}
+
+.gg-button-xs {
+	border: thin solid #fba90a;
+	font-size: 2vh;
+	height: 10vh;
+	width: 10vh;
 }
 /* end button */
 

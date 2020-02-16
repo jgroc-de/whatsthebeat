@@ -61,7 +61,14 @@ class App {
 	}
 }
 
-window.customElements.define('tuner-page', Tuner)
+class NoteSelect extends HTMLElement {
+	constructor() {
+		super()
+		this.innerHTML = document
+			.querySelector('#noteSelect')
+			.content.cloneNode(true)
+	}
+}
 
 const state = {
 	audio: null,
