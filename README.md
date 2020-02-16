@@ -7,6 +7,7 @@ Enjoy!
 
 ## TODO
 
+faire ce todo en .json et remplir l'onglet about du l'appli avec
 page scale
 page chord
 
