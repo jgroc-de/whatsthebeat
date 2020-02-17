@@ -23,19 +23,87 @@ export class Page {
 		this.state.main.appendChild(node)
 	}
 
-	setEvents() {
-		let main = document.getElementsByTagName('main')[0]
+	eventDispatcher(event) {
+		if (this.firstEvent) {
+			if (event.type === 'mousedown') {
+				this.state.main.removeEventListener('touchstart', this)
+				this.state.main.removeEventListener('touchend', this)
+			} else {
+				this.state.main.removeEventListener('click', this)
+				this.state.main.removeEventListener('mousedown', this)
+			}
+			this.firstEvent = false
+		}
+		if (this.inputInterval) {
+			window.clearInterval(this.inputInterval)
+		}
+		if (event.type === 'change') {
+			this.updateInput(event.target)
 
-		main.addEventListener('click', this, false)
-		main.addEventListener('change', this, false)
-		main.addEventListener('mousedown', this, false)
-		main.addEventListener('touchend', this, false)
-		main.addEventListener('touchstart', this, false)
+			return
+		}
+		switch (event.target.id) {
+			case 'start':
+				this.start(event)
+				break
+			case 'random':
+				this.random(event)
+				break
+			default:
+				this.manageInputEvent(event)
+		}
 	}
 
-	setNodes() {
-		this.select = this.state.main.querySelector('select')
-		this.inputs = this.state.main.querySelectorAll('input')
+	getNote() {
+		let i = 0
+		let node = null
+		let value = this.select.value
+
+		while ((node = this.select.children[i])) {
+			if (value === node.value) {
+				this.frequency.note = i
+				return i
+			}
+			i++
+		}
+
+		return i
+	}
+
+	getFrequency() {
+		let octave = this.inputs[0].value
+		let pitch = this.inputs[1].value
+
+		this.frequency.pitch = pitch
+		this.frequency.octave = octave
+	}
+
+	manageInputEvent(event) {
+		let input = event.target.parentNode.querySelectorAll('input, select')[0]
+		let value = 0
+
+		switch (event.target.textContent) {
+			case '+':
+				value = 1
+				break
+			case '-':
+				value = -1
+				break
+			default:
+				return
+		}
+		if (event.type === 'mousedown' || event.type === 'touchstart') {
+			this.updateInput(input, value)
+			this.inputInterval = setInterval(
+				function(that, input, value) {
+					that.updateInput(input, value)
+				},
+				100,
+				this,
+				input,
+				value
+			)
+		}
 	}
 
 	modifyValue(node, value) {
@@ -75,27 +143,25 @@ export class Page {
 		}
 	}
 
-	getNote() {
-		let i = 0
-		let node = null
-		let value = this.select.value
-
-		while ((node = this.select.children[i])) {
-			if (value === node.value) {
-				this.frequency.note = i
-				return i
-			}
-			i++
-		}
-
-		return i
+	removeEvents() {
+		this.state.main.removeEventListener('click', this)
+		this.state.main.removeEventListener('change', this)
+		this.state.main.removeEventListener('mousedown', this)
+		this.state.main.removeEventListener('touchstart', this)
+		this.state.main.removeEventListener('touchend', this)
+		this.stop(true)
 	}
 
-	getFrequency() {
-		let octave = this.inputs[0].value
-		let pitch = this.inputs[1].value
+	setEvents() {
+		this.state.main.addEventListener('click', this, false)
+		this.state.main.addEventListener('change', this, false)
+		this.state.main.addEventListener('mousedown', this, false)
+		this.state.main.addEventListener('touchend', this, false)
+		this.state.main.addEventListener('touchstart', this, false)
+	}
 
-		this.frequency.pitch = pitch
-		this.frequency.octave = octave
+	setNodes() {
+		this.select = this.state.main.querySelector('select')
+		this.inputs = this.state.main.querySelectorAll('input')
 	}
 }

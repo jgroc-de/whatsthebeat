@@ -28,11 +28,10 @@ export class BeatTaker {
 	}
 
 	setEvents() {
-		let body = document.getElementsByTagName('main')[0]
 		let tapButton = document.getElementById('start')
 
 		tapButton.addEventListener('mousedown', this, false)
-		body.addEventListener('click', this, false)
+		this.state.main.addEventListener('click', this, false)
 	}
 
 	eventDispatcher(event) {
@@ -107,10 +106,9 @@ export class BeatTaker {
 	}
 
 	removeEvents() {
-		let body = document.getElementsByTagName('main')[0]
 		let tapButton = document.getElementById('start')
 
 		tapButton.removeEventListener('mousedown', this)
-		body.removeEventListener('click', this)
+		this.state.main.removeEventListener('click', this)
 	}
 }

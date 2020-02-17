@@ -14,8 +14,12 @@ class App {
 		this.setBurger()
 	}
 
-	toggleHide(event) {
-		this.state.nav.card.toggleAttribute('hidden')
+	getBeat() {
+		if (this.page && this.page.beat) {
+			return this.page.beat.lastBeat.innerText
+		}
+
+		return false
 	}
 
 	setBurger() {
@@ -29,7 +33,6 @@ class App {
 		let beat = this.getBeat()
 
 		if (this.page) {
-			console.log(this.page)
 			this.page.removeEvents()
 		}
 		while (this.state.main.children.length) {
@@ -56,12 +59,8 @@ class App {
 		}
 	}
 
-	getBeat() {
-		if (this.page && this.page.beat) {
-			return this.page.beat.lastBeat.innerText
-		}
-
-		return false
+	toggleHide() {
+		this.state.nav.card.toggleAttribute('hidden')
 	}
 }
 

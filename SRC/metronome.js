@@ -14,75 +14,10 @@ export class Metronome extends Page {
 		this.tempo = 60
 	}
 
-	eventDispatcher(event) {
-		if (this.firstEvent) {
-			let main = document.getElementsByTagName('main')[0]
-			if (event.type === 'mousedown') {
-				main.removeEventListener('touchstart', this)
-				main.removeEventListener('touchend', this)
-			} else {
-				main.removeEventListener('click', this)
-				main.removeEventListener('mousedown', this)
-			}
-			this.firstEvent = false
-		}
-		if (this.inputInterval) {
-			window.clearInterval(this.inputInterval)
-		}
-		if (event.type === 'change') {
-			this.updateInput(event.target)
-
-			return
-		}
-		switch (event.target.id) {
-			case 'start':
-				if (event.type === 'click' || event.type === 'touchstart') {
-					this.play(event)
-				}
-				break
-			case 'random':
-				if (event.type === 'click' || event.type === 'touchstart') {
-					this.setTempo(Math.floor(Math.random() * 160) + 40)
-					this.updateInput(event.target)
-				}
-				break
-			default:
-				this.manageInputEvent(event)
-		}
-	}
-
 	getTempo() {
 		let tempo = this.inputs[2].value
 
 		this.toSecond(tempo)
-	}
-
-	manageInputEvent(event) {
-		let input = event.target.parentNode.querySelectorAll('input, select')[0]
-		let value = 0
-
-		switch (event.target.textContent) {
-			case '+':
-				value = 1
-				break
-			case '-':
-				value = -1
-				break
-			default:
-				return
-		}
-		if (event.type === 'mousedown' || event.type === 'touchstart') {
-			this.updateInput(input, value)
-			this.inputInterval = setInterval(
-				function(that, input, value) {
-					that.updateInput(input, value)
-				},
-				100,
-				this,
-				input,
-				value
-			)
-		}
 	}
 
 	async play(event) {
@@ -96,15 +31,11 @@ export class Metronome extends Page {
 		}
 	}
 
-	removeEvents() {
-		let main = document.getElementsByTagName('main')[0]
-
-		main.removeEventListener('click', this)
-		main.removeEventListener('change', this)
-		main.removeEventListener('mousedown', this)
-		main.removeEventListener('touchstart', this)
-		main.removeEventListener('touchend', this)
-		this.stop(true)
+	random(event) {
+		if (event.type === 'click' || event.type === 'touchstart') {
+			this.setTempo(Math.floor(Math.random() * 160) + 40)
+			this.updateInput(event.target)
+		}
 	}
 
 	setInterval() {
@@ -130,6 +61,12 @@ export class Metronome extends Page {
 		if (tempo != 0) {
 			this.inputs[2].value = tempo
 			this.inputs[2].parentNode.nextSibling.textContent = tempo
+		}
+	}
+
+	start(event) {
+		if (event.type === 'click' || event.type === 'touchstart') {
+			this.play(event)
 		}
 	}
 
