@@ -40,6 +40,7 @@
 			<a href="/#">What's the beat</a>
 			<a href="/#metronome">Metronome</a>
 			<a href="/#tuner">Tuner</a>
+			<a href="/#tune-game">Tune Game (WIP)</a>
 			<a href="/#scales">Scales (WIP)</a>
 			<a href="/#chords">Chords (WIP)</a>
 			<a href="/#about">About</a>
@@ -66,12 +67,12 @@
 			</div>
 			<div class="gg-pad-right">
 				<div class="gg-right">
-					<div id="beat" class="" aria-label="Tap">
+					<div id="beat" aria-label="Tap">
 						<span>current:</span>
 						<div class="gg-number">0</div>
 						bpm
 					</div>
-					<div id="lastBeat" class="" aria-label="Tap">
+					<div id="lastBeat" aria-label="Tap">
 						<span>last:</span>
 						<div class="gg-number">0</div>
 						bpm
@@ -80,7 +81,7 @@
 			</div>
 		</div>
 		<div>
-			<button id="tap" class="gg-button gg-center" aria-label="Tap">B**t me</button>
+			<button-start></button-start>
 		</div>
 	</template>
 
@@ -101,8 +102,8 @@
 			</form>
 		</div>
 		<div>
-			<button id="startTempo" class="gg-button gg-center" aria-label="startTempo">ON/OFF</button>
-			<button id="random" class="gg-button-xs gg-corner">random Tempo</button>
+			<button-start></button-start>
+			<button-random></button-random>
 		</div>
 	</template>
 
@@ -115,24 +116,26 @@
 			</form>
 		</div>
 		<div>
-			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
-			<button id="random" class="gg-button-xs gg-corner">random Note</button>
+			<button-start></button-start>
+			<button-random></button-random>
 		</div>
 	</template>
 
-	<template id="scale">
+	<template id="pathGame">
 		<div>
-			<form class="gg-3-rows gg-pad">
+			<form class="gg-4-rows gg-pad">
 				<note-select class="gg-3-cols"></note-select>
 				<octave-input class="gg-3-cols"></octave-input>
 				<pitch-input class="gg-3-cols"></pitch-input>
 				<div class="gg-3-cols">
-					<label for="note">Scale</label>
+					<label for="mode">Mode</label>
 					<div class="gg-3-cols">
 						<div class="gg-range-div">-</div>
 						<select name="mode" id="mode">
-							<option>Major</option>
-							<option>minor</option>
+							<option>M</option>
+							<option>m</option>
+							<option>ton</option>
+							<option>1/2 ton</option>
 						</select>
 						<div class="gg-range-div">+</div>
 					</div>
@@ -140,37 +143,8 @@
 			</form>
 		</div>
 		<div>
-			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
-			<button id="random" class="gg-button-xs gg-corner">random Note</button>
-		</div>
-	</template>
-
-	<template id="chords">
-		<div>
-			<form class="gg-3-rows gg-pad">
-				<note-select class="gg-3-cols"></note-select>
-				<octave-input class="gg-3-cols"></octave-input>
-				<pitch-input class="gg-3-cols"></pitch-input>
-				<div class="gg-3-cols">
-					<label for="note">Chord</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<select name="mode" id="mode">
-							<option>Major</option>
-							<option>minor</option>
-							<option>dim</option>
-							<option>sup</option>
-							<option>6th</option>
-							<option>7th</option>
-						</select>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div>
-			<button id="startTuner" class="gg-button gg-center" aria-label="start">ON/OFF</button>
-			<button id="random" class="gg-button-xs gg-corner">random Note</button>
+			<button-start></button-start>
+			<button-random></button-random>
 		</div>
 	</template>
 
@@ -226,6 +200,14 @@
 		</div>
 	</template>
 
+	<template id="startButton">
+		<button id="start" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+	</template>
+
+	<template id="randomButton">
+		<button id="random" class="gg-button-xs gg-corner">random</button>
+	</template>
+
 	<script>
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', () => {
@@ -245,27 +227,54 @@
 		class NoteSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#noteSelect').innerHTML;
+				this.innerHTML = document.querySelector('#noteSelect').innerHTML
 			}
 		}
 
 		class OctaveInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#octaveInput').innerHTML;
+				this.innerHTML = document.querySelector('#octaveInput').innerHTML
 			}
 		}
 
 		class PitchInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#pitchInput').innerHTML;
+				this.innerHTML = document.querySelector('#pitchInput').innerHTML
 			}
 		}
 
-		window.customElements.define('note-select', NoteSelect);
-		window.customElements.define('octave-input', OctaveInput);
-		window.customElements.define('pitch-input', PitchInput);
+		class StartButton extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#startButton').innerHTML
+				let location = window.location.hash
+				if (location === '') {
+					this.firstElementChild.innerText = 'B**t Me!'
+				}
+			}
+		}
+
+		class RandomButton extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#randomButton').innerHTML
+				let location = window.location.hash
+				if (location === '#tuner') {
+					this.firstElementChild.innerText = 'random note'
+				} else if (location === '#metronome') {
+					this.firstElementChild.innerText = 'random tempo'
+				}
+			}
+		}
+
+		window.customElements.define('note-select', NoteSelect)
+		window.customElements.define('octave-input', OctaveInput)
+		window.customElements.define('pitch-input', PitchInput)
+		window.customElements.define('button-start', StartButton)
+		window.customElements.define('button-random', RandomButton)
+
 	</script>
 </body>
 

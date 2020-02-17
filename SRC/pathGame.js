@@ -1,8 +1,8 @@
 import { Page } from './page.js'
 
-export class Tuner extends Page {
+export class PathGame {
 	constructor(state) {
-		super(state, 'tuner')
+		super(state, 'pathGame')
 		this.isPlaying = false
 		this.handleEvent = function(event) {
 			this.eventDispatcher(event)

@@ -1,89 +1,17 @@
-import { Audio } from './audio.js'
-import { Frequency } from './frequency.js'
+import { Page } from './page.js'
 
-export class Metronome {
+export class Metronome extends Page {
 	constructor(state) {
-		this.state = state
-		this.frequency = new Frequency()
-		this.buildView()
-		if (!this.state.audio) {
-			this.state.audio = new Audio()
-		}
+		super(state, 'metronome')
 		this.interval = null
 		this.inputInterval = null
 		this.handleEvent = function(event) {
 			this.eventDispatcher(event)
 		}
-		this.setNodes()
-		this.setEvents()
-		this.tempo = 60
-		this.btn = document.getElementById('startTempo')
-		this.firstEvent = true
-	}
-
-	buildView() {
-		let template = document.getElementById('metronome')
-		let node = document.importNode(template.content, true)
-		this.state.main.appendChild(node)
-	}
-
-	setNodes() {
-		this.select = this.state.main.querySelector('select')
-		this.select.addEventListener('change', this, false)
-		this.inputs = this.state.main.querySelectorAll('input')
 		for (let input of this.inputs) {
 			this.updateInput(input)
 		}
-	}
-
-	modifyValue(node, value) {
-		node.valueAsNumber += value
-		node.parentNode.nextSibling.textContent = node.valueAsNumber
-		if (node.name === 'octave') {
-			this.frequency.octave = node.valueAsNumber
-		}
-	}
-
-	modifyNote(add) {
-		let i = 0
-		let node = null
-		let value = this.select.value
-
-		while ((node = this.select.children[i])) {
-			if (value === node.value) {
-				let j = i + add
-				let last = this.select.children.length - 1
-				let node = this.inputs[0]
-				if (j < 0) {
-					j = last
-					if (this.frequency.octave > 0) {
-						this.modifyValue(node, -1)
-					}
-				} else if (j > last) {
-					j = 0
-					if (this.frequency.octave < 7) {
-						this.modifyValue(node, 1)
-					}
-				}
-				this.select.value = this.select.children[j].value
-
-				return
-			}
-			i++
-		}
-	}
-
-	updateInput(node, value = 0) {
-		if (node.tagName === 'INPUT') {
-			this.modifyValue(node, value)
-		} else if (node.tagName === 'SELECT') {
-			this.modifyNote(value)
-		}
-		if (this.interval) {
-			this.stop(false)
-			this.setParams()
-			this.setInterval()
-		}
+		this.tempo = 60
 	}
 
 	eventDispatcher(event) {
@@ -107,7 +35,7 @@ export class Metronome {
 			return
 		}
 		switch (event.target.id) {
-			case 'startTempo':
+			case 'start':
 				if (event.type === 'click' || event.type === 'touchstart') {
 					this.play(event)
 				}
@@ -121,6 +49,12 @@ export class Metronome {
 			default:
 				this.manageInputEvent(event)
 		}
+	}
+
+	getTempo() {
+		let tempo = this.inputs[2].value
+
+		this.toSecond(tempo)
 	}
 
 	manageInputEvent(event) {
@@ -151,85 +85,6 @@ export class Metronome {
 		}
 	}
 
-	setEvents() {
-		let main = document.getElementsByTagName('main')[0]
-
-		main.addEventListener('click', this, false)
-		main.addEventListener('change', this, false)
-		main.addEventListener('mousedown', this, false)
-		main.addEventListener('touchend', this, false)
-		main.addEventListener('touchstart', this, false)
-	}
-
-	toSecond(tempo) {
-		this.tempo = 60 / tempo
-	}
-
-	setTempo(tempo) {
-		if (tempo != 0) {
-			this.inputs[2].value = tempo
-			this.inputs[2].parentNode.nextSibling.textContent = tempo
-		}
-	}
-
-	getTempo() {
-		let tempo = this.inputs[2].value
-
-		this.toSecond(tempo)
-	}
-
-	stop(end = true) {
-		if (this.interval) {
-			window.clearInterval(this.interval)
-			this.interval = null
-			if (end) {
-				this.btn.removeAttribute('style')
-				this.state.audio.stop()
-			}
-		}
-	}
-
-	setInterval() {
-		this.lastTempo = this.tempo
-		this.interval = setInterval(
-			function(audio, tempo) {
-				audio.loop(tempo)
-			},
-			100,
-			this.state.audio,
-			this.tempo
-		)
-	}
-
-	getNote() {
-		let i = 0
-		let node = null
-		let value = this.select.value
-
-		while ((node = this.select.children[i])) {
-			if (value === node.value) {
-				this.frequency.note = i
-				return
-			}
-			i++
-		}
-	}
-
-	getFrequency() {
-		let octave = this.inputs[0].value
-		let pitch = this.inputs[1].value
-
-		this.frequency.pitch = pitch
-		this.frequency.octave = octave
-	}
-
-	setParams() {
-		this.getTempo()
-		this.getFrequency()
-		this.getNote()
-		this.state.audio.setFrequency(this.frequency.getFrequency())
-	}
-
 	async play(event) {
 		if (!this.interval) {
 			this.setParams()
@@ -250,5 +105,59 @@ export class Metronome {
 		main.removeEventListener('touchstart', this)
 		main.removeEventListener('touchend', this)
 		this.stop(true)
+	}
+
+	setInterval() {
+		this.lastTempo = this.tempo
+		this.interval = setInterval(
+			function(audio, tempo) {
+				audio.loop(tempo)
+			},
+			100,
+			this.state.audio,
+			this.tempo
+		)
+	}
+
+	setParams() {
+		this.getTempo()
+		this.getFrequency()
+		this.getNote()
+		this.state.audio.setFrequency(this.frequency.getFrequency())
+	}
+
+	setTempo(tempo) {
+		if (tempo != 0) {
+			this.inputs[2].value = tempo
+			this.inputs[2].parentNode.nextSibling.textContent = tempo
+		}
+	}
+
+	stop(end = true) {
+		if (this.interval) {
+			window.clearInterval(this.interval)
+			this.interval = null
+			if (end) {
+				this.btn.removeAttribute('style')
+				this.state.audio.stop()
+			}
+		}
+	}
+
+	toSecond(tempo) {
+		this.tempo = 60 / tempo
+	}
+
+	updateInput(node, value = 0) {
+		if (node.tagName === 'INPUT') {
+			this.modifyValue(node, value)
+		} else if (node.tagName === 'SELECT') {
+			this.modifyNote(value)
+		}
+		if (this.interval) {
+			this.stop(false)
+			this.setParams()
+			this.setInterval()
+		}
 	}
 }

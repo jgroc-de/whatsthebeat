@@ -1,6 +1,7 @@
 import { BeatTaker } from './beatTaker.js'
 import { Metronome } from './metronome.js'
 import { Tuner } from './tuner.js'
+import { PathGame } from './pathGame.js'
 import { About } from './about.js'
 
 class App {
@@ -38,6 +39,9 @@ class App {
 			case '#tuner':
 				this.page = new Tuner(this.state)
 				break
+			case '#tune-game':
+				this.page = new PathGame(this.state)
+				break
 			case '#metronome':
 				this.page = new Metronome(this.state)
 				if (beat) {
@@ -58,15 +62,6 @@ class App {
 		}
 
 		return false
-	}
-}
-
-class NoteSelect extends HTMLElement {
-	constructor() {
-		super()
-		this.innerHTML = document
-			.querySelector('#noteSelect')
-			.content.cloneNode(true)
 	}
 }
 
