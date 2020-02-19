@@ -1,10 +1,8 @@
-import { Audio } from '../misc/audio.js'
-import { Page } from './page.js'
+import { ViewTemplate } from './viewTemplate.js/index.js'
 
-export class BeatTaker extends Page {
+export class BeatTaker extends ViewTemplate {
 	constructor(state) {
 		super(state, 'wtb')
-		this.state.audio = new Audio()
 		console.log(this.state)
 		this.beat = {
 			beatOut: this.state.main

@@ -1,9 +1,11 @@
 import { BeatTaker } from './pages/beatTaker.js'
 import { Metronome } from './pages/metronome.js'
 import { Tuner } from './pages/tuner.js'
-import { Page } from './pages/page.js'
+import { ViewTemplate } from './pages/viewTemplate.js/index.js'
 import { Select } from './services/select.js'
-import { WTBDefault } from './services/WTBdefault.js'
+import { ServiceTemplate } from './services/serviceTemplate.js/index.js'
+import { Frequency } from './services/frequency.js'
+import { Audio } from './services/audio.js'
 
 class EventController {
 	constructor(state, services) {
@@ -11,7 +13,7 @@ class EventController {
 
 		this.state = state
 
-		this.page = this.setPage(state)
+		this.page = this.pageNoobFactory(window.location.hash, state)
 
 		this.services = services
 
@@ -33,6 +35,7 @@ class EventController {
 	}
 
 	eventDispatcher(event, page, state, services) {
+		//faire un systeme de provider
 		console.log(event.type, event.target)
 		if (this.inputInterval && event.type !== 'input') {
 			window.clearInterval(this.inputInterval)
@@ -42,7 +45,7 @@ class EventController {
 		this.firstEvent = this.removeUselessListener(this.firstEvent, state.main)
 		if (event.type == 'hashchange') {
 			services['tempo'].current = this.stopLastPage(page, state.main)
-			this.page = this.setPage(state)
+			this.page = this.pageNoobFactory(window.location.hash, state)
 			this.initServices(services, state.main)
 
 			return
@@ -76,6 +79,7 @@ class EventController {
 				page.toggleSound(event)
 				break
 			default:
+				//input case
 				let target = ''
 				if (
 					event.target.nodeName != 'select' ||
@@ -89,6 +93,13 @@ class EventController {
 				if (timeInterval) {
 					this.inputInterval = timeInterval
 				}
+				let frequency = services['frequency'].getFrequency(
+					services['pitch'].currentValue,
+					services['node'].currentValue,
+					services['octave'].currentValue
+				)
+
+				state.audio.setFrequency(frequency)
 		}
 	}
 
@@ -150,14 +161,14 @@ class EventController {
 		})
 	}
 
-	setPage(state) {
-		switch (window.location.hash) {
+	pageNoobFactory(hash, state) {
+		switch (hash) {
 			case '#tuner':
 				return new Tuner(state)
 			case '#metronome':
 				return new Metronome(state)
 			case '#about':
-				return new Page(state, 'about')
+				return new ViewTemplate(state)
 			default:
 				return new BeatTaker(state)
 		}
@@ -165,14 +176,15 @@ class EventController {
 }
 
 const state = {
-	audio: null,
+	audio: new Audio(),
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
 }
 new EventController(state, {
 	mode: new Select('M'),
 	note: new Select('A'),
-	octave: new WTBDefault(3),
-	pitch: new WTBDefault(442, 70),
-	tempo: new WTBDefault(60),
+	octave: new ServiceTemplate(3),
+	pitch: new ServiceTemplate(442, 70),
+	tempo: new ServiceTemplate(60),
+	Frequency: new Frequency(),
 })

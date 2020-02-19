@@ -1,6 +1,6 @@
-import { WTBDefault } from './WTBdefault.js'
+import { ServiceTemplate } from './serviceTemplate.js'
 
-export class Select extends WTBDefault {
+export class Select extends ServiceTemplate {
 	getSelectedItem(select) {
 		let i = 0
 		let node = null

@@ -1,10 +1,9 @@
-import { Page } from './page.js'
+import { ViewTemplate } from './viewTemplate.js'
 
-export class Metronome extends Page {
+export class Metronome extends ViewTemplate {
 	constructor(state) {
 		super(state, 'metronome')
 		this.interval = null
-		this.inputInterval = null
 		this.tempo = 60
 	}
 
@@ -36,13 +35,6 @@ export class Metronome extends Page {
 			this.state.audio,
 			this.tempo
 		)
-	}
-
-	setParams() {
-		this.getTempo()
-		this.getFrequency()
-		this.getNote()
-		this.state.audio.setFrequency(this.frequency.getFrequency())
 	}
 
 	start(event) {

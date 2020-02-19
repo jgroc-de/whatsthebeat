@@ -1,6 +1,6 @@
-import { Page } from './page.js'
+import { ViewTemplate } from './viewTemplate.js'
 
-export class Tuner extends Page {
+export class Tuner extends ViewTemplate {
 	constructor(state) {
 		super(state, 'tuner')
 		this.isPlaying = false
