@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '0.8.1'
+const VERSION = '0.7.11'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
@@ -13,7 +13,7 @@ const FILES_TO_CACHE = [
 	'/SRC/pages/metronome.js',
 	'/SRC/pages/beatTaker.js',
 	'/SRC/pages/tuner.js',
-	'/SRC/pages/page.js',
+	//'/SRC/pages/page.js',
 	'/SRC/misc/audio.js',
 	'/SRC/misc/frequency.js',
 	'/ICONS/favicon.ico',
