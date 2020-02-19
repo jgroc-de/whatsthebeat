@@ -67,7 +67,7 @@ class EventController {
 
 		switch (event.target.id) {
 			case 'start':
-				page.start(event)
+				page.start(event, state.audio)
 				break
 			case 'random':
 				page.random(event)
