@@ -1,23 +1,16 @@
-import { BeatTaker } from './pages/beatTaker.js'
-import { Metronome } from './pages/metronome.js'
-import { Tuner } from './pages/tuner.js'
-import { ViewTemplate } from './pages/viewTemplate.js/index.js'
-import { Select } from './services/select.js'
-import { ServiceTemplate } from './services/serviceTemplate.js/index.js'
-import { Frequency } from './services/frequency.js'
-import { Audio } from './services/audio.js'
+import * as Pages from './pages/index.js'
+import * as Services from './services/index.js'
 
 class EventController {
-	constructor(state, services) {
-		this.firstEvent = true
-
-		this.state = state
-
-		this.page = this.pageNoobFactory(window.location.hash, state)
-
+	constructor(pageFactory, services, state) {
+		this.pageFactory = pageFactory
 		this.services = services
-
+		this.state = state
+		this.firstEvent = true
 		this.inputInterval = null
+		this.page = this.pageFactory.get(state)
+		this.isPlaying = false
+		this.isMuted = true
 
 		window.addEventListener('hashchange', this, { passive: true })
 		state.main.addEventListener('change', this, { passive: true })
@@ -28,13 +21,19 @@ class EventController {
 		state.main.addEventListener('input', this, { passive: true })
 
 		this.handleEvent = function(event) {
-			this.eventDispatcher(event, this.page, this.state, this.services)
+			this.eventDispatcher(
+				event,
+				this.page,
+				this.state,
+				this.services,
+				this.pageFactory
+			)
 		}
 
 		this.initServices(services, state.main)
 	}
 
-	eventDispatcher(event, page, state, services) {
+	eventDispatcher(event, page, state, services, pageFactory) {
 		//faire un systeme de provider
 		console.log(event.type, event.target)
 		if (this.inputInterval && event.type !== 'input') {
@@ -45,7 +44,7 @@ class EventController {
 		this.firstEvent = this.removeUselessListener(this.firstEvent, state.main)
 		if (event.type == 'hashchange') {
 			services['tempo'].current = this.stopLastPage(page, state.main)
-			this.page = this.pageNoobFactory(window.location.hash, state)
+			this.page = pageFactory.get(state)
 			this.initServices(services, state.main)
 
 			return
@@ -160,31 +159,41 @@ class EventController {
 			plus: services['octave'].node.nextElementSibling,
 		})
 	}
+}
 
-	pageNoobFactory(hash, state) {
-		switch (hash) {
-			case '#tuner':
-				return new Tuner(state)
-			case '#metronome':
-				return new Metronome(state)
-			case '#about':
-				return new ViewTemplate(state)
-			default:
-				return new BeatTaker(state)
+class pageFactory {
+	constructor(pages) {
+		this.pages = pages
+	}
+
+	get(state) {
+		//remove the # from the hash
+		let route = window.location.hash.slice(1)
+		console.log(route)
+
+		if (this.pages[route]) {
+			return new this.pages[route](state)
+		} else if (!route) {
+			return new this.pages['home'](state)
 		}
+
+		return new this.pages['error'](state)
 	}
 }
 
 const state = {
-	audio: new Audio(),
+	audio: null, //new Audio(),
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
 }
-new EventController(state, {
-	mode: new Select('M'),
-	note: new Select('A'),
-	octave: new ServiceTemplate(3),
-	pitch: new ServiceTemplate(442, 70),
-	tempo: new ServiceTemplate(60),
-	Frequency: new Frequency(),
-})
+
+const services = {
+	mode: new Services.Select('M'),
+	note: new Services.Select('A'),
+	octave: new Services.Select('M'), //new ServiceTemplate(3),
+	pitch: new Services.Select('M'), //new ServiceTemplate(442, 70),
+	tempo: new Services.Select('M'), //new ServiceTemplate(60),
+	Frequency: new Services.Select('M'), //new Frequency(),
+}
+
+new EventController(new pageFactory(Pages), services, state)

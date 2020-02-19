@@ -1,68 +1,54 @@
-import { ViewTemplate } from './viewTemplate.js/index.js'
+//import { ViewTemplate } from './viewTemplate.js'
 
-export class BeatTaker extends ViewTemplate {
+//export class BeatTaker extends ViewTemplate {
+export class BeatTaker {
 	constructor(state) {
-		super(state, 'wtb')
-		console.log(this.state)
+		//ajouter this.mute = true dans ViewTemplate
+		//super(state, 'wtb')
 		this.beat = {
-			beatOut: this.state.main
-				.getElementById('beat')
-				.getElementsByTagName('div')[0],
-			lastBeat: this.state.main
+			beatOut: document.getElementById('beat').getElementsByTagName('div')[0],
+			lastBeat: document
 				.getElementById('lastBeat')
 				.getElementsByTagName('div')[0],
 			count: -1,
 			lastDelta: 1000000000000,
-			mute: true,
 		}
 	}
 
-	reset(event) {
+	reset(event, audio) {
+		audio.stop()
 		this.beat.count = -1
 		this.beat.lastDelta = 1000000000000
 		this.beat.beatOut.textContent = 0
 		if (event) {
 			this.beat.lastBeat.textContent = 0
 		}
-		this.state.audio.stop()
 	}
 
+	// à déplacer dans le parent
 	sleep(timeInMs) {
 		return new Promise(resolve => setTimeout(resolve, timeInMs))
 	}
 
-	async count() {
-		if (this.beat.count < 0) {
-			this.state.audio.setAudioContext()
-			this.beat.count = 0
-		} else {
-			this.beat.count += 1
-			let delta = this.state.audio.audioCtx.currentTime
-			let count = this.beat.count
-			let beats = Math.floor((this.beat.count * 60) / delta)
+	async count(audio, beat) {
+		beat.count += 1
+		let delta = audio.audioCtx.currentTime
+		let count = beat.count
+		let beats = Math.floor((beat.count * 60) / delta)
 
-			this.beat.beatOut.textContent = beats
-			await this.sleep(2100)
-			if (count === this.beat.count) {
-				this.beat.lastBeat.textContent = beats
-				this.reset()
-			}
+		beat.beatOut.textContent = beats
+		//if no more tap, write it
+		await this.sleep(2100)
+		if (count === beat.count) {
+			beat.lastBeat.textContent = beats
+			//throw event to reset
 		}
 	}
 
-	start() {
-		this.count()
-		if (!this.beat.mute) {
-			this.state.audio.play()
+	start(audio, mute) {
+		this.count(audio, this.beat)
+		if (!mute) {
+			audio.play()
 		}
-	}
-
-	toggleSound(node) {
-		if (this.beat.mute) {
-			this.state.audio.start()
-		} else {
-			this.state.audio.removeSound()
-		}
-		this.beat.mute = !this.beat.mute
 	}
 }

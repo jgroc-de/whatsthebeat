@@ -1,49 +1,18 @@
-import { ViewTemplate } from './viewTemplate.js'
+//import { ViewTemplate } from './viewTemplate.js'
 
-export class Tuner extends ViewTemplate {
+//export class Tuner extends ViewTemplate {
+export class Tuner {
 	constructor(state) {
-		super(state, 'tuner')
-		this.isPlaying = false
+		//super(state, 'tuner')
 	}
 
-	async play(keep = false) {
-		this.setParams()
-		if (keep && this.isPlaying) {
-			this.state.audio.stopSound()
-			this.isPlaying = false
-		}
-		if (!this.isPlaying) {
-			this.state.audio.startSound()
+	async start(audio, isPlaying) {
+		if (isPlaying) {
+			audio.stopSound()
 		} else {
-			this.state.audio.stopSound()
+			audio.startSound()
 		}
-		this.isPlaying = !this.isPlaying
-	}
 
-	setParams() {
-		this.getFrequency()
-		this.getNote()
-		this.state.audio.setFrequency(this.frequency.getFrequency())
-	}
-
-	start(event) {
-		if (event.type === 'mousedown' || event.type === 'touchstart') {
-			this.play()
-		}
-	}
-
-	stop() {
-		if (this.isPlaying) {
-			this.state.audio.stopSound()
-		}
-	}
-
-	updateInput(node, value = 0) {
-		if (node.tagName === 'INPUT') {
-			this.modifyValue(node, value)
-		}
-		if (this.isPlaying) {
-			this.play(true)
-		}
+		return !isPlaying
 	}
 }
