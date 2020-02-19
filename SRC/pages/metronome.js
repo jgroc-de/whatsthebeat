@@ -5,19 +5,7 @@ export class Metronome extends Page {
 		super(state, 'metronome')
 		this.interval = null
 		this.inputInterval = null
-		this.handleEvent = function(event) {
-			this.eventDispatcher(event)
-		}
-		for (let input of this.inputs) {
-			this.updateInput(input)
-		}
 		this.tempo = 60
-	}
-
-	getTempo() {
-		let tempo = this.inputs[2].value
-
-		this.toSecond(tempo)
 	}
 
 	async play(event) {
@@ -57,13 +45,6 @@ export class Metronome extends Page {
 		this.state.audio.setFrequency(this.frequency.getFrequency())
 	}
 
-	setTempo(tempo) {
-		if (tempo != 0) {
-			this.inputs[2].value = tempo
-			this.inputs[2].parentNode.nextSibling.textContent = tempo
-		}
-	}
-
 	start(event) {
 		if (event.type === 'click' || event.type === 'touchstart') {
 			this.play(event)
@@ -75,26 +56,8 @@ export class Metronome extends Page {
 			window.clearInterval(this.interval)
 			this.interval = null
 			if (end) {
-				this.btn.removeAttribute('style')
 				this.state.audio.stop()
 			}
-		}
-	}
-
-	toSecond(tempo) {
-		this.tempo = 60 / tempo
-	}
-
-	updateInput(node, value = 0) {
-		if (node.tagName === 'INPUT') {
-			this.modifyValue(node, value)
-		} else if (node.tagName === 'SELECT') {
-			this.modifyNote(value)
-		}
-		if (this.interval) {
-			this.stop(false)
-			this.setParams()
-			this.setInterval()
 		}
 	}
 }

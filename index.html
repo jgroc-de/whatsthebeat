@@ -22,7 +22,6 @@
 </head>
 
 <body>
-
 	<header>
 		<div id="burger">
 			<div class="gg-bar"></div>
@@ -87,15 +86,15 @@
 
 	<template id="metronome">
 		<div>
-			<form class="gg-4-rows gg-pad">
-				<note-select class="gg-3-cols"></note-select>
-				<octave-input class="gg-3-cols"></octave-input>
-				<pitch-input class="gg-3-cols"></pitch-input>
+			<form class="gg-4-rows">
+				<note-select></note-select>
+				<octave-input></octave-input>
+				<pitch-input></pitch-input>
 				<div class="gg-3-cols">
 					<label for="tempo">Tempo (BPM)</label>
 					<div class="gg-3-cols">
 						<div class="gg-range-div">-</div>
-						<input type="range" name="range" id="tempo" min="1" max="480" value="60"></input>
+						<input type="range" name="tempo" id="tempo" min="1" max="480" value="60"></input>
 						<div class="gg-range-div">+</div>
 					</div>
 				</div>
@@ -109,10 +108,10 @@
 
 	<template id="tuner">
 		<div>
-			<form class="gg-3-rows gg-pad">
-				<note-select class="gg-3-cols"></note-select>
-				<octave-input class="gg-3-cols"></octave-input>
-				<pitch-input class="gg-3-cols"></pitch-input>
+			<form class="gg-3-rows">
+				<note-select></note-select>
+				<octave-input></octave-input>
+				<pitch-input></pitch-input>
 			</form>
 		</div>
 		<div>
@@ -123,10 +122,10 @@
 
 	<template id="pathGame">
 		<div>
-			<form class="gg-4-rows gg-pad">
-				<note-select class="gg-3-cols"></note-select>
-				<octave-input class="gg-3-cols"></octave-input>
-				<pitch-input class="gg-3-cols"></pitch-input>
+			<form class="gg-4-rows">
+				<note-select></note-select>
+				<octave-input></octave-input>
+				<pitch-input></pitch-input>
 				<div class="gg-3-cols">
 					<label for="mode">Mode</label>
 					<div class="gg-3-cols">
@@ -209,21 +208,6 @@
 	</template>
 
 	<script>
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', () => {
-				navigator.serviceWorker.register('/service-worker.js')
-					.then((worker) => {
-						console.log('Service worker registered.', worker)
-						navigator.serviceWorker.addEventListener('message', function (event) {
-							document.getElementById("version").textContent = event.data
-						})
-						if (navigator.serviceWorker.controller) {
-							navigator.serviceWorker.controller.postMessage("hi")
-						}
-					})
-			})
-		}
-
 		class NoteSelect extends HTMLElement {
 			constructor() {
 				super()
@@ -275,6 +259,20 @@
 		window.customElements.define('button-start', StartButton)
 		window.customElements.define('button-random', RandomButton)
 
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', () => {
+				navigator.serviceWorker.register('/service-worker.js')
+					.then((worker) => {
+						console.log('Service worker registered.', worker)
+						navigator.serviceWorker.addEventListener('message', function (event) {
+							document.getElementById("version").textContent = event.data
+						})
+						if (navigator.serviceWorker.controller) {
+							navigator.serviceWorker.controller.postMessage("hi")
+						}
+					})
+			})
+		}
 	</script>
 </body>
 

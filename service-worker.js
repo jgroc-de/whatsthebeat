@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '0.7.4'
+const VERSION = '0.8.1'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
@@ -10,12 +10,12 @@ const FILES_TO_CACHE = [
 	'/index.html',
 	'/manifest.json',
 	'/CSS/main.css',
-	'/SRC/app.js',
-	'/SRC/metronome.js',
-	'/SRC/beatTaker.js',
-	'/SRC/tuner.js',
-	'/SRC/audio.js',
-	'/SRC/frequency.js',
+	'/SRC/pages/metronome.js',
+	'/SRC/pages/beatTaker.js',
+	'/SRC/pages/tuner.js',
+	'/SRC/pages/page.js',
+	'/SRC/misc/audio.js',
+	'/SRC/misc/frequency.js',
 	'/ICONS/favicon.ico',
 	'/ICONS/icon-144x144.png',
 	'/ICONS/icon-152x152.png',
@@ -24,11 +24,11 @@ const FILES_TO_CACHE = [
 ]
 
 self.addEventListener('install', evt => {
-	console.log('[ServiceWorker] Install')
+	//console.log('[ServiceWorker] Install')
 	// Precache static resources here.
 	evt.waitUntil(
 		caches.open(CACHE_NAME).then(cache => {
-			console.log('[ServiceWorker] Pre-caching offline page')
+			//console.log('[ServiceWorker] Pre-caching offline page')
 			return cache.addAll(FILES_TO_CACHE)
 		})
 	)
@@ -37,14 +37,14 @@ self.addEventListener('install', evt => {
 })
 
 self.addEventListener('activate', evt => {
-	console.log('[ServiceWorker] Activate')
+	//console.log('[ServiceWorker] Activate')
 	// Remove previous cached data from disk.
 	evt.waitUntil(
 		caches.keys().then(keyList => {
 			return Promise.all(
 				keyList.map(key => {
 					if (key !== CACHE_NAME) {
-						console.log('[ServiceWorker] Removing old cache', key)
+						//console.log('[ServiceWorker] Removing old cache', key)
 						return caches.delete(key)
 					}
 				})
@@ -56,7 +56,7 @@ self.addEventListener('activate', evt => {
 })
 
 self.addEventListener('fetch', evt => {
-	console.log('[ServiceWorker] Fetch', evt.request.url)
+	//console.log('[ServiceWorker] Fetch', evt.request.url)
 	// Add fetch event handler here.
 	evt.respondWith(
 		caches.open(CACHE_NAME).then(cache => {

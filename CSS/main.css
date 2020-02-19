@@ -207,7 +207,8 @@ button:active {
 /* end button */
 
 /* common */
-.gg-pad {
+.gg-pad,
+form {
 	padding: 16px;
 }
 
@@ -272,7 +273,10 @@ form {
 	grid-row-gap: 16px;
 }
 
-.gg-3-cols {
+.gg-3-cols,
+note-select,
+octave-input,
+pitch-input {
 	display: grid;
 	grid-template-columns: 20% 60% 20%;
 	grid-gap: 8px;

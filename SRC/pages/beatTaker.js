@@ -1,57 +1,21 @@
-import { Audio } from './audio.js'
+import { Audio } from '../misc/audio.js'
+import { Page } from './page.js'
 
-export class BeatTaker {
+export class BeatTaker extends Page {
 	constructor(state) {
-		this.state = state
-		this.buildView()
+		super(state, 'wtb')
 		this.state.audio = new Audio()
+		console.log(this.state)
 		this.beat = {
-			beatOut: document.getElementById('beat').getElementsByTagName('div')[0],
-			lastBeat: document
+			beatOut: this.state.main
+				.getElementById('beat')
+				.getElementsByTagName('div')[0],
+			lastBeat: this.state.main
 				.getElementById('lastBeat')
 				.getElementsByTagName('div')[0],
 			count: -1,
 			lastDelta: 1000000000000,
 			mute: true,
-		}
-
-		this.handleEvent = function(event) {
-			this.eventDispatcher(event)
-		}
-		this.setEvents()
-	}
-
-	buildView() {
-		let template = document.getElementById('wtb')
-		let node = document.importNode(template.content, true)
-		this.state.main.appendChild(node)
-	}
-
-	setEvents() {
-		let tapButton = document.getElementById('start')
-
-		tapButton.addEventListener('mousedown', this, false)
-		this.state.main.addEventListener('click', this, false)
-	}
-
-	eventDispatcher(event) {
-		if (event.type === 'mousedown') {
-			this.tap()
-			return
-		}
-		let node = event.target
-
-		if (node.tagName === 'SPAN') {
-			node = node.parentNode
-		}
-		switch (node.id) {
-			case 'reset':
-				this.reset(event)
-				break
-			case 'sound':
-				this.toggleSound(node)
-				break
-			default:
 		}
 	}
 
@@ -88,7 +52,7 @@ export class BeatTaker {
 		}
 	}
 
-	tap() {
+	start() {
 		this.count()
 		if (!this.beat.mute) {
 			this.state.audio.play()
@@ -102,13 +66,5 @@ export class BeatTaker {
 			this.state.audio.removeSound()
 		}
 		this.beat.mute = !this.beat.mute
-		node.classList.toggle('gg-on')
-	}
-
-	removeEvents() {
-		let tapButton = document.getElementById('start')
-
-		tapButton.removeEventListener('mousedown', this)
-		this.state.main.removeEventListener('click', this)
 	}
 }

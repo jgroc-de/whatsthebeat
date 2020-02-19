@@ -1,79 +1,178 @@
-import { BeatTaker } from './beatTaker.js'
-import { Metronome } from './metronome.js'
-import { Tuner } from './tuner.js'
-import { PathGame } from './pathGame.js'
-import { About } from './about.js'
+import { BeatTaker } from './pages/beatTaker.js'
+import { Metronome } from './pages/metronome.js'
+import { Tuner } from './pages/tuner.js'
+import { Page } from './pages/page.js'
+import { Select } from './services/select.js'
+import { WTBDefault } from './services/WTBdefault.js'
 
-class App {
-	constructor(state) {
+class EventController {
+	constructor(state, services) {
+		this.firstEvent = true
+
 		this.state = state
-		this.setPage()
+
+		this.page = this.setPage(state)
+
+		this.services = services
+
+		this.inputInterval = null
+
+		window.addEventListener('hashchange', this, { passive: true })
+		state.main.addEventListener('change', this, { passive: true })
+		document.addEventListener('mousedown', this, { passive: true })
+		state.main.addEventListener('mouseup', this, { passive: true })
+		document.addEventListener('touchstart', this, { passive: true })
+		state.main.addEventListener('touchend', this, { passive: true })
+		state.main.addEventListener('input', this, { passive: true })
+
 		this.handleEvent = function(event) {
-			this.toggleHide()
+			this.eventDispatcher(event, this.page, this.state, this.services)
 		}
-		this.setBurger()
+
+		this.initServices(services, state.main)
 	}
 
-	getBeat() {
-		if (this.page && this.page.beat) {
-			return this.page.beat.lastBeat.innerText
+	eventDispatcher(event, page, state, services) {
+		console.log(event.type, event.target)
+		if (this.inputInterval && event.type !== 'input') {
+			window.clearInterval(this.inputInterval)
+			this.inputInterval = null
+			return
+		}
+		this.firstEvent = this.removeUselessListener(this.firstEvent, state.main)
+		if (event.type == 'hashchange') {
+			services['tempo'].current = this.stopLastPage(page, state.main)
+			this.page = this.setPage(state)
+			this.initServices(services, state.main)
+
+			return
+		}
+		if (
+			event.target.nodeName == 'A' ||
+			event.target.parentNode.id == 'burger' ||
+			event.target.id == 'burger' ||
+			event.target.className == 'gg-modal'
+		) {
+			state.nav.toggleAttribute('hidden')
+			if (event.target.nodeName == 'A') {
+				window.location.hash = event.target.hash
+			}
+
+			return
+		}
+		this.changeButtonDesign(event)
+
+		switch (event.target.id) {
+			case 'start':
+				page.start(event)
+				break
+			case 'random':
+				page.random(event)
+				break
+			case 'reset':
+				page.reset(event)
+				break
+			case 'sound':
+				page.toggleSound(event)
+				break
+			default:
+				let target = ''
+				if (
+					event.target.nodeName != 'select' ||
+					event.target.nodeName != 'input'
+				) {
+					target = event.target.parentNode.querySelector('select, input')
+				} else {
+					target = event.target
+				}
+				let timeInterval = services[target.id].updateInput(event, target)
+				if (timeInterval) {
+					this.inputInterval = timeInterval
+				}
+		}
+	}
+
+	changeButtonDesign(event) {
+		if (
+			event.target.nodeName != 'BUTTON' ||
+			(event.type != 'touchstart' && event.type != 'mousedown')
+		) {
+			return
+		}
+
+		if (event.target.style.length) {
+			event.target.removeAttribute('style')
+		} else if (event.target.id == 'start' || event.target.id == 'sound') {
+			event.target.setAttribute('style', 'border-color:lightGreen')
+		}
+	}
+
+	removeUselessListener(firstEvent, main) {
+		if (firstEvent) {
+			//if touchscreen or computer
+			if (event.type === 'mousedown') {
+				document.removeEventListener('touchstart', this)
+				main.removeEventListener('touchend', this)
+			} else {
+				document.removeEventListener('mousedown', this)
+				main.removeEventListener('mouseup', this)
+			}
 		}
 
 		return false
 	}
 
-	setBurger() {
-		let burger = document.getElementById('burger')
+	stopLastPage(page, main) {
+		let beat = 60 //default
 
-		burger.addEventListener('mouseup', this, false)
-		this.state.nav.card.addEventListener('mouseup', this, false)
+		if (page) {
+			if (page.beat) {
+				beat = parseInt(page.beat.lastBeat.innerText)
+			}
+			page.stop(true)
+			while (main.children.length) {
+				main.removeChild(main.children[0])
+			}
+		}
+
+		return beat
 	}
 
-	setPage() {
-		let beat = this.getBeat()
+	initServices(services, main) {
+		let inputs = main.querySelectorAll('input, select')
 
-		if (this.page) {
-			this.page.removeEvents()
+		for (let input of inputs) {
+			services[input.name].init(input)
 		}
-		while (this.state.main.children.length) {
-			this.state.main.removeChild(this.state.main.children[0])
-		}
+		services['note'].init(services['note'].node, {
+			minus: services['octave'].node.previousElementSibling,
+			plus: services['octave'].node.nextElementSibling,
+		})
+	}
+
+	setPage(state) {
 		switch (window.location.hash) {
 			case '#tuner':
-				this.page = new Tuner(this.state)
-				break
-			case '#tune-game':
-				this.page = new PathGame(this.state)
-				break
+				return new Tuner(state)
 			case '#metronome':
-				this.page = new Metronome(this.state)
-				if (beat) {
-					this.page.setTempo(beat)
-				}
-				break
+				return new Metronome(state)
 			case '#about':
-				this.page = new About(this.state)
-				break
+				return new Page(state, 'about')
 			default:
-				this.page = new BeatTaker(state)
+				return new BeatTaker(state)
 		}
-	}
-
-	toggleHide() {
-		this.state.nav.card.toggleAttribute('hidden')
 	}
 }
 
 const state = {
 	audio: null,
 	main: document.querySelector('main'),
-	nav: {
-		card: document.querySelector('nav'),
-	},
+	nav: document.querySelector('nav'),
 }
-
-const app = new App(state)
-
-window.onhashchange = function() {
-	app.setPage()
-}
+new EventController(state, {
+	mode: new Select('M'),
+	note: new Select('A'),
+	octave: new WTBDefault(3),
+	pitch: new WTBDefault(442, 70),
+	tempo: new WTBDefault(60),
+})
