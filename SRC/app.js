@@ -8,7 +8,6 @@ class EventController {
 		this.state = state
 		this.firstEvent = true
 		this.inputInterval = null
-		this.page = this.pageFactory.get(state)
 		this.isPlaying = false
 		this.isMuted = true
 
@@ -30,7 +29,14 @@ class EventController {
 			)
 		}
 
-		this.initServices(services, state.main)
+		this.page = this.setPage(state, pageFactory, services)
+	}
+
+	setPage(state, pageFactory, services) {
+		let page = pageFactory.get(state)
+		services.init(state.main)
+
+		return page
 	}
 
 	eventDispatcher(event, page, state, services, pageFactory) {
@@ -44,8 +50,7 @@ class EventController {
 		this.firstEvent = this.removeUselessListener(this.firstEvent, state.main)
 		if (event.type == 'hashchange') {
 			services['tempo'].current = this.stopLastPage(page, state.main)
-			this.page = pageFactory.get(state)
-			this.initServices(services, state.main)
+			this.page = this.setPage(state, pageFactory, services)
 
 			return
 		}
@@ -147,18 +152,6 @@ class EventController {
 
 		return beat
 	}
-
-	initServices(services, main) {
-		let inputs = main.querySelectorAll('input, select')
-
-		for (let input of inputs) {
-			services[input.name].init(input)
-		}
-		services['note'].init(services['note'].node, {
-			minus: services['octave'].node.previousElementSibling,
-			plus: services['octave'].node.nextElementSibling,
-		})
-	}
 }
 
 class pageFactory {
@@ -182,18 +175,32 @@ class pageFactory {
 }
 
 const state = {
-	audio: null, //new Audio(),
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
 }
 
-const services = {
+let services = {
 	mode: new Services.Select('M'),
 	note: new Services.Select('A'),
 	octave: new Services.Select('M'), //new ServiceTemplate(3),
 	pitch: new Services.Select('M'), //new ServiceTemplate(442, 70),
 	tempo: new Services.Select('M'), //new ServiceTemplate(60),
-	Frequency: new Services.Select('M'), //new Frequency(),
+	frequency: new Services.Select('M'), //new Frequency(),
+	audio: null, //new Audio(),
+	init(main) {
+		let inputs = main.querySelectorAll('input, select')
+
+		for (let node of inputs) {
+			this[node.name].init(node)
+		}
+		this.note.init(this.note.node, {
+			minus: this.octave.node.previousElementSibling,
+			plus: this.octave.node.nextElementSibling,
+		})
+	},
 }
+
+services.reset = new Services.Reset(services)
+services.mute = new Services.Mute(Services)
 
 new EventController(new pageFactory(Pages), services, state)

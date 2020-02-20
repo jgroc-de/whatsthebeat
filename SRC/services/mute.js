@@ -1,6 +1,6 @@
 export class Mute {
-	construct(audio) {
-		this.audio = audio
+	construct(services) {
+		this.audio = services['audio']
 	}
 
 	action() {

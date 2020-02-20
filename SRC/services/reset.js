@@ -3,8 +3,8 @@
 	//  IT'S A DUCK, do your duck thing
 }*/
 export class reset {
-	construct(audio, services) {
-		this.audio = audio
+	construct(services) {
+		this.audio = services['audio']
 		this.services = []
 		for (service of services) {
 			if (hasMethods(service, 'reset')) {

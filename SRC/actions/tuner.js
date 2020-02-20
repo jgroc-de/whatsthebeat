@@ -1,11 +1,4 @@
-//import { ViewTemplate } from './viewTemplate.js'
-
-//export class Tuner extends ViewTemplate {
 export class Tuner {
-	constructor(state) {
-		//super(state, 'tuner')
-	}
-
 	async start(audio, isPlaying) {
 		if (isPlaying) {
 			audio.stopSound()
@@ -14,5 +7,9 @@ export class Tuner {
 		}
 
 		return !isPlaying
+	}
+
+	random(services) {
+		services.note.random()
 	}
 }

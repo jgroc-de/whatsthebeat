@@ -1,10 +1,6 @@
-//import { ViewTemplate } from './viewTemplate.js'
-
-//export class BeatTaker extends ViewTemplate {
 export class BeatTaker {
 	constructor(state) {
 		//ajouter this.mute = true dans ViewTemplate
-		//super(state, 'wtb')
 		this.beat = {
 			beatOut: document.getElementById('beat').getElementsByTagName('div')[0],
 			lastBeat: document
@@ -25,6 +21,15 @@ export class BeatTaker {
 		}
 	}
 
+	start(audio, mute) {
+		this.count(audio, this.beat)
+		if (!mute) {
+			audio.play()
+		}
+	}
+
+	random() {}
+
 	// à déplacer dans le parent
 	sleep(timeInMs) {
 		return new Promise(resolve => setTimeout(resolve, timeInMs))
@@ -42,13 +47,6 @@ export class BeatTaker {
 		if (count === beat.count) {
 			beat.lastBeat.textContent = beats
 			//throw event to reset
-		}
-	}
-
-	start(audio, mute) {
-		this.count(audio, this.beat)
-		if (!mute) {
-			audio.play()
 		}
 	}
 }

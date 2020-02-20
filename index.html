@@ -90,14 +90,7 @@
 				<note-select></note-select>
 				<octave-input></octave-input>
 				<pitch-input></pitch-input>
-				<div class="gg-3-cols">
-					<label for="tempo">Tempo (BPM)</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<input type="range" name="tempo" id="tempo" min="1" max="480" value="60"></input>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
+				<tempo-input></tempo-input>
 			</form>
 		</div>
 		<div>
@@ -126,19 +119,7 @@
 				<note-select></note-select>
 				<octave-input></octave-input>
 				<pitch-input></pitch-input>
-				<div class="gg-3-cols">
-					<label for="mode">Mode</label>
-					<div class="gg-3-cols">
-						<div class="gg-range-div">-</div>
-						<select name="mode" id="mode">
-							<option>M</option>
-							<option>m</option>
-							<option>ton</option>
-							<option>1/2 ton</option>
-						</select>
-						<div class="gg-range-div">+</div>
-					</div>
-				</div>
+				<mode-select></mode-select>
 			</form>
 		</div>
 		<div>
@@ -181,6 +162,20 @@
 		</div>
 	</template>
 
+	<template id="modeSelect">
+		<label for="mode">Mode</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<select name="mode" id="mode">
+				<option>M</option>
+				<option>m</option>
+				<option>ton</option>
+				<option>1/2 ton</option>
+			</select>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
 	<template id="octaveInput">
 		<label for=octave>Octave</label>
 		<div class="gg-3-cols">
@@ -195,6 +190,15 @@
 		<div class="gg-3-cols">
 			<div class="gg-range-div">-</div>
 			<input type="range" name="pitch" id="pitch" min="350" max="500" value="442"></input>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
+	<template id="tempoInput">
+		<label for="tempo">Tempo (BPM)</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<input type="range" name="tempo" id="tempo" min="1" max="480" value="60"></input>
 			<div class="gg-range-div">+</div>
 		</div>
 	</template>
@@ -215,6 +219,13 @@
 			}
 		}
 
+		class ModeSelect extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#modeSelect').innerHTML
+			}
+		}
+
 		class OctaveInput extends HTMLElement {
 			constructor() {
 				super()
@@ -226,6 +237,13 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#pitchInput').innerHTML
+			}
+		}
+
+		class TempoInput extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#tempoInput').innerHTML
 			}
 		}
 
@@ -254,8 +272,10 @@
 		}
 
 		window.customElements.define('note-select', NoteSelect)
+		window.customElements.define('mode-select', ModeSelect)
 		window.customElements.define('octave-input', OctaveInput)
 		window.customElements.define('pitch-input', PitchInput)
+		window.customElements.define('tempo-input', TempoInput)
 		window.customElements.define('button-start', StartButton)
 		window.customElements.define('button-random', RandomButton)
 
