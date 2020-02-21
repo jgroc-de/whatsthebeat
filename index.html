@@ -58,9 +58,10 @@
 			</form>
 		</div>
 		<div class="gg-2-cols">
-			<div id="settings" class="gg-2-rows">
-				<button id="reset" class="gg-button-s">Reset</button>
-				<button id="sound" class="gg-button-s">Sound</button>
+			<div id="settings" class="gg-3-rows">
+				<button-random></button-random>
+				<button-mute></button-mute>
+				<button-reset></button-reset>
 			</div>
 			<button-start></button-start>
 		</div>
@@ -77,9 +78,9 @@
 		</div>
 		<div class="gg-2-cols">
 			<div id="settings" class="gg-3-rows">
-				<button id="reset" class="gg-button-s">Reset</button>
-				<button id="sound" class="gg-button-s">Sound</button>
 				<button-random></button-random>
+				<button-mute></button-mute>
+				<button-reset></button-reset>
 			</div>
 			<button-start></button-start>
 		</div>
@@ -95,9 +96,9 @@
 		</div>
 		<div class="gg-2-cols">
 			<div id="settings" class="gg-3-rows">
-				<button id="reset" class="gg-button-s">Reset</button>
-				<button id="sound" class="gg-button-s">Sound</button>
 				<button-random></button-random>
+				<button-mute></button-mute>
+				<button-reset></button-reset>
 			</div>
 			<button-start></button-start>
 		</div>
@@ -108,6 +109,7 @@
 				<octave-input></octave-input>
 				<pitch-input></pitch-input>
 				<tempo-input></tempo-input>
+				<repeat-input></repeat-input>
 			</form>
 		</div>
 		<div>
@@ -198,6 +200,15 @@
 		</div>
 	</template>
 
+	<template id="repeatInput">
+		<label for=repeat>Repeat</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<input type="range" name="repeat" id="repeat" min=0 max=12 value=1></input>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
 	<template id="pitchInput">
 		<label for="pitch">Pitch (Hz)</label>
 		<div class="gg-3-cols">
@@ -217,12 +228,21 @@
 	</template>
 
 	<template id="startButton">
-		<button id="start" class="gg-button gg-center" aria-label="start">ON/OFF</button>
+		<button id="start" class="gg-button" aria-label="start">ON/OFF</button>
 	</template>
 
 	<template id="randomButton">
-		<button id="random" class="gg-button-xs gg-corner">random</button>
+		<button id="random" class="gg-button-s">Random</button>
 	</template>
+
+	<template id="resetButton">
+		<button id="reset" class="gg-button-s">Reset</button>
+	</template>
+
+	<template id="muteButton">
+		<button id="sound" class="gg-button-s">Mute</button>
+	</template>
+
 
 	<script>
 		class NoteSelect extends HTMLElement {
@@ -250,6 +270,13 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#octaveInput').innerHTML
+			}
+		}
+
+		class RepeatInput extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#repeatInput').innerHTML
 			}
 		}
 
@@ -281,12 +308,30 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#randomButton').innerHTML
-				let location = window.location.hash
-				if (location === '#tuner') {
-					this.firstElementChild.innerText = 'random note'
-				} else if (location === '#metronome') {
-					this.firstElementChild.innerText = 'random tempo'
+				switch (window.location.hash) {
+					case '#tuner':
+						this.firstElementChild.innerText = 'random note'
+						break
+					case '#metronome':
+						this.firstElementChild.innerText = 'random tempo'
+						break
+					default:
+						this.firstElementChild.innerText = 'random'
 				}
+			}
+		}
+
+		class ResetButton extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#resetButton').innerHTML
+			}
+		}
+
+		class MuteButton extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#muteButton').innerHTML
 			}
 		}
 
@@ -294,10 +339,13 @@
 		window.customElements.define('gamme-select', GammeSelect)
 		window.customElements.define('mode-select', ModeSelect)
 		window.customElements.define('octave-input', OctaveInput)
+		window.customElements.define('repeat-input', RepeatInput)
 		window.customElements.define('pitch-input', PitchInput)
 		window.customElements.define('tempo-input', TempoInput)
 		window.customElements.define('button-start', StartButton)
 		window.customElements.define('button-random', RandomButton)
+		window.customElements.define('button-reset', ResetButton)
+		window.customElements.define('button-mute', MuteButton)
 	</script>
 </body>
 

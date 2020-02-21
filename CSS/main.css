@@ -269,7 +269,7 @@ form {
 
 .gg-3-rows {
 	display: grid;
-	grid-template-rows: 20% 20% 20%;
+	grid-template-rows: 30% 30% 30%;
 	align-content: center;
 	grid-row-gap: 16px;
 }
@@ -284,8 +284,8 @@ form {
 .gg-2-cols {
 	display: grid;
 	grid-template-columns: 30% 70%;
+	align-content: center;
 	grid-gap: 8px;
-	height: 30px;
 	text-align: center;
 	line-height: 30px;
 }
@@ -306,6 +306,10 @@ select,
 	border-width: thin;
 	cursor: pointer;
 	border-radius: 20px;
+	text-align: center;
+}
+
+option {
 	text-align: center;
 }
 

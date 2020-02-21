@@ -42,7 +42,7 @@ export class Conductor {
 		this.firstEvent = this.removeUselessListener(this.firstEvent, map.main)
 		if (event.type == 'hashchange') {
 			while (map.main.children.length) {
-				map.main.removeChild(main.children[0])
+				map.main.removeChild(map.main.children[0])
 			}
 			this.page = this.setPage(workshops, map.main)
 			return
