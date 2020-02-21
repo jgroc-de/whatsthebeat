@@ -11,9 +11,6 @@
  * and myfile.js the path of the file where the class is
  */
 
-export { BeatTaker as home } from './beatTaker.js'
+export { BeatTaker as wtb } from './beatTaker.js'
 export { Metronome as metronome } from './metronome.js'
 export { Tuner as tuner } from './tuner.js'
-//export { ViewTemplate as about } from './viewTemplate.js'
-//export { ViewTemplate as error } from './viewTemplate.js'
-export { Tuner as error } from './tuner.js'

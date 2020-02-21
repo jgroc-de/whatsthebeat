@@ -1,12 +1,7 @@
 export class Metronome {
-	reset(audio) {
-		//à mettre dans audio
-		window.clearInterval(audio.interval)
-		this.interval = null // nécessaire ??
-		audio.stop()
-	}
-
-	async start(audio, tempo) {
+	start(workshops) {
+		let audio = workshops['audio']
+		let tempo = workshops['tempo'].currentValue
 		if (!this.interval) {
 			//à mettre dans l'objet audio
 			audio.interval = setInterval(
@@ -25,8 +20,8 @@ export class Metronome {
 		return false
 	}
 
-	random(services) {
-		services.tempo.random()
-		services.tempo.set(Math.floor(Math.random() * 160) + 40)
+	random() {
+		//launch event
+		//workshops.tempo.set(Math.floor(Math.random() * 160) + 40)
 	}
 }

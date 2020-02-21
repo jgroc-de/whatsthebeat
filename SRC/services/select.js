@@ -1,12 +1,8 @@
-//import { ServiceTemplate } from './serviceTemplate.js'
+import { Input } from './input.js'
 
-//export class Select extends ServiceTemplate {
-export class Select {
+export class Select extends Input {
 	constructor(value) {
-		this.node = null
-		this.target = null
-		this.current = value
-		this.def = value
+		super(value)
 	}
 
 	getSelectedItem(select) {
@@ -52,8 +48,7 @@ export class Select {
 		return select.value
 	}
 
-	init(input, target = null) {
-		this.node = input
-		this.target = target
-	}
+	setVisibleValue() {}
+
+	reset() {}
 }

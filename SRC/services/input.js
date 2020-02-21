@@ -1,4 +1,4 @@
-export class ServiceTemplate {
+export class Input {
 	constructor(value, intervalTime = 100) {
 		this.default = value
 		this.current = value
@@ -56,6 +56,11 @@ export class ServiceTemplate {
 		this.setVisibleValue(inputNode)
 
 		return null
+	}
+
+	reset() {
+		this.node.valueAsNumber = this.default
+		this.setVisibleValue(this.node)
 	}
 
 	setVisibleValue(node) {

@@ -1,5 +1,5 @@
 export class Tuner {
-	async start(audio, isPlaying) {
+	start(audio, isPlaying) {
 		if (isPlaying) {
 			audio.stopSound()
 		} else {
@@ -9,7 +9,8 @@ export class Tuner {
 		return !isPlaying
 	}
 
-	random(services) {
-		services.note.random()
+	random() {
+		//launch random note
+		//services.note.random()
 	}
 }

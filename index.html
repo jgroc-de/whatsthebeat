@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 	<script type="module" src="./SRC/app.js" async></script>
 	<link rel="manifest" href="/manifest.json">
-
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-title" content="What's the B**t?">
@@ -37,12 +36,6 @@
 		<div class="gg-navbar">
 			<h2><b>What's The B**t?</b></h2>
 			<a href="/#">What's the beat</a>
-			<a href="/#metronome">Metronome</a>
-			<a href="/#tuner">Tuner</a>
-			<a href="/#tune-game">Tune Game (WIP)</a>
-			<a href="/#scales">Scales (WIP)</a>
-			<a href="/#chords">Chords (WIP)</a>
-			<a href="/#about">About</a>
 		</div>
 		<div class="gg-modal"></div>
 	</nav>
@@ -58,33 +51,22 @@
 		</a>
 	</footer>
 
-	<template id="wtb">
-		<div class="gg-left-panel">
-			<div id="settings" class="gg-pad-left gg-2-rows">
+	<template route home id="#wtb">
+		<div>
+			<form class="gg-2-rows">
+				<tempo-input></tempo-input>
+			</form>
+		</div>
+		<div class="gg-2-cols">
+			<div id="settings" class="gg-2-rows">
 				<button id="reset" class="gg-button-s">Reset</button>
 				<button id="sound" class="gg-button-s">Sound</button>
 			</div>
-			<div class="gg-pad-right">
-				<div class="gg-right">
-					<div id="beat" aria-label="Tap">
-						<span>current:</span>
-						<div class="gg-number">0</div>
-						bpm
-					</div>
-					<div id="lastBeat" aria-label="Tap">
-						<span>last:</span>
-						<div class="gg-number">0</div>
-						bpm
-					</div>
-				</div>
-			</div>
-		</div>
-		<div>
 			<button-start></button-start>
 		</div>
 	</template>
 
-	<template id="metronome">
+	<template route id="#metronome">
 		<div>
 			<form class="gg-4-rows">
 				<note-select></note-select>
@@ -93,13 +75,17 @@
 				<tempo-input></tempo-input>
 			</form>
 		</div>
-		<div>
+		<div class="gg-2-cols">
+			<div id="settings" class="gg-3-rows">
+				<button id="reset" class="gg-button-s">Reset</button>
+				<button id="sound" class="gg-button-s">Sound</button>
+				<button-random></button-random>
+			</div>
 			<button-start></button-start>
-			<button-random></button-random>
 		</div>
 	</template>
 
-	<template id="tuner">
+	<template route id="#tuner">
 		<div>
 			<form class="gg-3-rows">
 				<note-select></note-select>
@@ -107,28 +93,33 @@
 				<pitch-input></pitch-input>
 			</form>
 		</div>
-		<div>
+		<div class="gg-2-cols">
+			<div id="settings" class="gg-3-rows">
+				<button id="reset" class="gg-button-s">Reset</button>
+				<button id="sound" class="gg-button-s">Sound</button>
+				<button-random></button-random>
+			</div>
 			<button-start></button-start>
-			<button-random></button-random>
 		</div>
 	</template>
-
-	<template id="pathGame">
+	<template route id="#config">
 		<div>
-			<form class="gg-4-rows">
-				<note-select></note-select>
+			<form class="gg-3-rows">
 				<octave-input></octave-input>
 				<pitch-input></pitch-input>
-				<mode-select></mode-select>
+				<tempo-input></tempo-input>
 			</form>
 		</div>
 		<div>
-			<button-start></button-start>
-			<button-random></button-random>
+			<form class="gg-3-rows">
+				<note-select></note-select>
+				<gamme-select></gamme-select>
+				<mode-select></mode-select>
+			</form>
 		</div>
 	</template>
 
-	<template id="about">
+	<template route id="#about">
 		<div class="gg-pad">
 			<span>
 				Welcome on this webApp!<br>
@@ -162,6 +153,28 @@
 		</div>
 	</template>
 
+	<template id="gammeSelect">
+		<label for="gamme">Gamme</label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<select name="gamme" id="gamme">
+				<option>A</option>
+				<option>A#</option>
+				<option>B</option>
+				<option>C</option>
+				<option>C#</option>
+				<option>D</option>
+				<option>D#</option>
+				<option>E</option>
+				<option>F</option>
+				<option>F#</option>
+				<option>G</option>
+				<option>G#</option>
+			</select>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
 	<template id="modeSelect">
 		<label for="mode">Mode</label>
 		<div class="gg-3-cols">
@@ -169,8 +182,8 @@
 			<select name="mode" id="mode">
 				<option>M</option>
 				<option>m</option>
-				<option>ton</option>
-				<option>1/2 ton</option>
+				<option>par ton</option>
+				<option>chromatique</option>
 			</select>
 			<div class="gg-range-div">+</div>
 		</div>
@@ -219,6 +232,13 @@
 			}
 		}
 
+		class GammeSelect extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#gammeSelect').innerHTML
+			}
+		}
+
 		class ModeSelect extends HTMLElement {
 			constructor() {
 				super()
@@ -251,8 +271,7 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#startButton').innerHTML
-				let location = window.location.hash
-				if (location === '') {
+				if (window.location.hash === '') {
 					this.firstElementChild.innerText = 'B**t Me!'
 				}
 			}
@@ -272,27 +291,13 @@
 		}
 
 		window.customElements.define('note-select', NoteSelect)
+		window.customElements.define('gamme-select', GammeSelect)
 		window.customElements.define('mode-select', ModeSelect)
 		window.customElements.define('octave-input', OctaveInput)
 		window.customElements.define('pitch-input', PitchInput)
 		window.customElements.define('tempo-input', TempoInput)
 		window.customElements.define('button-start', StartButton)
 		window.customElements.define('button-random', RandomButton)
-
-		if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
-			window.addEventListener('load', () => {
-				navigator.serviceWorker.register('/service-worker.js')
-					.then((worker) => {
-						console.log('Service worker registered.', worker)
-						navigator.serviceWorker.addEventListener('message', function (event) {
-							document.getElementById("version").textContent = event.data
-						})
-						if (navigator.serviceWorker.controller) {
-							navigator.serviceWorker.controller.postMessage("hi")
-						}
-					})
-			})
-		}
 	</script>
 </body>
 

@@ -4,7 +4,7 @@
 
 body {
 	font-family: 'Poppins';
-	background: #f7e3d4;
+	background: #55b9f3;
 	margin: 0;
 	color: #342e09;
 }
@@ -30,7 +30,8 @@ footer {
 }
 
 header,
-main {
+main,
+.gg-2-cols {
 	display: grid;
 }
 
@@ -80,7 +81,7 @@ nav a {
 }
 
 nav a:hover {
-	background-color: #f7e3d4;
+	background-color: #55b9f3;
 }
 
 nav h2 {
@@ -167,18 +168,26 @@ footer a {
 }
 
 /* button */
-button {
-	background-color: #fddc22;
-	border: thick solid #fba90a;
+button,
+.gg-range-div {
+	background: linear-gradient(145deg, #5bc6ff, #4da7db);
+	box-shadow: 5px 5px 11px #489dcf, -5px -5px 11px #62d5ff;
+	border: thick solid #fc7307;
 	text-align: center;
 	border-radius: 100%;
 }
 
-button:active {
-	border-color: lightGreen;
+button:hover,
+.gg-range-div:hover,
+.gg-on:hover {
+	background: linear-gradient(145deg, #4da7db, #5bc6ff);
 }
 
+button:active,
+.gg-range-div:active,
 .gg-on {
+	box-shadow: inset 22px 22px 43px #489dcf, inset -22px -22px 43px #62d5ff;
+	background: linear-gradient(145deg, #5bc6ff, #4da7db);
 	border-color: lightGreen;
 }
 
@@ -191,14 +200,14 @@ button:active {
 }
 
 .gg-button-s {
-	border: medium solid #fba90a;
+	border-width: medium;
 	font-size: 3vh;
 	height: 15vh;
 	width: 15vh;
 }
 
 .gg-button-xs {
-	border: thin solid #fba90a;
+	border-width: thin;
 	font-size: 2vh;
 	height: 10vh;
 	width: 10vh;
@@ -272,10 +281,16 @@ form {
 	grid-row-gap: 16px;
 }
 
-.gg-3-cols,
-note-select,
-octave-input,
-pitch-input {
+.gg-2-cols {
+	display: grid;
+	grid-template-columns: 30% 70%;
+	grid-gap: 8px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+}
+
+.gg-3-cols {
 	display: grid;
 	grid-template-columns: 20% 60% 20%;
 	grid-gap: 8px;
@@ -287,9 +302,11 @@ pitch-input {
 input,
 select,
 .gg-range-div {
-	background-color: #fddc22;
-	border: 2px solid #342e09;
+	background-color: #fc7307;
+	border-width: thin;
 	cursor: pointer;
+	border-radius: 20px;
+	text-align: center;
 }
 
 button {
@@ -305,7 +322,7 @@ button {
 .test {
 	color: #f7e3d4;
 	color: #fc7307;
-	color: #fba90a;
+	color: #55b9f3;
 	color: #fddc22;
 	color: #342e09;
 }

@@ -5,10 +5,23 @@ export class Audio {
 		this.value = 0
 		this.setAudioContext()
 		this.noises = []
-		this.frequency = 442
+		this.frequency = 0
 		this.lastTime = 0
 		this.analyser = null
 		this.noise = null
+		this.interval = null
+		this.pitches = []
+
+		let rConstante = Math.pow(2, 1 / 12)
+		let note = 0
+		while (note < 12) {
+			this.pitches[note] = Math.pow(rConstante, note)
+			++note
+		}
+	}
+
+	getFrequency(pitch, note, octave) {
+		return (pitch * this.pitches[note]) / Math.pow(2, 3 - octave)
 	}
 
 	setMax(data) {
@@ -31,6 +44,8 @@ export class Audio {
 		}
 	}
 
+	mute() {}
+
 	printData() {
 		this.analyser.getByteTimeDomainData(this.dataArray)
 		this.setMax(this.dataArray)
@@ -41,7 +56,7 @@ export class Audio {
 	setMediaSource(stream) {
 		let noise = this.audioCtx.createMediaStreamSource(stream)
 		let analyser = this.audioCtx.createAnalyser()
-		
+
 		analyser.fftSize = 2048
 		analyser.minDecibels = -90
 		analyser.maxDecibels = -10
@@ -54,16 +69,20 @@ export class Audio {
 	}
 
 	setAudioContext() {
-		this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+		return (this.audioCtx = new (window.AudioContext ||
+			window.webkitAudioContext)())
 	}
 
 	setNoise(audioCtx, frequency) {
+		if (!audioCtx) {
+			audioCtx = this.setAudioContext()
+		}
 		let noise = audioCtx.createOscillator()
 
 		noise.frequency.value = frequency
 		noise.type = 'square'
 		noise.connect(this.setFilter(audioCtx)).connect(audioCtx.destination)
-		
+
 		return noise
 	}
 
@@ -73,6 +92,15 @@ export class Audio {
 		filter.Q.value = 0.1
 
 		return filter
+	}
+
+	setFrequency(workshops) {
+		let frequency = this.getFrequency(
+			workshops['pitch'].currentValue,
+			workshops['note'].currentValue,
+			workshops['octave'].currentValue
+		)
+		this.frequency = frequency
 	}
 
 	play(time = 0, stop = true) {
@@ -94,7 +122,7 @@ export class Audio {
 		if (stop) {
 			noise.stop(time + 0.1)
 			lastTime = time
-			noise = this.setNoise(audioCtx, frequency))
+			noise = this.setNoise(audioCtx, frequency)
 		}
 		noises.push(noise)
 
@@ -133,6 +161,11 @@ export class Audio {
 		await this.setAudioContext()
 		//there is always a node ready to use in the array
 		this.setNoise(audioCtx, this.frequency)
+	}
+
+	reset() {
+		window.clearInterval(this.interval)
+		this.stop()
 	}
 
 	stop() {
