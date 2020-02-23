@@ -7,16 +7,18 @@ Enjoy!
 
 ## TODO
 
-faire ce todo en .json et remplir l'onglet about du l'appli avec
-fix buttons positions
 plug audio
-locale storage/: pouvoir modifier l'afficahge des pages (couleurs, inpouts dispo, boutons dispo) et enregistrer la derniere config
-page scale (need factory for gammes and mode)
 page chord
-page followmypath (and other games)
-
+page followmypath
+locale storage/: pouvoir modifier l'afficahge des pages (couleurs, inpouts dispo, boutons dispo) et enregistrer la derniere config
+faire ce todo en .json et remplir l'onglet about du l'appli avec
+other games, etc…
 
 ## changelog
+### Version 0.9.X
+
+page scale (need factory for gammes and mode)
+
 ### Version 0.8.X
 
 major refacto:

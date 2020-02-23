@@ -1,12 +1,6 @@
 export class Tuner {
-	start(audio, isPlaying) {
-		if (isPlaying) {
-			audio.stopSound()
-		} else {
-			audio.startSound()
-		}
-
-		return !isPlaying
+	start(workshops) {
+		workshops.audio.toggle()
 	}
 
 	random(workshops) {
