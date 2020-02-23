@@ -9,8 +9,9 @@ export class Tuner {
 		return !isPlaying
 	}
 
-	random() {
-		//launch random note
-		//services.note.random()
+	random(workshops) {
+		let index = Math.floor(Math.random() * 11)
+		workshops.note.node.value = workshops.note.node.children[index].value
+		workshops.note.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
 }

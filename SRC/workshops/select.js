@@ -3,6 +3,7 @@ import { Input } from './input.js'
 export class Select extends Input {
 	constructor(value) {
 		super(value)
+		this.currentAsNumber = 0
 	}
 
 	getSelectedItem(select) {
@@ -44,11 +45,15 @@ export class Select extends Input {
 			}
 			i++
 		}
+		this.valueAsNumber = i
 
 		return select.value
 	}
 
-	setVisibleValue() {}
-
-	reset() {}
+	reset() {
+		if (this.node) {
+			this.node.value = this.default
+			this.setVisibleValue(this.node)
+		}
+	}
 }

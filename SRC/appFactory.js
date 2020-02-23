@@ -1,11 +1,10 @@
-export class Conductor {
+export class AppFactory {
 	constructor(services, map) {
 		this.services = services
 		this.map = map
 		this.firstEvent = true
 		this.inputInterval = null
 		this.isPlaying = false
-		this.isMuted = true
 
 		window.addEventListener('hashchange', this, { passive: true })
 		map.main.addEventListener('change', this, { passive: true })
@@ -16,48 +15,34 @@ export class Conductor {
 		map.main.addEventListener('input', this, { passive: true })
 
 		this.handleEvent = function(event) {
-			this.eventDispatcher(event, this.page, this.map, this.services)
+			this.eventDispatcher(event, this.page, this.map, this.services, this.inputInterval)
 		}
 
 		this.page = this.setPage(services, map.main)
 	}
 
 	setPage(services, main) {
-		console.log(services)
 		let page = services['painter'].get(main)
-		console.log(page)
 		services.init(main)
 
 		return page
 	}
 
-	eventDispatcher(event, page, map, workshops) {
+	eventDispatcher(event, page, map, workshops, inputInterval) {
 		//faire un systeme de provider
-		console.log(event.type, event.target)
+		if ((event.type == 'touchend' || event.type == 'mouseup') && !inputInterval) {
+			return
+		}
 		if (this.inputInterval && event.type !== 'input') {
 			window.clearInterval(this.inputInterval)
 			this.inputInterval = null
 			return
 		}
 		this.firstEvent = this.removeUselessListener(this.firstEvent, map.main)
-		if (event.type == 'hashchange') {
-			while (map.main.children.length) {
-				map.main.removeChild(map.main.children[0])
-			}
-			this.page = this.setPage(workshops, map.main)
+		if (this.newPageCase(workshops, map.main, event.type)) {
 			return
 		}
-		if (
-			event.target.nodeName == 'A' ||
-			event.target.parentNode.id == 'burger' ||
-			event.target.id == 'burger' ||
-			event.target.className == 'gg-modal'
-		) {
-			map.nav.toggleAttribute('hidden')
-			if (event.target.nodeName == 'A') {
-				window.location.hash = event.target.hash
-			}
-
+		if (this.navCase(event.target, map.nav)) {
 			return
 		}
 		this.buttonCase(event)
@@ -67,17 +52,12 @@ export class Conductor {
 				page.start(workshops)
 				break
 			case 'random':
-				page.random()
+				page.random(workshops)
 				break
 			case 'reset':
-				console.log(workshops)
-				for (let workshop in workshops) {
-					if (workshop != 'init') {
-						workshops[workshop].reset()
-					}
-				}
+				workshops.reset()
 				break
-			case 'sound':
+			case 'mute':
 				workshops['audio'].mute()
 				break
 			default:
@@ -103,21 +83,40 @@ export class Conductor {
 	}
 
 	buttonCase(event) {
+		if (event.target.nodeName != 'BUTTON' && (event.target.id == 'mute')) {
+			event.target.classList.toggle('gg-on')
+		}
+	}
+
+	navCase(target, nav) {
 		if (
-			event.target.nodeName != 'BUTTON' ||
-			(event.type != 'touchstart' && event.type != 'mousedown')
+			target.nodeName == 'A' ||
+			target.parentNode.id == 'burger' ||
+			target.id == 'burger' ||
+			target.className == 'gg-modal'
 		) {
-			return
+			nav.toggleAttribute('hidden')
+			if (target.nodeName == 'A') {
+				window.location.hash = target.hash
+			}
+
+			return true
 		}
 
-		//getbutton()
-		//button.changeStyle()
-		if (event.target.style.length) {
-			event.target.removeAttribute('style')
-		} else if (event.target.id == 'start' || event.target.id == 'sound') {
-			console.log(event.target)
-			event.target.className += ' gg-on'
+		return false
+	}
+
+	newPageCase(workshops, main, type) {
+		if (type != 'hashchange') {
+			return false
 		}
+
+		while (main.children.length) {
+			main.removeChild(main.children[0])
+		}
+		this.page = this.setPage(workshops, main)
+
+		return true
 	}
 
 	removeUselessListener(firstEvent, main) {

@@ -269,7 +269,7 @@ form {
 
 .gg-3-rows {
 	display: grid;
-	grid-template-rows: 30% 30% 30%;
+	grid-template-rows: 20% 20% 20%;
 	align-content: center;
 	grid-row-gap: 16px;
 }

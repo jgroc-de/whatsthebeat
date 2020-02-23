@@ -59,11 +59,13 @@ export class Input {
 	}
 
 	reset() {
-		this.node.valueAsNumber = this.default
-		this.setVisibleValue(this.node)
+		if (this.node) {
+			this.node.valueAsNumber = this.default
+			this.setVisibleValue(this.node)
+		}
 	}
 
 	setVisibleValue(node) {
-		node.parentNode.nextSibling.textContent = node.value
+		node.parentNode.parentNode.firstElementChild.querySelectorAll('span')[1].innerText = node.value
 	}
 }

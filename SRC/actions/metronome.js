@@ -1,7 +1,7 @@
 export class Metronome {
 	start(workshops) {
 		let audio = workshops['audio']
-		let tempo = workshops['tempo'].currentValue
+		let tempo = workshops['tempo'].current
 		if (!this.interval) {
 			//à mettre dans l'objet audio
 			audio.interval = setInterval(
@@ -21,7 +21,7 @@ export class Metronome {
 	}
 
 	random() {
-		//launch event
-		//workshops.tempo.set(Math.floor(Math.random() * 160) + 40)
+		workshops.tempo.node.valueAsNumber = Math.floor(Math.random() * 180) + 40
+		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
 }

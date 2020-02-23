@@ -1,12 +1,12 @@
 import * as Actions from './actions/index.js'
-import * as Workshop from './services/servicesIndex.js'
-import { Conductor as Factory } from './conductor.js'
+import * as Workshop from './workshops/workshopIndex.js'
+import { AppFactory } from './appFactory.js'
 import { PagePainter } from './pagePainter.js'
 
 if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
 	/*window.addEventListener('load', () => {
 		navigator.serviceWorker.register('/service-worker.js').then(worker => {
-			console.log('Service worker registered.', worker)
+			//console.log('Service worker registered.', worker)
 			navigator.serviceWorker.addEventListener('message', function(event) {
 				document.getElementById('version').textContent = event.data
 			})
@@ -22,7 +22,7 @@ const map = {
 	nav: document.querySelector('nav'),
 }
 
-let workshops = {
+const workshops = {
 	mode: new Workshop.Select('chromatique'),
 	note: new Workshop.Select('A'),
 	gamme: new Workshop.Select('A'),
@@ -39,11 +39,20 @@ let workshops = {
 		for (let node of inputs) {
 			this[node.name].init(node)
 		}
-		this.note.init(this.note.node, {
-			minus: this.octave.node.previousElementSibling,
-			plus: this.octave.node.nextElementSibling,
-		})
+		if (this.octave.node) {
+			this.note.init(this.note.node, {
+				minus: this.octave.node.previousElementSibling,
+				plus: this.octave.node.nextElementSibling,
+			})
+		}
+	},
+	reset() {
+		for (let workshop in this) {
+			if (workshop != 'init' &&	 workshop != 'reset') {
+				this[workshop].reset()
+			}
+		}
 	},
 }
 
-new Factory(workshops, map)
+new AppFactory(workshops, map)

@@ -1,17 +1,29 @@
 export class BeatTaker {
 	start(workshops) {
 		let audio = workshops.audio
-		let beat = workshops.beat
-
-		beat.count(audio.audioCtx.currentTime)
-		if (!audio.isMuted) {
-			audio.play()
-		}
+		workshops.beat.count(workshops)
+		audio.start()
 	}
 
-	random() {}
+	random(workshops) {
+		workshops.tempo.node.valueAsNumber = Math.floor(Math.random() * 180) + 40
+		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
+	}
 
 	sleep(timeInMs) {
 		return new Promise(resolve => setTimeout(resolve, timeInMs))
+	}
+
+	reset() {
+		this.beatCount = -1
+	}
+
+	count(workshops) {
+		let currentTime = workshops.audio.currentTime
+		this.beatCount += 1
+		let beats = Math.floor((this.beatCount * 60) / currentTime)
+
+		workshops.tempo.node.valueAsNumber = beats
+		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
 }

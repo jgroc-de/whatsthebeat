@@ -11,6 +11,8 @@ export class Audio {
 		this.noise = null
 		this.interval = null
 		this.pitches = []
+		this.isMuted = true
+		this.isStopped = true
 
 		let rConstante = Math.pow(2, 1 / 12)
 		let note = 0
@@ -44,7 +46,14 @@ export class Audio {
 		}
 	}
 
-	mute() {}
+	mute() {
+		if (!this.isMuted) {
+			this.stop()
+		} else {
+			this.play(0, this.isStopped)
+		}
+		this.isMuted = !this.isMuted
+	}
 
 	printData() {
 		this.analyser.getByteTimeDomainData(this.dataArray)
@@ -74,9 +83,6 @@ export class Audio {
 	}
 
 	setNoise(audioCtx, frequency) {
-		if (!audioCtx) {
-			audioCtx = this.setAudioContext()
-		}
 		let noise = audioCtx.createOscillator()
 
 		noise.frequency.value = frequency
@@ -96,37 +102,39 @@ export class Audio {
 
 	setFrequency(workshops) {
 		let frequency = this.getFrequency(
-			workshops['pitch'].currentValue,
-			workshops['note'].currentValue,
-			workshops['octave'].currentValue
+			workshops['pitch'].current,
+			workshops['note'].currentAsNumber,
+			workshops['octave'].current
 		)
 		this.frequency = frequency
 	}
 
 	play(time = 0, stop = true) {
-		let noises = this.noises
-		let audioCtx = this.audioCtx
-		let frequency = this.frequency
-		let lastTime = this.lastTime
-
-		if (noises.length === 0) {
-			noises.push(this.setNoise(audioCtx, frequency))
+		console.log(this.audioCtx)
+		if (!this.audioCtx) {
+			return
 		}
-		let noise = noises.shift()
+		if (this.noises.length === 0) {
+			this.noises.push(this.setNoise(this.audioCtx, this.frequency))
+		}
 
 		if (!time) {
-			time = audioCtx.currentTime
-			lastTime = time
+			time = this.audioCtx.currentTime
+			this.lastTime = time
 		}
-		noise.start(time)
-		if (stop) {
-			noise.stop(time + 0.1)
-			lastTime = time
-			noise = this.setNoise(audioCtx, frequency)
-		}
-		noises.push(noise)
+		//if (!this.isMuted) {
+			let noise = this.noises.shift()
+			noise.start(time)
+			//console.log(noise)
+			if (stop) {
+				noise.stop(time + 0.1)
+				this.lastTime = time
+				noise = this.setNoise(this.audioCtx, this.frequency)
+			}
+			this.noises.push(noise)
+		//}
 
-		return lastTime
+		return this.lastTime
 	}
 
 	removeSound() {
@@ -157,10 +165,13 @@ export class Audio {
 		}
 	}
 
-	async start(audioCtx) {
-		await this.setAudioContext()
+	async start() {
+		if (!this.audioCtx) {
+			await this.setAudioContext()
+		}
 		//there is always a node ready to use in the array
-		this.setNoise(audioCtx, this.frequency)
+		this.setNoise(this.audioCtx, this.frequency)
+		this.play(0, this.isStopped)
 	}
 
 	reset() {
