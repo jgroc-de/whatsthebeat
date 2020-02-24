@@ -3,21 +3,7 @@ import { Input } from './input.js'
 export class Select extends Input {
 	constructor(value) {
 		super(value)
-		this.currentAsNumber = 0
-	}
-
-	getSelectedItem(select) {
-		let i = 0
-		let node = null
-
-		while ((node = select.children[i])) {
-			if (select.value === node.value) {
-				break
-			}
-			i++
-		}
-
-		return i
+		this.currentValueAsNumber = 0
 	}
 
 	modifyValue(select, add) {
@@ -39,13 +25,13 @@ export class Select extends Input {
 						this.target.plus.dispatchEvent(event)
 					}
 				}
+				this.currentValueAsNumber = selection
 				select.value = select.children[selection].value
 
 				break
 			}
 			i++
 		}
-		this.valueAsNumber = i
 
 		return select.value
 	}

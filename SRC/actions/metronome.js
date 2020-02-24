@@ -1,23 +1,7 @@
 export class Metronome {
 	start(workshops) {
-		let audio = workshops['audio']
-		let tempo = workshops['tempo'].current
-		if (!this.interval) {
-			//à mettre dans l'objet audio
-			audio.interval = setInterval(
-				function(audio, tempo) {
-					audio.loop(tempo)
-				},
-				100,
-				audio,
-				tempo
-			)
-
-			return true
-		}
-		audio.stop()
-
-		return false
+		workshops.audio.setFrequencyAndTempo(workshops)
+		workshops.audio.loop(workshops.tempo.current)
 	}
 
 	random(workshops) {

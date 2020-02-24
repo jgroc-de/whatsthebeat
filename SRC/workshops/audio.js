@@ -7,6 +7,7 @@ export class Audio {
 		this.lastTime = 0
 		this.interval = null
 		this.pitches = this.setPitchesConstantes()
+		this.isMuted = false
 	}
 
 	setPitchesConstantes() {
@@ -22,22 +23,24 @@ export class Audio {
 		return pitches
 	}
 
-	first() {
-		this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-		this.gainNode = this.audioCtx.createGain()
-		this.gainNode.connect(this.audioCtx.destination);
-
-	}
-
-	setNoise(audioCtx, frequency) {
-		let noise = audioCtx.createOscillator()
+	getNoiseNode(audioCtx, frequency) {
+		let noise = new OscillatorNode(audioCtx, {frequency: frequency, type: 'sine'}) //could be square
 		let filter = this.setFilter(audioCtx)
-
-		noise.frequency.value = frequency
-		noise.type = 'square'
-		noise.connect(filter).connect(audioCtx.destination)
+		let gainNode = this.setGainNode(audioCtx, this.isMuted)
+		noise.connect(filter).connect(gainNode).connect(audioCtx.destination)
 
 		return noise
+	}
+
+	setGainNode(audioCtx, isMuted) {
+		let gainNode = audioCtx.createGain()
+
+		if (isMuted) {
+			gainNode.gain.value = 0
+		}
+		this.gainNode = gainNode
+
+		return gainNode
 	}
 
 	setFilter(audioCtx) {
@@ -48,80 +51,98 @@ export class Audio {
 		return filter
 	}
 
-	setFrequency(workshops) {
+	setFrequencyAndTempo(workshops) {
 		this.frequency = (
 			(
-				workshops['pitch'].current * this.pitches[workshops['note'].currentAsNumber]
+				workshops['pitch'].current * this.pitches[workshops['note'].currentValueAsNumber]
 			) / (
 				Math.pow(2, 3 - workshops['octave'].current)
 			)
 		)
+		this.tempo = workshops['tempo'].current
 	}
 
-	play(time = 0, continuendo = false) {
+	play(frequency, time = 0, continuendo = false) {
 		if (this.noises.length === 0) {
-			this.noises.push(this.setNoise(this.audioCtx, this.frequency))
+			this.noises.push(this.getNoiseNode(this.audioCtx, frequency))
 		}
-
 		if (!time) {
 			time = this.audioCtx.currentTime
-			this.lastTime = time
 		}
-		//if (!this.isMuted) {
-			let noise = this.noises.shift()
-			noise.start(time)
-			//console.log(noise)
-			if (continuendo) {
-				noise.stop(time + 0.1)
-				this.lastTime = time
-				noise = this.setNoise(this.audioCtx, this.frequency)
-				this.noises.push(noise)
+		this.lastTime = time
+		let noise = this.noises.shift()
+		noise.start(time)
+		if (!continuendo) {
+			noise.stop(time + 0.1)
+			this.noises.push(this.getNoiseNode(this.audioCtx, frequency))
+		}
+	}
+
+	async mute() {
+		if (this.gainNode) {
+			if (!this.gainNode.gain.value) {
+				this.gainNode.gain.linearRampToValueAtTime(1, this.audioCtx.currentTime)
+			} else {
+				this.gainNode.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime)
 			}
-		//}
-
-		return this.lastTime
+		}
+		this.isMuted = !this.isMuted
 	}
 
-	mute() {
-		if (!this.gainNode.gain.value) {
-			this.gainNode.gain.linearRampToValueAtTime(1, this.audioCtx.currentTime + 0.1)
+	async loop(tempo) {
+		if (!this.audioCtx) {
+			await this.start(true)
+		}
+		this.tempo = tempo
+		if (!this.interval) {
+			console.log('loop')
+
+			//à mettre dans l'objet audio
+			this.interval = setInterval(
+				function(audio) {
+					let delta = 60 / audio.tempo
+					if (audio.lastTime + 3 * delta / 4 <= audio.audioCtx.currentTime) {
+						audio.play(audio.frequency, audio.lastTime + delta, false)
+					}
+				},
+				30 / this.tempo,
+				this
+			)
 		} else {
-			this.gainNode.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + 0.1)
+			this.stop()
 		}
 	}
 
-	async loop(delta) {
+	async start(autoStop) {
 		if (!this.audioCtx) {
-			await this.start(this.audioCtx)
+			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 		}
-		if (!this.audioCtx) {
-			return
-		}
-		if (this.lastTime <= this.audioCtx.currentTime - delta / 2) {
-			this.play(this.lastTime + delta)
-		}
+		this.play(this.frequency, 0, false)
 	}
 
-	start(continuendo) {
-		if (!this.audioCtx) {
-			this.first()
-		}
-		this.play(0, continuendo)
-	}
-
-	reset() {
-		window.clearInterval(this.interval)
+	async reset() {
 		this.stop()
 	}
 
-	stop() {
+	async stop() {
+		if (this.interval) {
+			window.clearInterval(this.interval)
+			this.interval = null
+		}
 		this.noises.length = 0
 		this.lastTime = 0
-		this.audioCtx.close()
+		if (this.gainNode) {
+			this.gainNode.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + 0.2)
+			this.gainNode = null
+		}
+		if (this.audioCtx) {
+			this.audioCtx.close()
+			this.audioCtx = null
+		}
 	}
 
-	toggle(continuendo) {
-		if (!this.audioCtx) {
+	async toggle(continuendo) {
+		if (!this.audioCtx || this.audioCtx.state !== 'running') {
 			this.start(continuendo)
 		} else {
 			this.stop()

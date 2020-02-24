@@ -37,10 +37,9 @@ export class Input {
 				add = -1
 				break
 		}
+		this.current = this.modifyValue(inputNode, add)
+		this.setVisibleValue(inputNode)
 		if (add && event.type !== 'input') {
-			this.current = this.modifyValue(inputNode, add)
-			this.setVisibleValue(inputNode)
-
 			return window.setInterval(
 				function(that, inputNode, add) {
 					that.current = that.modifyValue(inputNode, add)
@@ -52,8 +51,6 @@ export class Input {
 				add
 			)
 		}
-		this.current = this.modifyValue(inputNode, add)
-		this.setVisibleValue(inputNode)
 
 		return null
 	}

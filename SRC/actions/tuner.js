@@ -1,6 +1,7 @@
 export class Tuner {
 	start(workshops) {
-		workshops.audio.toggle()
+		workshops.audio.setFrequencyAndTempo(workshops)
+		workshops.audio.toggle(true)
 	}
 
 	random(workshops) {

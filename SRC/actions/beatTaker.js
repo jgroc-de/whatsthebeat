@@ -1,8 +1,7 @@
 export class BeatTaker {
 	start(workshops) {
-		let audio = workshops.audio
+		workshops.audio.start(true)
 		workshops.beat.count(workshops)
-		audio.start()
 	}
 
 	random(workshops) {

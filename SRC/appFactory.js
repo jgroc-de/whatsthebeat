@@ -78,12 +78,19 @@ export class AppFactory {
 					}
 				}
 
-				workshops['audio'].setFrequency(workshops)
+				console.log(workshops)
+				workshops['audio'].setFrequencyAndTempo(workshops)
 		}
 	}
 
 	buttonCase(event) {
-		if (event.target.nodeName != 'BUTTON' && (event.target.id == 'mute')) {
+		if (
+			event.target.nodeName == 'BUTTON' &&
+			(
+				event.target.id === 'mute'
+				|| (event.target.id === 'start' && window.location.hash != '')
+			)
+		) {
 			event.target.classList.toggle('gg-on')
 		}
 	}
@@ -111,6 +118,7 @@ export class AppFactory {
 			return false
 		}
 
+		workshops.audio.stop()
 		while (main.children.length) {
 			main.removeChild(main.children[0])
 		}
