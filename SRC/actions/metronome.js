@@ -1,7 +1,7 @@
 export class Metronome {
 	start(workshops) {
-		workshops.audio.setFrequencyAndTempo(workshops)
-		workshops.audio.loop(workshops.tempo.current)
+		workshops.audio.setAudioParams(workshops)
+		workshops.audio.start(true)
 	}
 
 	random(workshops) {

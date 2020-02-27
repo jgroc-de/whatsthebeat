@@ -7,6 +7,7 @@ Enjoy!
 
 ## TODO
 
+remplacer nom bouton par icone et rajouter text on hover
 debug audio
 page scale (need factory for gammes and mode)
 page chord

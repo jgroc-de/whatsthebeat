@@ -45,54 +45,52 @@ export class AppFactory {
 		if (this.navCase(event.target, map.nav)) {
 			return
 		}
-		this.buttonCase(event)
+		if (this.buttonCase(event, workshops, page)) {
+			return
+		}
+		this.inputCase(event, workshops)
 
+		console.log(workshops)
+	}
+
+	inputCase(event, workshops) {
+		//input case
+		let target = null
+		if (event.target.nodeName != 'select' || event.target.nodeName != 'input') {
+			target = event.target.parentNode.querySelector('select, input')
+		} else {
+			target = event.target
+		}
+		let timeInterval = workshops[target.id].updateInput(event, target)
+		if (timeInterval) {
+			this.inputInterval = timeInterval
+		}
+		workshops['audio'].setAudioParams(workshops)
+	}
+
+	buttonCase(event, workshops, page) {
+		if (event.tahget.nodeName !== 'BUTTON') {
+			return false
+		}
+		if (event.target.id === 'mute' || (event.target.id === 'start' && window.location.hash != '')) {
+			event.target.classList.toggle('gg-on')
+		}
 		switch (event.target.id) {
 			case 'start':
 				page.start(workshops)
-				break
+				return true
 			case 'random':
 				page.random(workshops)
-				break
+				return true
 			case 'reset':
 				workshops.reset()
-				break
+				return true
 			case 'mute':
 				workshops['audio'].mute()
-				break
-			default:
-				//input case
-				let target = null
-				if (
-					event.target.nodeName != 'select' ||
-					event.target.nodeName != 'input'
-				) {
-					target = event.target.parentNode.querySelector('select, input')
-				} else {
-					target = event.target
-				}
-				if (target) {
-					let timeInterval = workshops[target.id].updateInput(event, target)
-					if (timeInterval) {
-						this.inputInterval = timeInterval
-					}
-				}
-
-				console.log(workshops)
-				workshops['audio'].setFrequencyAndTempo(workshops)
+				return true
 		}
-	}
 
-	buttonCase(event) {
-		if (
-			event.target.nodeName == 'BUTTON' &&
-			(
-				event.target.id === 'mute'
-				|| (event.target.id === 'start' && window.location.hash != '')
-			)
-		) {
-			event.target.classList.toggle('gg-on')
-		}
+		return false
 	}
 
 	navCase(target, nav) {

@@ -1,6 +1,6 @@
 export class Beat {
     constructor() {
-        this.reset()
+        this.beatCount = -1
     }
 
     reset() {
@@ -14,5 +14,9 @@ export class Beat {
 
 		workshops.tempo.node.valueAsNumber = beats
         workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
+	}
+
+	sleep(timeInMs) {
+		return new Promise(resolve => setTimeout(resolve, timeInMs))
 	}
 }

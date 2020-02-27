@@ -4,7 +4,8 @@ import { AppFactory } from './appFactory.js'
 import { PagePainter } from './pagePainter.js'
 
 if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
-	/*window.addEventListener('load', () => {
+	/*
+	window.addEventListener('load', () => {
 		navigator.serviceWorker.register('/service-worker.js').then(worker => {
 			//console.log('Service worker registered.', worker)
 			navigator.serviceWorker.addEventListener('message', function(event) {
@@ -14,7 +15,8 @@ if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
 				navigator.serviceWorker.controller.postMessage('hi')
 			}
 		})
-	})*/
+	})
+	*/
 }
 
 const map = {
@@ -25,13 +27,14 @@ const map = {
 const workshops = {
 	mode: new Workshop.Select('chromatique'),
 	note: new Workshop.Select('A'),
-	gamme: new Workshop.Select('A'),
+	gamme: new Workshop.Select('M'),
+	wave: new Workshop.Select('sine'),
 	octave: new Workshop.Input(3),
 	pitch: new Workshop.Input(442, 70),
 	tempo: new Workshop.Input(60),
 	repeat: new Workshop.Input(1),
 	beat: new Workshop.Beat(),
-	audio: new Workshop.Audio(),
+	audio: new Workshop.AudioPlayer(),
 	painter: new PagePainter(Actions, map.nav.firstElementChild),
 	init(main) {
 		let inputs = main.querySelectorAll('input, select')

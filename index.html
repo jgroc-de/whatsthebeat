@@ -88,10 +88,11 @@
 
 	<template route id="#tuner">
 		<div>
-			<form class="gg-3-rows">
+			<form class="gg-4-rows">
 				<note-select></note-select>
 				<octave-input></octave-input>
 				<pitch-input></pitch-input>
+				<wave-select></wave-select>
 			</form>
 		</div>
 		<div class="gg-2-cols">
@@ -113,10 +114,11 @@
 			</form>
 		</div>
 		<div>
-			<form class="gg-3-rows">
+			<form class="gg-4-rows">
 				<note-select></note-select>
 				<gamme-select></gamme-select>
 				<mode-select></mode-select>
+				<wave-select></wave-select>
 			</form>
 		</div>
 	</template>
@@ -186,6 +188,20 @@
 				<option>m</option>
 				<option>par ton</option>
 				<option>chromatique</option>
+			</select>
+			<div class="gg-range-div">+</div>
+		</div>
+	</template>
+
+	<template id="waveSelect">
+		<label for="wave"><span>wave: </span><span></span></label>
+		<div class="gg-3-cols">
+			<div class="gg-range-div">-</div>
+			<select name="wave" id="wave">
+				<option>sine</option>
+				<option>square</option>
+				<option>sawtooth</option>
+				<option>triangle</option>
 			</select>
 			<div class="gg-range-div">+</div>
 		</div>
@@ -266,6 +282,13 @@
 			}
 		}
 
+		class WaveSelect extends HTMLElement {
+			constructor() {
+				super()
+				this.innerHTML = document.querySelector('#waveSelect').innerHTML
+			}
+		}
+
 		class OctaveInput extends HTMLElement {
 			constructor() {
 				super()
@@ -338,6 +361,7 @@
 		window.customElements.define('note-select', NoteSelect)
 		window.customElements.define('gamme-select', GammeSelect)
 		window.customElements.define('mode-select', ModeSelect)
+		window.customElements.define('wave-select', WaveSelect)
 		window.customElements.define('octave-input', OctaveInput)
 		window.customElements.define('repeat-input', RepeatInput)
 		window.customElements.define('pitch-input', PitchInput)
