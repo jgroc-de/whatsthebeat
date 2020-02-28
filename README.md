@@ -9,9 +9,9 @@ Enjoy!
 
 ### Bugs
 
-tempo pas raz sur metronome
+settings par raz sur metronome
 hauteur bloc trop petit (ou bouton trop gros) en mode landscape
-son qui craque (pb performance)
+son qui craque (pb performance, voir https://padenot.github.io/web-audio-perf/)
 sur beattaker, pas de raz auto
 
 ### Features
