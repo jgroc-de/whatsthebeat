@@ -197,10 +197,8 @@ class SoundGenerator {
 		if (!continuendo || this.tempo === 0) {
 			this.play(0, continuendo)
 		} else {
-			if (!this.interval) {
+			if (continuendo || !this.interval) {
 				console.log('loop')
-				let that = this
-
 				this.interval = setInterval(
 					function(sound) {
 						console.log(sound)
