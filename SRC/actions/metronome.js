@@ -2,7 +2,9 @@ export class Metronome {
 	start(workshops, force = false) {
 		let isPlaying = workshops.audio.sound.audioCtx
 
-		workshops.audio.stop()
+		if (!force) {
+			workshops.audio.stop()
+		}
 		workshops.audio.setAudioParams(workshops)
 		if ((isPlaying && force) || (!isPlaying && !force)) {
 			workshops.audio.start(true)

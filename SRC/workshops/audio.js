@@ -39,6 +39,7 @@ class SoundGenerator {
 		this.interval = null
 		this.audioCtx = null
 		this.gainNode = null
+		this.filterNode = null
 		this.noise = null
 		this.isMuted = false
 		this.waveForm = null
@@ -110,7 +111,10 @@ class SoundGenerator {
 			window.clearInterval(this.interval)
 			this.interval = null
 		}
-		this.stopNoise()
+		this.stopNoise(this.noise)
+		this.noise = null
+		this.filterNode = null
+		this.gainNode = null
 		this.lastTime = 0
 		if (this.gainNode) {
 			this.gainNode.gain.linearRampToValueAtTime(
@@ -125,56 +129,68 @@ class SoundGenerator {
 		}
 	}
 
-	setNoiseNode() {
-		let filter = this.setFilter(this.audioCtx)
-		let gainNode = this.setGainNode(this.audioCtx, this.isMuted)
+	setNoiseNode(noise) {
+		if (!noise) {
+			let filter = this.setFilter(this.audioCtx, this.filterNode)
+			let gainNode = this.setGainNode(this.audioCtx, this.gainNode, this.isMuted)
 
-		this.noise = new OscillatorNode(this.audioCtx, {
-			frequency: this.frequency,
-			type: this.waveForm,
-		})
-		this.noise
-			.connect(filter)
-			.connect(gainNode)
-			.connect(this.audioCtx.destination)
+			noise = new OscillatorNode(this.audioCtx, {
+				frequency: this.frequency,
+				type: this.waveForm,
+			})
+			this.noise = noise
+
+			noise
+				.connect(filter)
+				.connect(gainNode)
+				.connect(this.audioCtx.destination)
+
+			return true
+		}
+		noise.frequency.value = this.frequency;
+		noise.type = this.waveForm;
+		
+		return false
+	
 	}
 
-	setGainNode(audioCtx, isMuted) {
-		let gainNode = audioCtx.createGain()
+	setGainNode(audioCtx, gainNode, isMuted) {
+		if (!gainNode) {
+			gainNode = audioCtx.createGain()
+			this.gainNode = gainNode
+		}
 
 		if (isMuted) {
 			gainNode.gain.value = 0
 		}
-		this.gainNode = gainNode
 
 		return gainNode
 	}
 
-	setFilter(audioCtx) {
-		let filter = audioCtx.createBiquadFilter('bandpass')
+	setFilter(audioCtx, filterNode) {
+		if (!filterNode) {
+			filterNode = audioCtx.createBiquadFilter('bandpass')
 
-		filter.Q.value = 0.1
+			filterNode.Q.value = 0.1
 
-		return filter
+			this.filterNode = filterNode
+		}
+
+		return this.filterNode
 	}
 
-	stopNoise(time) {
-		if (this.noise) {
-			this.noise.stop(time)
-			this.noise = null
+	stopNoise(noise, time) {
+		if (noise) {
+			noise.stop(time)
 		}
 	}
 
-	startNoise(time) {
-		this.noise.start(time)
+	startNoise(noise, time) {
+		noise.start(time)
 	}
 
 	toggle() {
-		if (this.noise) {
-			this.stopNoise()
-		} else {
-			this.loop(true)
-		}
+		this.loop(true)
 	}
 
 	loop(continuendo = false) {
@@ -207,15 +223,16 @@ class SoundGenerator {
 	}
 
 	play(time = 0, continuendo = false) {
-		this.stopNoise()
-		this.setNoiseNode()
-		if (!time) {
-			time = this.audioCtx.currentTime
-		}
-		this.lastTime = time
-		this.startNoise(time)
-		if (!continuendo) {
-			this.stopNoise(time + 0.1)
+		if (this.setNoiseNode(this.noise)) {
+			if (!time) {
+				time = this.audioCtx.currentTime
+			}
+			this.lastTime = time
+			this.startNoise(this.noise, time)
+			if (!continuendo) {
+				this.stopNoise(this.noise, time + 0.09)
+				this.noise = null
+			}
 		}
 	}
 }

@@ -3,7 +3,9 @@ export class Tuner {
 		let isPlaying = workshops.audio.setAudioParams(workshops)
 
 		workshops.audio.sound.tempo = 0
-		workshops.audio.stop()
+		if (!force) {
+			workshops.audio.stop()
+		}
 		if ((isPlaying && force) || (!isPlaying && !force)) {
 			workshops.audio.start(true)
 		}
