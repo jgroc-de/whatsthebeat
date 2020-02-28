@@ -3,22 +3,6 @@ import * as Workshop from './workshops/workshopIndex.js'
 import { AppFactory } from './appFactory.js'
 import { PagePainter } from './pagePainter.js'
 
-if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
-	/*
-	window.addEventListener('load', () => {
-		navigator.serviceWorker.register('/service-worker.js').then(worker => {
-			//console.log('Service worker registered.', worker)
-			navigator.serviceWorker.addEventListener('message', function(event) {
-				document.getElementById('version').textContent = event.data
-			})
-			if (navigator.serviceWorker.controller) {
-				navigator.serviceWorker.controller.postMessage('hi')
-			}
-		})
-	})
-	*/
-}
-
 const map = {
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
@@ -27,14 +11,14 @@ const map = {
 const workshops = {
 	mode: new Workshop.Select('chromatique'),
 	note: new Workshop.Select('A'),
-	gamme: new Workshop.Select('M'),
-	wave: new Workshop.Select('sine'),
+	gamme: new Workshop.Select('A'),
+	waveForm: new Workshop.Select('sine'),
 	octave: new Workshop.Input(3),
 	pitch: new Workshop.Input(442, 70),
 	tempo: new Workshop.Input(60),
 	repeat: new Workshop.Input(1),
 	beat: new Workshop.Beat(),
-	audio: new Workshop.AudioPlayer(),
+	audio: new Workshop.AudioInterface(),
 	painter: new PagePainter(Actions, map.nav.firstElementChild),
 	init(main) {
 		let inputs = main.querySelectorAll('input, select')
@@ -50,8 +34,9 @@ const workshops = {
 		}
 	},
 	reset() {
+		console.log(this)
 		for (let workshop in this) {
-			if (workshop != 'init' &&	 workshop != 'reset') {
+			if (workshop != 'init' && workshop != 'reset') {
 				this[workshop].reset()
 			}
 		}

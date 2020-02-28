@@ -63,6 +63,8 @@ export class Input {
 	}
 
 	setVisibleValue(node) {
-		node.parentNode.parentNode.firstElementChild.querySelectorAll('span')[1].innerText = node.value
+		node.parentNode.parentNode.firstElementChild.querySelectorAll(
+			'span'
+		)[1].innerText = node.value
 	}
 }

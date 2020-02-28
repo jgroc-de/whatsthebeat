@@ -18,6 +18,7 @@
 	<link rel="apple-touch-icon" href="/ICONS/icon-152x152.png">
 	<meta name="description" content="Take the beat of any music">
 	<meta name="theme-color" content="#2F3BA2" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body>
@@ -58,8 +59,7 @@
 			</form>
 		</div>
 		<div class="gg-2-cols">
-			<div id="actions" class="gg-3-rows">
-				<button-random></button-random>
+			<div id="actions" class="gg-2-rows">
 				<button-mute></button-mute>
 				<button-reset></button-reset>
 			</div>
@@ -129,8 +129,8 @@
 				Welcome on this webApp!<br>
 				<br>You can find here some very basic music tools as something to give you the current beat you are
 				tapping, a metronome and a sound emitter to help you to tune you instrument.
-				<br>If ever you would like to discuss about this work, click <a
-					href="https://jgroc-de.github.io/">here</a><br><br>Enjoy!
+				<br>If ever you would like to discuss about this work, click <a href="https://jgroc-de.github.io/">here
+					to access my github page</a><br><br>Enjoy!
 			</span>
 		</div>
 	</template>
@@ -197,7 +197,7 @@
 		<label for="wave"><span>wave: </span><span></span></label>
 		<div class="gg-3-cols">
 			<div class="gg-range-div">-</div>
-			<select name="wave" id="wave">
+			<select name="waveForm" id="waveForm">
 				<option>sine</option>
 				<option>square</option>
 				<option>sawtooth</option>
@@ -244,23 +244,40 @@
 	</template>
 
 	<template id="startButton">
-		<button id="start" class="gg-button" aria-label="start">ON/OFF</button>
+		<button id="start" class="gg-button" aria-label="start"><i class="material-icons gg-font-xl"
+				title="start">touch_app</i></button>
 	</template>
 
 	<template id="randomButton">
-		<button id="random" class="gg-button-m">Random</button>
+		<button id="random" class="gg-button-m"><i class="material-icons gg-font-l" title='random'>shuffle</i></button>
 	</template>
 
 	<template id="resetButton">
-		<button id="reset" class="gg-button-m">Reset</button>
+		<button id="reset" class="gg-button-m"><i class="material-icons gg-font-l" title='refresh'>
+				replay</i></button>
 	</template>
 
 	<template id="muteButton">
-		<button id="mute" class="gg-button-m">Mute</button>
+		<button id="mute" class="gg-button-m"><i class="material-icons gg-font-l" title='mute'>volume_off</i></button>
 	</template>
 
 
 	<script>
+		if ('serviceWorker' in navigator) {
+			/*
+						window.addEventListener('load', () => {
+							navigator.serviceWorker.register('/service-worker.js').then(worker => {
+								//console.log('Service worker registered.', worker)
+								navigator.serviceWorker.addEventListener('message', function (event) {
+									document.getElementById('version').textContent = event.data
+								})
+								if (navigator.serviceWorker.controller) {
+									navigator.serviceWorker.controller.postMessage('hi')
+								}
+							})
+						})
+			*/
+		}
 		class NoteSelect extends HTMLElement {
 			constructor() {
 				super()
@@ -333,13 +350,11 @@
 				this.innerHTML = document.querySelector('#randomButton').innerHTML
 				switch (window.location.hash) {
 					case '#tuner':
-						this.firstElementChild.innerText = 'random note'
+						this.firstElementChild.firstElementChild.title = 'random note'
 						break
 					case '#metronome':
-						this.firstElementChild.innerText = 'random tempo'
+						this.firstElementChild.firstElementChild.title = 'random tempo'
 						break
-					default:
-						this.firstElementChild.innerText = 'random'
 				}
 			}
 		}
@@ -355,6 +370,9 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#muteButton').innerHTML
+				if (window.location.hash == '') {
+					this.firstElementChild.firstElementChild.innerText = 'volume_up'
+				}
 			}
 		}
 

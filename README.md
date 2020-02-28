@@ -7,22 +7,32 @@ Enjoy!
 
 ## TODO
 
-remplacer nom bouton par icone et rajouter text on hover
-debug audio
+### Bugs
+
+tempo pas raz sur metronome
+hauteur bloc trop petit (ou bouton trop gros) en mode landscape
+son qui craque (pb performance)
+sur beattaker, pas de raz auto
+
+### Features
+
+fonts trop lourde
+locale storage/: enregistrer la derniere config
 page scale (need factory for gammes and mode)
 page chord
 page followmypath
-locale storage/: enregistrer la derniere config et pouvoir modifier l'afficahge des pages (couleurs, inputs dispo, boutons dispo) et 
 faire ce todo en .json et remplir l'onglet about du l'appli avec
 other games, etc…
+pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
 ## changelog
-### Version 0.9.X
 
+### Version 0.9.X
 
 ### Version 0.8.X
 
 major refacto:
+
 - new desing
 - major architecture changes (using factory patterns)
 

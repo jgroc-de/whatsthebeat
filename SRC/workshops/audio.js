@@ -4,9 +4,11 @@ export class AudioInterface {
 	}
 
 	setAudioParams(workshops) {
-		this.sound.setFrequency(workshops.node, waveForm.pitch, waveform.octave)
+		this.sound.setFrequency(workshops.note, workshops.pitch, workshops.octave)
 		this.sound.setTempo(workshops.tempo)
-		this.sound.setWaveForm(workshops.wave)
+		this.sound.setWaveForm(workshops.waveForm)
+
+		return this.sound.isPlaying()
 	}
 
 	mute() {
@@ -23,7 +25,7 @@ export class AudioInterface {
 	}
 
 	reset() {
-		this.sound.stop()
+		this.sound.reset()
 	}
 
 	stop() {
@@ -42,6 +44,21 @@ class SoundGenerator {
 		this.waveForm = null
 		this.frequency = 0
 		this.pitches = this.setPitchesConstantes()
+	}
+
+	reset() {
+		this.stop()
+		this.isMuted = false
+		this.waveForm = null
+		this.frequency = 0
+	}
+
+	isPlaying() {
+		if (this.audioCtx) {
+			return this.noise !== null
+		}
+
+		return false
 	}
 
 	init() {
@@ -75,11 +92,9 @@ class SoundGenerator {
 	}
 
 	setFrequency(note, pitch, octave) {
-		this.frequency = ((
-			pitch.current * this.pitches[note.currentValueAsNumber])
-			/
-			(Math.pow(2, 3 - octave.current))
-		)
+		this.frequency =
+			(pitch.current * this.pitches[note.currentValueAsNumber]) /
+			Math.pow(2, 3 - octave.current)
 	}
 
 	setWaveForm(waveForm) {
@@ -98,7 +113,10 @@ class SoundGenerator {
 		this.stopNoise()
 		this.lastTime = 0
 		if (this.gainNode) {
-			this.gainNode.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + 0.2)
+			this.gainNode.gain.linearRampToValueAtTime(
+				0,
+				this.audioCtx.currentTime + 0.2
+			)
 			this.gainNode = null
 		}
 		if (this.audioCtx) {
@@ -110,9 +128,15 @@ class SoundGenerator {
 	setNoiseNode() {
 		let filter = this.setFilter(this.audioCtx)
 		let gainNode = this.setGainNode(this.audioCtx, this.isMuted)
-		
-		this.noise = new OscillatorNode(this.audioCtx, {frequency: this.frequency, type: this.waveForm})
-		this.noise.connect(filter).connect(gainNode).connect(this.audioCtx.destination)
+
+		this.noise = new OscillatorNode(this.audioCtx, {
+			frequency: this.frequency,
+			type: this.waveForm,
+		})
+		this.noise
+			.connect(filter)
+			.connect(gainNode)
+			.connect(this.audioCtx.destination)
 	}
 
 	setGainNode(audioCtx, isMuted) {
@@ -141,34 +165,39 @@ class SoundGenerator {
 		}
 	}
 
-	start(time) {
+	startNoise(time) {
 		this.noise.start(time)
 	}
 
 	toggle() {
-		if (this.audioCtx.state !== 'running') {
-			this.loop(true)
-		} else {
+		if (this.noise) {
 			this.stopNoise()
+		} else {
+			this.loop(true)
 		}
 	}
 
-	//combiner loop et play
 	loop(continuendo = false) {
 		if (!continuendo || this.tempo === 0) {
 			this.play(0, continuendo)
 		} else {
-			if (this.interval) {
+			if (!this.interval) {
 				console.log('loop')
+				let that = this
 
 				this.interval = setInterval(
-					function(audio) {
-						let delta = 60 / audio.sound.tempo
+					function(sound) {
+						console.log(sound)
+						let delta = 60 / sound.tempo
 
-						if (audio.lastTime + 3 * delta / 4 <= audio.sound.audioCtx.currentTime) {
-							audio.play(audio.lastTime + delta, false)
+						if (
+							sound.lastTime + (3 * delta) / 4 <=
+							sound.audioCtx.currentTime
+						) {
+							sound.play(sound.lastTime + delta, false)
 						}
 					},
+					30000 / this.tempo,
 					this
 				)
 			} else {
@@ -184,9 +213,9 @@ class SoundGenerator {
 			time = this.audioCtx.currentTime
 		}
 		this.lastTime = time
-		this.start(time)
+		this.startNoise(time)
 		if (!continuendo) {
-			this.sound.stopNoise(time + 0.1)
+			this.stopNoise(time + 0.1)
 		}
 	}
 }

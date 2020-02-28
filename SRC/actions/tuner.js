@@ -1,7 +1,12 @@
 export class Tuner {
-	start(workshops) {
+	start(workshops, force = false) {
+		let isPlaying = workshops.audio.setAudioParams(workshops)
+
 		workshops.audio.sound.tempo = 0
-		workshops.audio.start(true)
+		workshops.audio.stop()
+		if ((isPlaying && force) || (!isPlaying && !force)) {
+			workshops.audio.start(true)
+		}
 	}
 
 	random(workshops) {
@@ -10,4 +15,6 @@ export class Tuner {
 		workshops.note.node.value = workshops.note.node.children[index].value
 		workshops.note.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
+
+	init(workshops) {}
 }

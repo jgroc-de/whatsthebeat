@@ -1,6 +1,6 @@
 export class AppFactory {
-	constructor(services, map) {
-		this.services = services
+	constructor(workshops, map) {
+		this.services = workshops
 		this.map = map
 		this.firstEvent = true
 		this.inputInterval = null
@@ -15,22 +15,32 @@ export class AppFactory {
 		map.main.addEventListener('input', this, { passive: true })
 
 		this.handleEvent = function(event) {
-			this.eventDispatcher(event, this.page, this.map, this.services, this.inputInterval)
+			this.eventDispatcher(
+				event,
+				this.page,
+				this.map,
+				this.services,
+				this.inputInterval
+			)
 		}
 
-		this.page = this.setPage(services, map.main)
+		this.page = this.setPage(workshops, map.main)
 	}
 
-	setPage(services, main) {
-		let page = services['painter'].get(main)
-		services.init(main)
+	setPage(workshops, main) {
+		let page = workshops['painter'].get(main)
+		page.init(workshops)
+		workshops.init(main)
 
 		return page
 	}
 
 	eventDispatcher(event, page, map, workshops, inputInterval) {
 		//faire un systeme de provider
-		if ((event.type == 'touchend' || event.type == 'mouseup') && !inputInterval) {
+		if (
+			(event.type == 'touchend' || event.type == 'mouseup') &&
+			!inputInterval
+		) {
 			return
 		}
 		if (this.inputInterval && event.type !== 'input') {
@@ -48,34 +58,42 @@ export class AppFactory {
 		if (this.buttonCase(event, workshops, page)) {
 			return
 		}
-		this.inputCase(event, workshops)
-
-		console.log(workshops)
+		this.inputCase(event, workshops, page)
 	}
 
-	inputCase(event, workshops) {
-		//input case
+	inputCase(event, workshops, page) {
 		let target = null
-		if (event.target.nodeName != 'select' || event.target.nodeName != 'input') {
+		let timeInterval = null
+
+		if (event.target.nodeName != 'SELECT' || event.target.nodeName != 'INPUT') {
 			target = event.target.parentNode.querySelector('select, input')
 		} else {
 			target = event.target
 		}
-		let timeInterval = workshops[target.id].updateInput(event, target)
-		if (timeInterval) {
-			this.inputInterval = timeInterval
+		if (target && (target.nodeName == 'SELECT' || target.nodeName == 'INPUT')) {
+			timeInterval = workshops[target.id].updateInput(event, target)
+			if (timeInterval) {
+				this.inputInterval = timeInterval
+			}
+			page.start(workshops, true)
 		}
-		workshops['audio'].setAudioParams(workshops)
 	}
 
 	buttonCase(event, workshops, page) {
-		if (event.tahget.nodeName !== 'BUTTON') {
-			return false
+		let target = event.target
+		if (target.nodeName !== 'BUTTON') {
+			if (target.nodeName !== 'I') {
+				return false
+			}
+			target = event.target.parentNode
 		}
-		if (event.target.id === 'mute' || (event.target.id === 'start' && window.location.hash != '')) {
-			event.target.classList.toggle('gg-on')
+		if (
+			target.id === 'mute' ||
+			(target.id === 'start' && window.location.hash != '')
+		) {
+			target.classList.toggle('gg-on')
 		}
-		switch (event.target.id) {
+		switch (target.id) {
 			case 'start':
 				page.start(workshops)
 				return true
@@ -84,6 +102,8 @@ export class AppFactory {
 				return true
 			case 'reset':
 				workshops.reset()
+				page.init(workshops)
+				this.resetButtons()
 				return true
 			case 'mute':
 				workshops['audio'].mute()
@@ -91,6 +111,16 @@ export class AppFactory {
 		}
 
 		return false
+	}
+
+	resetButtons() {
+		let buttons = document.getElementsByTagName('BUTTON')
+
+		for (let button of buttons) {
+			if (button.classList.contains('gg-on')) {
+				button.classList.remove('gg-on')
+			}
+		}
 	}
 
 	navCase(target, nav) {
@@ -116,7 +146,7 @@ export class AppFactory {
 			return false
 		}
 
-		workshops.audio.stop()
+		workshops.audio.reset()
 		while (main.children.length) {
 			main.removeChild(main.children[0])
 		}

@@ -36,7 +36,7 @@ export class PagePainter {
 			action = this.actions[homeID.slice(1)]
 		}
 
-		return action.prototype
+		return new action()
 	}
 
 	draw(main, name) {

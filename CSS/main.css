@@ -122,6 +122,11 @@ main {
 		grid-template-rows: 50% 50%;
 	}
 
+	.gg-2-rows {
+		align-content: space-around;
+		row-gap: 10vw;
+	}
+
 	.gg-3-rows {
 		align-content: space-around;
 	}
@@ -132,8 +137,18 @@ main {
 	}
 
 	.gg-button-m {
-		height: 20vw;
-		width: 20vw;
+		height: 16vw;
+		width: 16vw;
+	}
+
+	.gg-font-xl {
+		font-size: 20vw !important;
+		color: #342e09;
+	}
+
+	.gg-font-l {
+		font-size: 10vw !important;
+		color: #342e09;
 	}
 }
 
@@ -142,19 +157,33 @@ main {
 		grid-template-columns: 50% 50%;
 	}
 
-	.gg-3-rows {
+	.gg-2-rows {
 		align-content: center;
-		row-gap: 16px;
+		row-gap: 10vh;
+	}
+
+	.gg-3-rows {
+		align-content: space-around;
 	}
 
 	button-start button {
-		width: 25vh;
-		height: 25vh;
+		width: 50vh;
+		height: 50vh;
+	}
+
+	.gg-font-xl {
+		font-size: 25vh !important;
+		color: #342e09;
+	}
+
+	.gg-font-l {
+		font-size: 10vh !important;
+		color: #342e09;
 	}
 
 	.gg-button-m {
-		height: 10vh;
-		width: 10vh;
+		height: 18vh;
+		width: 18vh;
 	}
 }
 
