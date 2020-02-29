@@ -277,7 +277,6 @@
 
 	<script>
 		if ('serviceWorker' in navigator) {
-
 			window.addEventListener('load', () => {
 				navigator.serviceWorker.register('/service-worker.js').then(worker => {
 					//console.log('Service worker registered.', worker)
@@ -289,89 +288,88 @@
 					}
 				})
 			})
-
 		}
 		class NoteSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('noteSelect').innerHTML
+				this.innerHTML = document.getElementById('noteSelect').innerHTML
 			}
 		}
 
 		class GammeSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('gammeSelect').innerHTML
+				this.innerHTML = document.getElementById('gammeSelect').innerHTML
 			}
 		}
 
 		class ModeSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('modeSelect').innerHTML
+				this.innerHTML = document.getElementById('modeSelect').innerHTML
 			}
 		}
 
 		class WaveSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('waveSelect').innerHTML
+				this.innerHTML = document.getElementById('waveSelect').innerHTML
 			}
 		}
 
 		class OctaveInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('octaveInput').innerHTML
+				this.innerHTML = document.getElementById('octaveInput').innerHTML
 			}
 		}
 
 		class RepeatInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('repeatInput').innerHTML
+				this.innerHTML = document.getElementById('repeatInput').innerHTML
 			}
 		}
 
 		class PitchInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('pitchInput').innerHTML
+				this.innerHTML = document.getElementById('pitchInput').innerHTML
 			}
 		}
 
 		class TempoInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('tempoInput').innerHTML
+				this.innerHTML = document.getElementById('tempoInput').innerHTML
 			}
 		}
 
 		class StartButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('startButton').innerHTML
+				this.innerHTML = document.getElementById('startButton').innerHTML
 			}
 		}
 
 		class RandomButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('randomButton').innerHTML
+				this.innerHTML = document.getElementById('randomButton').innerHTML
 			}
 		}
 
 		class ResetButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('resetButton').innerHTML
+				this.innerHTML = document.getElementById('resetButton').innerHTML
 			}
 		}
 
 		class MuteButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.getElementByID('muteButton').innerHTML
+				this.innerHTML = document.getElementById('muteButton').innerHTML
 			}
 		}
 
