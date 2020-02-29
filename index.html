@@ -3,7 +3,6 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>What's the B**t?</title>
 	<meta name="whatstheb**t" content="beat-taking-pwa">
@@ -50,7 +49,7 @@
 		</a>
 	</footer>
 
-	<template route home id="#wtb">
+	<template route home id="#Whats_The_Beat">
 		<div>
 			<form class="gg-3-rows">
 				<div></div>
@@ -65,7 +64,7 @@
 		</div>
 	</template>
 
-	<template route id="#metronome">
+	<template route id="#Metronome">
 		<div>
 			<form class="gg-4-rows">
 				<note-select></note-select>
@@ -84,7 +83,7 @@
 		</div>
 	</template>
 
-	<template route id="#tuner">
+	<template route id="#Tuner">
 		<div>
 			<form class="gg-4-rows">
 				<note-select></note-select>
@@ -102,7 +101,23 @@
 			<button-start></button-start>
 		</div>
 	</template>
-	<template route id="#config">
+
+	<template route id="#Follow_My_Path">
+		<div>
+			<form class="gg-2-rows">
+				<repeat-input></repeat-input>
+				<tempo-input></tempo-input>
+			</form>
+		</div>
+		<div class="gg-2-cols">
+			<div id="actions" class="gg-2-rows">
+				<button-mute></button-mute>
+			</div>
+			<button-start></button-start>
+		</div>
+	</template>
+
+	<template route id="#Config">
 		<div>
 			<form class="gg-4-rows">
 				<octave-input></octave-input>
@@ -121,7 +136,7 @@
 		</div>
 	</template>
 
-	<template route id="#about">
+	<template route id="#About">
 		<div class="gg-pad">
 			<span>
 				Welcome on this webApp!<br>
@@ -270,7 +285,7 @@
 						document.getElementById('version').textContent = event.data
 					})
 					if (navigator.serviceWorker.controller) {
-						navigator.serviceWorker.controller.postMessage('hi')
+						navigator.serviceWorker.controller.postMessage('set_version')
 					}
 				})
 			})
@@ -279,95 +294,84 @@
 		class NoteSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#noteSelect').innerHTML
+				this.innerHTML = document.getElementByID('noteSelect').innerHTML
 			}
 		}
 
 		class GammeSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#gammeSelect').innerHTML
+				this.innerHTML = document.getElementByID('gammeSelect').innerHTML
 			}
 		}
 
 		class ModeSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#modeSelect').innerHTML
+				this.innerHTML = document.getElementByID('modeSelect').innerHTML
 			}
 		}
 
 		class WaveSelect extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#waveSelect').innerHTML
+				this.innerHTML = document.getElementByID('waveSelect').innerHTML
 			}
 		}
 
 		class OctaveInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#octaveInput').innerHTML
+				this.innerHTML = document.getElementByID('octaveInput').innerHTML
 			}
 		}
 
 		class RepeatInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#repeatInput').innerHTML
+				this.innerHTML = document.getElementByID('repeatInput').innerHTML
 			}
 		}
 
 		class PitchInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#pitchInput').innerHTML
+				this.innerHTML = document.getElementByID('pitchInput').innerHTML
 			}
 		}
 
 		class TempoInput extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#tempoInput').innerHTML
+				this.innerHTML = document.getElementByID('tempoInput').innerHTML
 			}
 		}
 
 		class StartButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#startButton').innerHTML
-				/*if (window.location.hash === '') {
-					this.firstElementChild.innerText = 'B**t Me!'
-				}*/
+				this.innerHTML = document.getElementByID('startButton').innerHTML
 			}
 		}
 
 		class RandomButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#randomButton').innerHTML
-				switch (window.location.hash) {
-					case '#tuner':
-						this.firstElementChild.firstElementChild.title = 'random note'
-						break
-					case '#metronome':
-						this.firstElementChild.firstElementChild.title = 'random tempo'
-						break
-				}
+				this.innerHTML = document.getElementByID('randomButton').innerHTML
 			}
 		}
 
 		class ResetButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#resetButton').innerHTML
+				this.innerHTML = document.getElementByID('resetButton').innerHTML
 			}
 		}
 
 		class MuteButton extends HTMLElement {
 			constructor() {
 				super()
-				this.innerHTML = document.querySelector('#muteButton').innerHTML
+				this.innerHTML = document.getElementByID('muteButton').innerHTML
 			}
 		}
 

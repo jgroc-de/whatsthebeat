@@ -69,10 +69,6 @@ nav a {
 	display: block;
 }
 
-nav a:hover {
-	background-color: #55b9f3;
-}
-
 nav h2 {
 	font-size: 2em;
 	padding: 32px;
@@ -194,12 +190,6 @@ button,
 	border-radius: 100%;
 	color: #342e09;
 	cursor: pointer;
-}
-
-button:hover,
-.gg-range-div:hover,
-.gg-on:hover {
-	background: linear-gradient(145deg, #4da7db, #5bc6ff);
 }
 
 button:active,

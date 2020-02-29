@@ -11,6 +11,7 @@ Enjoy!
 
 ### Features
 
+input scale (need factory for gammes and mode)
 page chord
 faire ce todo en .json et remplir l'onglet about du l'appli avec
 other games, etc…
@@ -18,13 +19,9 @@ pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
 ## changelog
 
-### Version 1.2.X
-
-- page followmypath
-
 ### Version 1.1.X
 
-- input scale (need factory for gammes and mode)
+- page followmypath
 
 ### Version 1.0.X
 

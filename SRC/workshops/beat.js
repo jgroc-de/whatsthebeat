@@ -14,7 +14,7 @@ export class Beat {
 		workshops.audio.start(false)
 		let currentTime = workshops.audio.audioCtx.currentTime
 		this.beatCount += 1
-		let beats = this.beatCount * 60 / currentTime
+		let beats = (this.beatCount * 60) / currentTime
 		console.log(this, beats, currentTime)
 
 		if (beats !== NaN && beats !== Infinity) {
@@ -23,9 +23,5 @@ export class Beat {
 			workshops.tempo.node.valueAsNumber = 0
 		}
 		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
-	}
-
-	sleep(timeInMs) {
-		return new Promise(resolve => setTimeout(resolve, timeInMs))
 	}
 }

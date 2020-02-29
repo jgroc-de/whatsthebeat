@@ -11,6 +11,7 @@
  * and myfile.js the path of the file where the class is
  */
 
-export { BeatTaker as wtb } from './beatTaker.js'
-export { Metronome as metronome } from './metronome.js'
-export { Tuner as tuner } from './tuner.js'
+export { BeatTaker as Whats_The_Beat } from './beatTaker.js'
+export { Metronome } from './metronome.js'
+export { Tuner } from './tuner.js'
+export { Repeater as Follow_My_Path } from './repeater.js'
