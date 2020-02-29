@@ -39,6 +39,8 @@ export class Select extends Input {
 	reset() {
 		if (this.node) {
 			this.node.value = this.default
+			this.current = this.default
+			this.modifyValue(this.node, 0)
 			this.setVisibleValue(this.node)
 		}
 	}

@@ -1,13 +1,14 @@
 export class Metronome {
 	start(workshops, force = false) {
-		let isPlaying = workshops.audio.sound.audioCtx
+		let isPlaying = workshops.audio.isPlaying
 
-		if (!force) {
-			workshops.audio.stop()
-		}
 		workshops.audio.setAudioParams(workshops)
-		if ((isPlaying && force) || (!isPlaying && !force)) {
-			workshops.audio.start(true)
+		if (!force && isPlaying) {
+			workshops.audio.stop()
+		} else {
+			if ((!isPlaying && !force)) {
+				workshops.audio.start()
+			}
 		}
 	}
 
@@ -15,6 +16,4 @@ export class Metronome {
 		workshops.tempo.node.valueAsNumber = Math.floor(Math.random() * 180) + 40
 		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
-
-	init(workshops) {}
 }

@@ -9,7 +9,6 @@
 	<meta name="whatstheb**t" content="beat-taking-pwa">
 	<link rel="icon" href="/ICONS/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="./CSS/main.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 	<script type="module" src="./SRC/app.js" async></script>
 	<link rel="manifest" href="/manifest.json">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,9 +27,7 @@
 			<div class="gg-bar"></div>
 			<div class="gg-bar"></div>
 		</div>
-		<div>
-			<h1>What's the b**t?</h1>
-		</div>
+		<div><h1>What's the b**t?</h1></div>
 	</header>
 
 	<nav hidden>
@@ -237,7 +234,7 @@
 		<label for="tempo"><span>Tempo: </span><span></span><span> (BPM)</span></label>
 		<div class="gg-3-cols">
 			<div class="gg-range-div">-</div>
-			<input type="range" name="tempo" id="tempo" min="1" max="480" value="60"></input>
+			<input type="range" name="tempo" id="tempo" min="1" max="240" value="60"></input>
 			<div class="gg-range-div">+</div>
 		</div>
 	</template>
@@ -337,9 +334,9 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#startButton').innerHTML
-				if (window.location.hash === '') {
+				/*if (window.location.hash === '') {
 					this.firstElementChild.innerText = 'B**t Me!'
-				}
+				}*/
 			}
 		}
 
@@ -369,9 +366,6 @@
 			constructor() {
 				super()
 				this.innerHTML = document.querySelector('#muteButton').innerHTML
-				if (window.location.hash == '') {
-					this.firstElementChild.firstElementChild.innerText = 'volume_up'
-				}
 			}
 		}
 

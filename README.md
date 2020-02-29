@@ -7,39 +7,46 @@ Enjoy!
 
 ## TODO
 
-### Bugs
-
-settings par raz sur metronome
-hauteur bloc trop petit (ou bouton trop gros) en mode landscape
-son qui craque (pb performance, voir https://padenot.github.io/web-audio-perf/)
-sur beattaker, pas de raz auto
+### Known Bugs
 
 ### Features
 
-fonts trop lourde
-locale storage/: enregistrer la derniere config
-page scale (need factory for gammes and mode)
 page chord
-page followmypath
 faire ce todo en .json et remplir l'onglet about du l'appli avec
 other games, etc…
 pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
 ## changelog
 
+### Version 1.2.X
+
+- page followmypath
+
+### Version 1.1.X
+
+- input scale (need factory for gammes and mode)
+
+### Version 1.0.X
+
+- changer h1 avec page
+- sur beattaker, raz auto
+
 ### Version 0.9.X
+
+- bunch of bugs fixes
+- local storage!
+- perf upgrade
 
 ### Version 0.8.X
 
-major refacto:
-
 - new desing
 - major architecture changes (using factory patterns)
+- page config
 
 ### Version 0.7.X
 
-adding random button
+- adding random button
 
 ### Version 0.6.X
 
-Major css refactor
+- major css refacto

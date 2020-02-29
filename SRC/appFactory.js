@@ -1,10 +1,11 @@
 export class AppFactory {
 	constructor(workshops, map) {
-		this.services = workshops
+		this.workshops = workshops
 		this.map = map
 		this.firstEvent = true
 		this.inputInterval = null
-		this.isPlaying = false
+
+		this.canStore = this.getStoredValues(workshops)
 
 		window.addEventListener('hashchange', this, { passive: true })
 		map.main.addEventListener('change', this, { passive: true })
@@ -19,7 +20,7 @@ export class AppFactory {
 				event,
 				this.page,
 				this.map,
-				this.services,
+				this.workshops,
 				this.inputInterval
 			)
 		}
@@ -27,10 +28,43 @@ export class AppFactory {
 		this.page = this.setPage(workshops, map.main)
 	}
 
+	getStoredValues(workshops) {
+		if (this.storageAvailable('localStorage')) {
+			let storedValue = null
+			for (let workshop in workshops) {
+				storedValue = localStorage.getItem(workshop)
+				if (storedValue) {
+					workshops[workshop].current = storedValue
+				}
+			}
+
+			return true
+		}
+
+		return false
+	}
+
+	storeValues(workshops) {
+		if (this.canStore) {
+			for (let workshop in workshops) {
+				if (workshop !== 'init' && workshop !== 'reset') {
+					localStorage.setItem(workshop, workshops[workshop].current)
+				}
+			}
+		}
+	}
+
 	setPage(workshops, main) {
 		let page = workshops['painter'].get(main)
-		page.init(workshops)
+
 		workshops.init(main)
+		let title = window.location.hash
+		if (title) {
+			title = title.toUpperCase()[1] + title.slice(2)
+		} else {
+			title = 'Whats the b**t?'
+		}
+		this.map.title.innerText = title
 
 		return page
 	}
@@ -77,6 +111,7 @@ export class AppFactory {
 			}
 			page.start(workshops, true)
 		}
+		this.storeValues(workshops)
 	}
 
 	buttonCase(event, workshops, page) {
@@ -102,7 +137,6 @@ export class AppFactory {
 				return true
 			case 'reset':
 				workshops.reset()
-				page.init(workshops)
 				this.resetButtons()
 				return true
 			case 'mute':
@@ -151,6 +185,7 @@ export class AppFactory {
 			main.removeChild(main.children[0])
 		}
 		this.page = this.setPage(workshops, main)
+		this.storeValues(workshops)
 
 		return true
 	}
@@ -168,5 +203,30 @@ export class AppFactory {
 		}
 
 		return false
+	}
+
+	storageAvailable(type) {
+		let storage;
+		try {
+			storage = window[type]
+			let x = '__storage_test__'
+			storage.setItem(x, x)
+			storage.removeItem(x)
+			return true
+		}
+		catch(e) {
+			return e instanceof DOMException && (
+				// everything except Firefox
+				e.code === 22 ||
+				// Firefox
+				e.code === 1014 ||
+				// test name field too, because code might not be present
+				// everything except Firefox
+				e.name === 'QuotaExceededError' ||
+				// Firefox
+				e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+				// acknowledge QuotaExceededError only if there's something already stored
+				(storage && storage.length !== 0)
+		}
 	}
 }

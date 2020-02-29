@@ -3,16 +3,10 @@
 }
 
 body {
-	font-family: 'Poppins';
+	font-family: 'Roboto', Impact, Charcoal, sans-serif;
 	background: #55b9f3;
 	margin: 0;
 	color: #342e09;
-}
-
-h6 {
-	margin: 0;
-	font-size: 1em;
-	position: relative;
 }
 
 a {
@@ -35,7 +29,6 @@ main,
 	display: grid;
 }
 
-/* header */
 header {
 	box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12),
 		0 4px 2px -2px rgba(0, 0, 0, 0.2);
@@ -61,12 +54,8 @@ header h1 {
 	font-size: 2em;
 	font-weight: 400;
 	margin: 0;
-	position: relative;
-	top: -4px;
 }
-/* end header */
 
-/* navigation slide */
 nav {
 	position: fixed;
 	left: 0;
@@ -108,7 +97,6 @@ nav h2 {
 	background: rgba(0, 0, 0, 0.5);
 	cursor: pointer;
 }
-/* end navigation slide */
 
 main {
 	padding: 60px 16px;
@@ -127,28 +115,22 @@ main {
 		row-gap: 10vw;
 	}
 
-	.gg-3-rows {
-		align-content: space-around;
-	}
-
 	button-start button {
 		width: 40vw;
 		height: 40vw;
 	}
 
-	.gg-button-m {
-		height: 16vw;
-		width: 16vw;
-	}
-
 	.gg-font-xl {
 		font-size: 20vw !important;
-		color: #342e09;
 	}
 
 	.gg-font-l {
 		font-size: 10vw !important;
-		color: #342e09;
+	}
+
+	.gg-button-m {
+		height: 16vw;
+		width: 16vw;
 	}
 }
 
@@ -162,10 +144,6 @@ main {
 		row-gap: 10vh;
 	}
 
-	.gg-3-rows {
-		align-content: space-around;
-	}
-
 	button-start button {
 		width: 50vh;
 		height: 50vh;
@@ -173,12 +151,10 @@ main {
 
 	.gg-font-xl {
 		font-size: 25vh !important;
-		color: #342e09;
 	}
 
 	.gg-font-l {
 		font-size: 10vh !important;
-		color: #342e09;
 	}
 
 	.gg-button-m {
@@ -190,13 +166,6 @@ main {
 .gg-button-m {
 	border-width: medium;
 	font-size: 3vh;
-}
-
-button-start {
-	font-size: 4vh;
-	line-height: 20vh;
-	white-space: nowrap;
-	margin: auto;
 }
 
 footer {
@@ -216,7 +185,6 @@ footer a {
 	color: #fc7307;
 }
 
-/* button */
 button,
 .gg-range-div {
 	background: linear-gradient(145deg, #5bc6ff, #4da7db);
@@ -224,6 +192,8 @@ button,
 	border: thick solid #fc7307;
 	text-align: center;
 	border-radius: 100%;
+	color: #342e09;
+	cursor: pointer;
 }
 
 button:hover,
@@ -238,32 +208,17 @@ button:active,
 	box-shadow: inset 22px 22px 43px #489dcf, inset -22px -22px 43px #62d5ff;
 	background: linear-gradient(145deg, #5bc6ff, #4da7db);
 	border-color: lightGreen;
+	color: lightGreen;
 }
 
-/* end button */
-
-/* common */
 .gg-pad,
 form {
 	padding: 16px;
 }
 
-.gg-pad-top {
-	padding-top: 16px;
-}
-
 .gg-pad-right {
 	padding-right: 16px;
 }
-
-.gg-pad-bot {
-	padding-bottom: 16px;
-}
-
-.gg-pad-left {
-	padding-left: 16px;
-}
-/* end common */
 
 .gg-left-panel {
 	display: grid;
@@ -299,13 +254,14 @@ form {
 	display: grid;
 	grid-template-rows: 20% 20% 20%;
 	grid-row-gap: 8px;
+	align-content: space-around;
 }
 
 .gg-4-rows {
 	display: grid;
 	grid-template-rows: 20% 20% 20% 20%;
-	align-content: center;
 	grid-row-gap: 16px;
+	align-content: center;
 }
 
 .gg-2-cols {
@@ -340,17 +296,13 @@ option {
 	text-align: center;
 }
 
-button {
-	cursor: pointer;
-}
-
 .gg-number {
 	display: inline-block;
 	width: 20%;
 	color: #fc7307;
 }
 
-.test {
+.t {
 	color: #f7e3d4;
 	color: #fc7307;
 	color: #55b9f3;

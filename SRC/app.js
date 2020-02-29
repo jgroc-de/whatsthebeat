@@ -6,6 +6,7 @@ import { PagePainter } from './pagePainter.js'
 const map = {
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
+	title: document.querySelector('h1'),
 }
 
 const workshops = {

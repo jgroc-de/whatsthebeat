@@ -1,18 +1,27 @@
 export class Beat {
 	constructor() {
-		this.beatCount = -1
+		this.beatCount = 0
 	}
 
 	reset() {
-		this.beatCount = -1
+		this.beatCount = 0
 	}
 
 	count(workshops) {
-		let currentTime = workshops.audio.sound.audioCtx.currentTime
+		if (!workshops.audio.interval) {
+			this.reset()
+		}
+		workshops.audio.start(false)
+		let currentTime = workshops.audio.audioCtx.currentTime
 		this.beatCount += 1
-		let beats = Math.floor((this.beatCount * 60) / currentTime)
+		let beats = this.beatCount * 60 / currentTime
+		console.log(this, beats, currentTime)
 
-		workshops.tempo.node.valueAsNumber = beats
+		if (beats !== NaN && beats !== Infinity) {
+			workshops.tempo.node.valueAsNumber = beats
+		} else {
+			workshops.tempo.node.valueAsNumber = 0
+		}
 		workshops.tempo.node.dispatchEvent(new Event('input', { bubbles: true }))
 	}
 

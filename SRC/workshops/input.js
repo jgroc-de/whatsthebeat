@@ -58,6 +58,7 @@ export class Input {
 	reset() {
 		if (this.node) {
 			this.node.valueAsNumber = this.default
+			this.current = this.default
 			this.setVisibleValue(this.node)
 		}
 	}

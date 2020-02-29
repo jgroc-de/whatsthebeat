@@ -1,40 +1,5 @@
 export class AudioInterface {
 	constructor() {
-		this.sound = new SoundGenerator()
-	}
-
-	setAudioParams(workshops) {
-		this.sound.setFrequency(workshops.note, workshops.pitch, workshops.octave)
-		this.sound.setTempo(workshops.tempo)
-		this.sound.setWaveForm(workshops.waveForm)
-
-		return this.sound.isPlaying()
-	}
-
-	mute() {
-		this.sound.mute()
-	}
-
-	start(continuendo = false) {
-		this.sound.init()
-		if (continuendo) {
-			this.sound.toggle()
-		} else {
-			this.sound.loop()
-		}
-	}
-
-	reset() {
-		this.sound.reset()
-	}
-
-	stop() {
-		this.sound.stop()
-	}
-}
-
-class SoundGenerator {
-	constructor() {
 		this.lastTime = 0
 		this.interval = null
 		this.audioCtx = null
@@ -44,7 +9,17 @@ class SoundGenerator {
 		this.isMuted = false
 		this.waveForm = null
 		this.frequency = 0
+		this.tempo = 0
 		this.pitches = this.setPitchesConstantes()
+		this.isPlaying = false
+	}
+
+	setAudioParams(workshops) {
+		this.setFrequency(workshops.note, workshops.pitch, workshops.octave)
+		this.setTempo(workshops.tempo)
+		this.setWaveForm(workshops.waveForm)
+
+		return this.isPlaying
 	}
 
 	reset() {
@@ -52,20 +27,6 @@ class SoundGenerator {
 		this.isMuted = false
 		this.waveForm = null
 		this.frequency = 0
-	}
-
-	isPlaying() {
-		if (this.audioCtx) {
-			return this.noise !== null
-		}
-
-		return false
-	}
-
-	init() {
-		if (!this.audioCtx) {
-			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-		}
 	}
 
 	mute() {
@@ -111,39 +72,40 @@ class SoundGenerator {
 			window.clearInterval(this.interval)
 			this.interval = null
 		}
-		this.stopNoise(this.noise)
-		this.noise = null
-		this.filterNode = null
-		this.gainNode = null
 		this.lastTime = 0
+		if (this.noise) {
+			this.noise.disconnect()
+		}
 		if (this.gainNode) {
-			this.gainNode.gain.linearRampToValueAtTime(
-				0,
-				this.audioCtx.currentTime + 0.2
-			)
-			this.gainNode = null
+			this.gainNode.disconnect()
 		}
-		if (this.audioCtx) {
-			this.audioCtx.close()
-			this.audioCtx = null
+		if (this.filterNode) {
+			this.filterNode.disconnect()
 		}
+		this.noise = null
+		this.gainNode = null
+		this.filterNode = null
+		this.isPlaying = false
+		if (this.nodeToDisconnect) {
+			this.nodeToDisconnect.disconnect()
+			this.nodeToDisconnect = null
+		}
+		this.audioCtx = null
 	}
 
 	setNoiseNode(noise) {
+		let gainNode = this.setGainNode(this.audioCtx, this.gainNode, this.isMuted)
 		if (!noise) {
 			let filter = this.setFilter(this.audioCtx, this.filterNode)
-			let gainNode = this.setGainNode(this.audioCtx, this.gainNode, this.isMuted)
-
 			noise = new OscillatorNode(this.audioCtx, {
 				frequency: this.frequency,
 				type: this.waveForm,
 			})
-			this.noise = noise
-
 			noise
 				.connect(filter)
 				.connect(gainNode)
 				.connect(this.audioCtx.destination)
+			this.noise = noise
 
 			return true
 		}
@@ -162,6 +124,8 @@ class SoundGenerator {
 
 		if (isMuted) {
 			gainNode.gain.value = 0
+		} else {
+			gainNode.gain.value = 1
 		}
 
 		return gainNode
@@ -179,58 +143,72 @@ class SoundGenerator {
 		return this.filterNode
 	}
 
-	stopNoise(noise, time) {
-		if (noise) {
-			noise.stop(time)
+	start(shouldPlay = true) {
+		if (!this.audioCtx) {
+			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 		}
-	}
-
-	startNoise(noise, time) {
-		noise.start(time)
-	}
-
-	toggle() {
-		this.loop(true)
-	}
-
-	loop(continuendo = false) {
-		if (!continuendo || this.tempo === 0) {
-			this.play(0, continuendo)
-		} else {
-			if (continuendo || !this.interval) {
-				console.log('loop')
-				this.interval = setInterval(
-					function(sound) {
-						console.log(sound)
-						let delta = 60 / sound.tempo
-
-						if (
-							sound.lastTime + (3 * delta) / 4 <=
-							sound.audioCtx.currentTime
-						) {
-							sound.play(sound.lastTime + delta, false)
-						}
-					},
-					30000 / this.tempo,
-					this
-				)
+		if (shouldPlay) {
+			if (this.tempo === 0) {
+				this.play()
 			} else {
-				this.stop()
+				this.toggle(this.tempo, this.interval)
 			}
+		} else {
+			if (this.interval) {
+				window.clearTimeout(this.interval)
+			}
+			this.interval = setTimeout(
+				function(sound) {
+					sound.reset()
+				},
+				2500,
+				this
+			)
+		}
+		
+	}
+
+	toggle(tempo, interval) {
+		if (!interval) {
+			this.isPlaying = true
+			this.setNoiseNode()
+			this.interval = setInterval(
+				function(sound) {
+					let delta = 60 / sound.tempo
+
+					if (
+						sound.lastTime + delta / 2 <=
+						sound.audioCtx.currentTime
+					) {
+						sound.repeat(sound.lastTime + delta)
+					}
+				},
+				30000 / 240,
+				this
+			)
+		} else {
+			this.stop()
 		}
 	}
 
-	play(time = 0, continuendo = false) {
-		if (this.setNoiseNode(this.noise)) {
-			if (!time) {
-				time = this.audioCtx.currentTime
-			}
-			this.lastTime = time
-			this.startNoise(this.noise, time)
-			if (!continuendo) {
-				this.stopNoise(this.noise, time + 0.09)
-				this.noise = null
-			}
+	repeat(time) {
+		this.lastTime = time
+		this.noise.start(time)
+		this.noise.stop(time + 0.09)
+		if (this.nodeToDisconnect) {
+			this.nodeToDisconnect.disconnect()
+			this.nodeToDisconnect = null
+		}
+		this.nodeToDisconnect = this.noise
+		this.setNoiseNode(null)
+	}
+
+	play() {
+		this.setNoiseNode(this.noise)
+		if (!this.isPlaying) {
+			this.lastTime = this.audioCtx.currentTime
+			this.noise.start()
+			this.isPlaying = true
 		}
 	}
 }
