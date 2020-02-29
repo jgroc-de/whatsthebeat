@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '0.9.X'
+const VERSION = '1.0.0'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
