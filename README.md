@@ -10,12 +10,15 @@ Enjoy!
 ### Known Bugs
 
 #### SEO
+
+- modify hash and use history instead! https://developers.google.com/search/docs/guides/javascript-seo-basics?hl=fr
+- change icones!
 - add 404!!!
-- show menu without js (gen links…)
-- add decription/tuto for each pages
+- add help for each pages
 
 ### Features
 
+- add help for each pages
 - input scale (need factory for gammes and mode)
 - page chord
 - rework follow my path
