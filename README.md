@@ -11,25 +11,22 @@ Enjoy!
 
 ### Features
 
-page chord
-faire ce todo en .json et remplir l'onglet about du l'appli avec
+- input scale (need factory for gammes and mode)
+- page chord
+- faire ce todo en .json et remplir l'onglet about du l'appli avec
 other games, etc…
-pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
+- pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
 ## changelog
 
-### Version 1.2.X
+### Version 1.1.X
 
 - page followmypath
 
-### Version 1.1.X
-
-- input scale (need factory for gammes and mode)
-
 ### Version 1.0.X
 
-- changer h1 avec page
-- sur beattaker, raz auto
+- change h1 with page
+- on beattaker, reset auto
 
 ### Version 0.9.X
 

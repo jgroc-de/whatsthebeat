@@ -15,9 +15,13 @@ export class AudioInterface {
 	}
 
 	setAudioParams(workshops) {
-		this.setFrequency(workshops.note, workshops.pitch, workshops.octave)
-		this.setTempo(workshops.tempo)
-		this.setWaveForm(workshops.waveForm)
+		this.setFrequency(
+			workshops.note.currentValueAsNumber,
+			workshops.pitch.current,
+			workshops.octave.current
+		)
+		this.setTempo(workshops.tempo.current)
+		this.setWaveForm(workshops.waveForm.current)
 
 		return this.isPlaying
 	}
@@ -54,17 +58,15 @@ export class AudioInterface {
 	}
 
 	setFrequency(note, pitch, octave) {
-		this.frequency =
-			(pitch.current * this.pitches[note.currentValueAsNumber]) /
-			Math.pow(2, 3 - octave.current)
+		this.frequency = (pitch * this.pitches[note]) / Math.pow(2, 3 - octave)
 	}
 
 	setWaveForm(waveForm) {
-		this.waveForm = waveForm.current
+		this.waveForm = waveForm
 	}
 
 	setTempo(tempo) {
-		this.tempo = tempo.current
+		this.tempo = tempo
 	}
 
 	stop() {
@@ -109,11 +111,10 @@ export class AudioInterface {
 
 			return true
 		}
-		noise.frequency.value = this.frequency;
-		noise.type = this.waveForm;
-		
+		noise.frequency.value = this.frequency
+		noise.type = this.waveForm
+
 		return false
-	
 	}
 
 	setGainNode(audioCtx, gainNode, isMuted) {
@@ -151,7 +152,7 @@ export class AudioInterface {
 			if (this.tempo === 0) {
 				this.play()
 			} else {
-				this.toggle(this.tempo, this.interval)
+				this.toggle(this.interval)
 			}
 		} else {
 			if (this.interval) {
@@ -165,10 +166,9 @@ export class AudioInterface {
 				this
 			)
 		}
-		
 	}
 
-	toggle(tempo, interval) {
+	toggle(interval) {
 		if (!interval) {
 			this.isPlaying = true
 			this.setNoiseNode()
@@ -176,11 +176,8 @@ export class AudioInterface {
 				function(sound) {
 					let delta = 60 / sound.tempo
 
-					if (
-						sound.lastTime + delta / 2 <=
-						sound.audioCtx.currentTime
-					) {
-						sound.repeat(sound.lastTime + delta)
+					if (sound.lastTime + delta / 2 <= sound.audioCtx.currentTime) {
+						sound.repeat(sound.lastTime + delta, 0.09)
 					}
 				},
 				30000 / 240,
@@ -191,10 +188,11 @@ export class AudioInterface {
 		}
 	}
 
-	repeat(time) {
+	repeat(time, stopDelta) {
+		console.log(time)
 		this.lastTime = time
 		this.noise.start(time)
-		this.noise.stop(time + 0.09)
+		this.noise.stop(time + stopDelta)
 		if (this.nodeToDisconnect) {
 			this.nodeToDisconnect.disconnect()
 			this.nodeToDisconnect = null
@@ -210,5 +208,40 @@ export class AudioInterface {
 			this.noise.start()
 			this.isPlaying = true
 		}
+	}
+
+	async repeatXTimes(workshops) {
+		let count = workshops.repeat.current
+
+		let delta = 60 / this.tempo
+		let delta3 = 3 * delta
+		let delta2 = 2 * delta
+		this.stop()
+		this.isPlaying = true
+		if (!this.audioCtx) {
+			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+		}
+		this.randomNote(workshops)
+		this.setNoiseNode()
+		let i = 0
+		while (i < count) {
+			this.randomNote(workshops)
+			this.repeat(i * delta3, delta2)
+			this.nodeToDisconnect = null
+			i++
+		}
+		await this.sleep((count + 0.1) * delta3 * 1000)
+	}
+
+	async sleep(timeInMs) {
+		return new Promise(resolve => setTimeout(resolve, timeInMs))
+	}
+
+	randomNote(workshops) {
+		this.setFrequency(
+			Math.floor(Math.random() * 11),
+			workshops.pitch.current,
+			workshops.octave.current
+		)
 	}
 }
