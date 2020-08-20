@@ -13,6 +13,9 @@ Enjoy!
 
 - input scale (need factory for gammes and mode)
 - page chord
+- add decription/tuto for each pages
+- rework follow my path
+- change front page (tuner or metronome instead of beat taker) 
 - faire ce todo en .json et remplir l'onglet about du l'appli avec
 other games, etc…
 - pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
