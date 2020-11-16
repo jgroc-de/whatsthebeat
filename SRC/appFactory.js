@@ -1,41 +1,42 @@
 export class AppFactory {
-	constructor(workshops, map) {
+	constructor(workshops, mainNodes) {
 		this.workshops = workshops
-		this.map = map
+		this.mainNodes = mainNodes
 		this.firstEvent = true
 		this.inputInterval = null
 
 		this.canStore = this.workshops.getStoredValues()
 
-		window.addEventListener('hashchange', this, { passive: true })
-		map.main.addEventListener('change', this, { passive: true })
+		let navLinks = mainNodes.nav.querySelectorAll('a')
+		for (let link of navLinks) {
+			link.addEventListener('click', this, true)
+			link.addEventListener('touchstart', this, true)
+		}
+		mainNodes.main.addEventListener('change', this, { passive: true })
 		document.addEventListener('mousedown', this, { passive: true })
-		map.main.addEventListener('mouseup', this, { passive: true })
+		mainNodes.main.addEventListener('mouseup', this, { passive: true })
 		document.addEventListener('touchstart', this, { passive: true })
-		map.main.addEventListener('touchend', this, { passive: true })
-		map.main.addEventListener('input', this, { passive: true })
+		mainNodes.main.addEventListener('touchend', this, { passive: true })
+		mainNodes.main.addEventListener('input', this, { passive: true })
+		window.addEventListener('popstate', this, true)
 
 		this.handleEvent = function(event) {
 			this.eventDispatcher(
 				event,
 				this.page,
-				this.map,
+				this.mainNodes,
 				this.workshops,
 				this.inputInterval
 			)
 		}
 
-		this.page = this.setPage(workshops, map)
+		this.page = workshops['painter'].drawNewPage(mainNodes, workshops)
 	}
 
-	setPage(workshops, map) {
-		return workshops['painter'].get(map, workshops)
-	}
-
-	eventDispatcher(event, page, map, workshops, inputInterval) {
-		//faire un systeme de provider
+	eventDispatcher(event, page, mainNodes, workshops, inputInterval) {
+		//pourrait etre un systeme de provider
 		if (
-			(event.type == 'touchend' || event.type == 'mouseup') &&
+			(event.type === 'touchend' || event.type === 'mouseup') &&
 			!inputInterval
 		) {
 			return
@@ -45,11 +46,11 @@ export class AppFactory {
 			this.inputInterval = null
 			return
 		}
-		this.firstEvent = this.removeUselessListener(this.firstEvent, map.main)
-		if (this.newPageCase(workshops, map.main, event.type)) {
+		this.firstEvent = this.removeUselessListener(this.firstEvent, mainNodes.main)
+		if (this.newPageCase(workshops, mainNodes.main, event)) {
 			return
 		}
-		if (this.navCase(event.target, map.nav)) {
+		if (this.navCase(event.target, mainNodes.nav)) {
 			return
 		}
 		if (this.buttonCase(event, workshops, page)) {
@@ -122,15 +123,11 @@ export class AppFactory {
 
 	navCase(target, nav) {
 		if (
-			target.nodeName == 'A' ||
 			target.parentNode.id == 'burger' ||
 			target.id == 'burger' ||
 			target.className == 'gg-modal'
 		) {
 			nav.toggleAttribute('hidden')
-			if (target.nodeName == 'A') {
-				window.location.hash = target.hash
-			}
 
 			return true
 		}
@@ -138,16 +135,31 @@ export class AppFactory {
 		return false
 	}
 
-	newPageCase(workshops, main, type) {
-		if (type != 'hashchange') {
+	newPageCase(workshops, main, event) {
+		if (event.target.nodeName !== 'A' && event.type !== 'popstate') {
 			return false
+		}
+		if (event.target.nodeName === 'A' && event.type === 'mousedown') {
+			return true
+		}
+
+		event.preventDefault()
+		let hrefUrl = ''
+		if (event.type === 'popstate') {
+		  hrefUrl = window.location.pathname
+		} else {
+		  hrefUrl = event.target.getAttribute('href')
+		  this.mainNodes.nav.toggleAttribute('hidden')
 		}
 
 		workshops.audio.reset()
 		while (main.children.length) {
 			main.removeChild(main.children[0])
 		}
-		this.page = this.setPage(workshops, this.map)
+		if (event.type !== 'popstate') {
+			window.history.pushState({}, window.title, hrefUrl)
+		}
+		this.page = workshops['painter'].drawNewPage(this.mainNodes, workshops)
 		this.workshops.storeValues(this.canStore)
 
 		return true

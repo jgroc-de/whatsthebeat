@@ -1,7 +1,7 @@
 'use strict'
 
 // Update cache names any time any of the cached files change.
-const VERSION = '1.1.11'
+const VERSION = '1.2.0'
 const CACHE_NAME = 'static-cache-v' + VERSION
 
 // Add list of files to cache here.
@@ -11,8 +11,8 @@ const FILES_TO_CACHE = [
 	'/manifest.json',
 	'/CSS/main.css',
 	'/ICONS/favicon.ico',
-	'/ICONS/icon-144x144.png',
-	'/ICONS/icon-152x152.png',
+	'/ICONS/android/android-launchericon-144-144.png',
+	'/ICONS/ios/ios-appicon-152-152.png',
 	'/SRC/app.js',
 	'/SRC/appFactory.js',
 	'/SRC/actions/beatTaker.js',
