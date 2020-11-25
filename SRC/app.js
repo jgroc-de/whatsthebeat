@@ -2,7 +2,7 @@ import * as Actions from './actions/index.js'
 import * as Workshop from './workshops/workshopIndex.js'
 import { AppFactory } from './appFactory.js'
 
-const map = {
+const mainNodes = {
 	main: document.querySelector('main'),
 	nav: document.querySelector('nav'),
 	title: document.querySelector('h1'),
@@ -32,7 +32,7 @@ const workshops = {
 	repeat: new Workshop.Input(1),
 	beat: new Workshop.Beat(),
 	audio: new Workshop.AudioInterface(),
-	painter: new Workshop.PagePainter(Actions, map.nav.firstElementChild),
+	painter: new Workshop.PagePainter(Actions, mainNodes.nav.firstElementChild),
 	init(main) {
 		let inputs = main.querySelectorAll('input, select')
 
@@ -58,7 +58,7 @@ const workshops = {
 			}
 		}
 	},
-	getStoredValues(workshops) {
+	getStoredValues() {
 		if (!this.storageAvailable('localStorage')) {
 			return false
 		}
@@ -100,4 +100,4 @@ const workshops = {
 	},
 }
 
-new AppFactory(workshops, map)
+new AppFactory(workshops, mainNodes)
