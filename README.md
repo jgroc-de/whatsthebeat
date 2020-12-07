@@ -9,7 +9,6 @@ Enjoy!
 
 ### Known Bugs
 
-- >>> fix all pages…
 - rework follow my path
 - rework beat taker
 
