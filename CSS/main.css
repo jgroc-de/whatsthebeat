@@ -63,7 +63,6 @@ header h1 {
 	font-weight: 400;
 	margin: 0;
 	text-transform: capitalize;
-	text-transform: 
 }
 
 nav {
@@ -203,7 +202,7 @@ footer a {
 	color: #fc7307;
 }
 
-button,
+button.gg-button-m, button.gg-button,
 .gg-range-div {
 	background: linear-gradient(145deg, #5bc6ff, #4da7db);
 	box-shadow: 5px 5px 11px #489dcf, -5px -5px 11px #62d5ff;
@@ -255,6 +254,11 @@ form {
 	max-width: 800px;
 	margin: auto;
 	height: 100%;
+}
+
+form label {
+	display: block;
+	text-align: center;
 }
 
 .gg-2-rows {
@@ -322,6 +326,25 @@ option {
 	color: #342e09;
 }
 
+
+.material-icons.gg-help {
+	font-size: 2em;
+}
+
+.gg-2-cols.gg-help {
+	grid-template-columns: auto auto;
+	text-align: left;
+}
+
+button.gg-nav {
+	padding-top: 3px;
+	background-color: #55b9f3;
+	border-radius: 12px;
+	width: 4em;
+	position: absolute;
+	right: 12px;
+}
+
 .gg-error {
 	height: 100%;
 	margin-top: 35%;
@@ -331,5 +354,27 @@ option {
 	border: #fc7307 solid 5px;
 	text-align: center;
 	display: flex;
-	align-items:center;
+	align-items: center;
+}
+
+#help-box {
+	position: fixed;
+	left: 5vw;
+	top: 25vh;
+	width: 90vw;
+	height: 50vh;
+	background-color: #f7e3d4;
+	border-radius: 24px;
+	border: #fc7307 solid 5px;
+	z-index: 2;
+	font-size: 3vh;
+}
+
+#close-help {
+	top: 12px;
+	background-color: #fc7307;
+}
+
+.help-print {
+	margin: 18vh 12px;
 }

@@ -46,11 +46,11 @@ export class AppFactory {
 			this.inputInterval = null
 			return
 		}
-		this.firstEvent = this.removeUselessListener(this.firstEvent, mainNodes.main)
+		this.firstEvent = this.removeUselessListener(this.firstEvent, event, mainNodes.main)
 		if (this.newPageCase(workshops, mainNodes.main, event)) {
 			return
 		}
-		if (this.navCase(event.target, mainNodes.nav)) {
+		if (this.navCase(event, mainNodes.nav)) {
 			return
 		}
 		if (this.buttonCase(event, workshops, page)) {
@@ -79,6 +79,9 @@ export class AppFactory {
 	}
 
 	buttonCase(event, workshops, page) {
+		if (event.which !== 1) {
+			return false;
+		}
 		let target = event.target
 		if (target.nodeName !== 'BUTTON') {
 			if (target.nodeName !== 'I') {
@@ -88,7 +91,7 @@ export class AppFactory {
 		}
 		if (
 			target.id === 'mute' ||
-			(target.id === 'start' && window.location.hash != '')
+			(target.id === 'start' && window.location.pathname !== '/')
 		) {
 			target.classList.toggle('gg-on')
 		}
@@ -106,6 +109,12 @@ export class AppFactory {
 			case 'mute':
 				workshops['audio'].mute()
 				return true
+			case 'help':
+				this.helpButton()
+				return true
+			case 'close-help':
+				this.closeHelpButton()
+				return true
 		}
 
 		return false
@@ -121,13 +130,33 @@ export class AppFactory {
 		}
 	}
 
-	navCase(target, nav) {
+
+	helpButton() {
+		let helpHTML = document.getElementById('helper')
+		let helpBox = document.getElementById('help-box')
+
+		if (helpHTML) {
+			helpBox.lastElementChild.innerHTML = helpHTML.innerHTML
+			helpBox.hidden = false
+		}
+	}
+
+	closeHelpButton() {
+		document.getElementById('help-box').hidden = true
+	}
+
+	navCase(event, nav) {
+		if (event.which !== 1) {
+			return false
+		}
+		let target = event.target;
 		if (
 			target.parentNode.id == 'burger' ||
 			target.id == 'burger' ||
 			target.className == 'gg-modal'
 		) {
 			nav.toggleAttribute('hidden')
+			this.closeHelpButton()
 
 			return true
 		}
@@ -160,12 +189,15 @@ export class AppFactory {
 			window.history.pushState({}, window.title, hrefUrl)
 		}
 		this.page = workshops['painter'].drawNewPage(this.mainNodes, workshops)
+		document.title = document.getElementById('wtb-title').innerText
+		let description = document.querySelector('meta[name="description"]')
+		description.content = document.getElementById('wtb-description').innerText
 		this.workshops.storeValues(this.canStore)
 
 		return true
 	}
 
-	removeUselessListener(firstEvent, main) {
+	removeUselessListener(firstEvent, event, main) {
 		if (firstEvent) {
 			//if touchscreen or computer
 			if (event.type === 'mousedown') {

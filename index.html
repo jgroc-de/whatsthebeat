@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>What's the B**t? music tools for wind instruments</title>
-	<meta name="whatstheb**t"
+	<meta name="description"
 		content="Here is some free music tools for wind instruments as a tuner, a metronome, a beat taker and more. Enjoy, download if you want and share!">
 	<link rel="icon" href="/ICONS/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="./CSS/main.css">
@@ -31,8 +31,11 @@
 			<div class="gg-bar"></div>
 			<div class="gg-bar"></div>
 		</div>
-		<div>
+		<div class="gg-2-cols gg-help">
 			<h1>What's the b**t?</h1>
+			<button class="gg-nav" id="help">
+				<i class="material-icons gg-help">help_outline </i>
+			</button>
 		</div>
 	</header>
 
@@ -44,11 +47,18 @@
 		<div class="gg-modal"></div>
 	</nav>
 
+	<div id="help-box" hidden>
+		<button class="gg-nav" id="close-help">
+			<i class="material-icons">highlight_off</i>
+		</button>
+		<div class="help-print">help me</div>
+	</div>
+
 	<main></main>
 
 	<footer>
 		<hr>
-		<span>version: <span id="version"></span></span>
+		<span>version: <span id="version">X.X.X</span></span>
 		<a href="https://jgroc-de.github.io/" class="gg-pad-right">
 			<em>© jgroc-de 2020</em>
 		</a>
@@ -67,8 +77,13 @@
 			</div>
 			<button-start></button-start>
 		</div>
-		<div class="gg-help">
-			<p>This is a beat taker.<br>Tap the main button to get the rythm. Switch to the metronome to verify the accuracy.</p>
+		<div hidden>
+			<div id="helper">
+				<p>This is a beat taker. Tap the main button to get the rythm. Switch to the metronome to verify the
+					accuracy.</p>
+			</div>
+			<span id="wtb-title">What's the B**t? music tools for wind instruments</span>
+			<span id="wtb-description">Here is some free music tools for wind instruments as a tuner, a metronome, a beat taker and more. Enjoy, download if you want and share!</span>
 		</div>
 	</template>
 
@@ -89,8 +104,12 @@
 			</div>
 			<button-start></button-start>
 		</div>
-		<div class="gg-help">
-			<p>This is a metronome.<br>Change the input to modify what you want.</p>
+		<div hidden>
+			<div id="helper">
+				<p>This is a metronome. Change the input to modify what you want.</p>
+			</div>
+			<span id="wtb-title">Metronome - What's the B**t?</span>
+			<span id="wtb-description">A simple metronome with the possibility to set the note frequency precisely</span>
 		</div>
 	</template>
 
@@ -111,8 +130,13 @@
 			</div>
 			<button-start></button-start>
 		</div>
-		<div class="gg-help">
-			<p>This is a "tuner" helper.<br>It plays a note and it's up to you to feel if you in tune or not.</p>
+		<div hidden>
+			<div id="helper">
+				<p>This is a "tuner" helper. It plays a note and it's up to you to feel if you are in tune or not.</p>
+			</div>
+			<span id="wtb-title">Tuner - What's the B**t?</span>
+			<span id="wtb-description">This is a "tuner" helper. It plays a note and it's up to you to feel if you are in tune or not!
+				Here is some free music tools for wind instruments as a tuner, a metronome, a beat taker and more. Enjoy, download if you want and share</span>
 		</div>
 	</template>
 
@@ -129,8 +153,13 @@
 			</div>
 			<button-start></button-start>
 		</div>
-		<div class="gg-help">
-			<p>This is a little hear game.<br>Listen to the path and try to reproduce it! You can modify the scales and octave in the config tab.</p>
+		<div hidden>
+			<div id="helper">
+				<p>This is a little hear game. Listen to the path and try to reproduce it! You can modify the scales and
+					octave in the config tab.</p>
+			</div>
+			<span id="wtb-title">Follow My Path - What's the B**t?</span>
+			<span id="wtb-description">This is a little hear game. Listen to the path and try to reproduce it!</span>
 		</div>
 	</template>
 
@@ -151,8 +180,12 @@
 				<wave-select></wave-select>
 			</form>
 		</div>
-		<div class="gg-help">
-			<p>This is the config window.<br>Everything that you will set here will impact all other tab.</p>
+		<div hidden>
+			<div id="helper">
+				<p>This is the config window. Everything that you will set here will impact all other tab.</p>
+			</div>
+			<span id="wtb-title">Config - What's the B**t?</span>
+			<span id="wtb-description">Configure your app!</span>
 		</div>
 	</template>
 
@@ -166,11 +199,25 @@
 					to access my github page</a><br><br>Enjoy!
 			</span>
 		</div>
+		<div hidden>
+			<div id="helper">
+				<p>some info about this app</p>
+			</div>
+			<span id="wtb-title">About - What's the B**t?</span>
+			<span id="wtb-description">Some information about this app</span>
+		</div>
 	</template>
 
 	<template route id="error">
 		<div class="gg-pad gg-error">
 			<span>Error 404: Not Found!!!</span>
+		</div>
+		<div hidden>
+			<div id="helper">
+				<p>this page does not exist</p>
+			</div>
+			<span id="wtb-title">wtb - 404 not found</span>
+			<span id="wtb-description">error page</span>
 		</div>
 	</template>
 

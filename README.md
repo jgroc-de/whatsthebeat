@@ -9,31 +9,30 @@ Enjoy!
 
 ### Known Bugs
 
+- >>> fix all pages…
 - rework follow my path
 - rework beat taker
 
 #### SEO
 
-- add help for each pages
-- modify title/description on each pages
+- changes icons
 
 ### Features
 
 - input scale (need factory for gammes and mode)
 - page chord
-- faire ce todo en .json et remplir l'onglet about du l'appli avec
-other games, etc…
 - pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
 ## changelog
 
-### Version 1.2.X SEO
+### Version 1.2.X SEO and History API
 
 - remove hash navigation
 - add page 404
 - use history API! https://developers.google.com/search/docs/guides/javascript-seo-basics?hl=fr
-- change icones!
 - change front page (tuner or metronome instead of beat taker)
+- add helper
+- modify title/description on each pages
 
 ### Version 1.1.X
 
