@@ -19,7 +19,7 @@ export class AppFactory {
 		mainNodes.main.addEventListener('touchend', this, { passive: true })
 		mainNodes.main.addEventListener('input', this, { passive: true })
 		window.addEventListener('popstate', this, true)
-
+		this.page = workshops['painter'].drawNewPage(mainNodes, workshops)
 		this.handleEvent = function(event) {
 			this.eventDispatcher(
 				event,
@@ -29,8 +29,6 @@ export class AppFactory {
 				this.inputInterval
 			)
 		}
-
-		this.page = workshops['painter'].drawNewPage(mainNodes, workshops)
 	}
 
 	eventDispatcher(event, page, mainNodes, workshops, inputInterval) {
