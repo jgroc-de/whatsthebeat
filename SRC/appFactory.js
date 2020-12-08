@@ -77,7 +77,7 @@ export class AppFactory {
 	}
 
 	buttonCase(event, workshops, page) {
-		if (event.which !== 1) {
+		if (event.which && event.which !== 1) {
 			return false;
 		}
 		let target = event.target
@@ -87,10 +87,7 @@ export class AppFactory {
 			}
 			target = event.target.parentNode
 		}
-		if (
-			target.id === 'mute' ||
-			(target.id === 'start' && window.location.pathname !== '/')
-		) {
+		if (target.id === 'mute' || target.id === 'start') {
 			target.classList.toggle('gg-on')
 		}
 		switch (target.id) {

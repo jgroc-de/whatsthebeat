@@ -1,4 +1,4 @@
-export class AudioInterface {
+export class Audio {
 	constructor() {
 		this.lastTime = 0
 		this.interval = null
@@ -10,6 +10,7 @@ export class AudioInterface {
 		this.waveForm = null
 		this.frequency = 0
 		this.tempo = 0
+		this.saved = {'frequency': []}
 		this.pitches = this.setPitchesConstantes()
 		this.isPlaying = false
 	}
@@ -31,6 +32,7 @@ export class AudioInterface {
 		this.isMuted = false
 		this.waveForm = null
 		this.frequency = 0
+		this.saved = {'frequency': []}
 	}
 
 	mute() {
@@ -210,27 +212,38 @@ export class AudioInterface {
 		}
 	}
 
-	async repeatXTimes(workshops) {
-		let count = workshops.repeat.current
-
-		let delta = 60 / this.tempo
-		let delta3 = 3 * delta
-		let delta2 = 2 * delta
+	async repeatXTimes(workshops, count, useSaved) {
 		this.stop()
+		let delta = 60 / this.tempo
+		console.log(this.saved, count, useSaved)
+		let delta2 = 2 * delta
+		let delta3 = 3 * delta
 		this.isPlaying = true
 		if (!this.audioCtx) {
 			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 		}
-		this.randomNote(workshops)
+		this.setCurrentNoteForRepetition(workshops, 0, useSaved)
 		this.setNoiseNode()
 		let i = 0
 		while (i < count) {
-			this.randomNote(workshops)
+			if (i !== count - 1) {
+				this.setCurrentNoteForRepetition(workshops, i + 1, useSaved)
+			}
 			this.repeat(i * delta3, delta2)
 			this.nodeToDisconnect = null
 			i++
 		}
-		await this.sleep((count + 0.1) * delta3 * 1000)
+		await this.sleep((count + 0.1) * delta3 * 100)
+	}
+
+	setCurrentNoteForRepetition(workshops, i, useSaved) {
+		console.log(i)
+		if (useSaved) {
+			this.frequency = this.saved['frequency'][i]
+		} else {
+			this.randomNote(workshops)
+			this.saved['frequency'].push(this.frequency)
+		}
 	}
 
 	async sleep(timeInMs) {

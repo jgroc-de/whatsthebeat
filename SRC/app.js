@@ -31,7 +31,7 @@ const workshops = {
 	tempo: new Workshop.Input(60),
 	repeat: new Workshop.Input(1),
 	beat: new Workshop.Beat(),
-	audio: new Workshop.AudioInterface(),
+	audio: new Workshop.Audio(),
 	painter: new Workshop.PagePainter(Actions, mainNodes.nav.firstElementChild),
 	init(main) {
 		let inputs = main.querySelectorAll('input, select')

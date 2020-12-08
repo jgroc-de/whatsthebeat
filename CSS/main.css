@@ -215,7 +215,7 @@ button.gg-button-m, button.gg-button,
 
 button:active,
 .gg-range-div:active,
-.gg-on {
+button.gg-on {
 	box-shadow: inset 22px 22px 43px #489dcf, inset -22px -22px 43px #62d5ff;
 	background: linear-gradient(145deg, #5bc6ff, #4da7db);
 	border-color: lightGreen;

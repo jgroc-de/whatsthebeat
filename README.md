@@ -9,16 +9,13 @@ Enjoy!
 
 ### Known Bugs
 
-- rework follow my path
-- rework beat taker
+### SEO
 
-#### SEO
-
-- changes icons
+- >>> changes icons
 
 ### Features
 
-- input scale (need factory for gammes and mode)
+- >>> input scale (need factory for gammes and mode)
 - page chord
 - pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
 
@@ -32,6 +29,8 @@ Enjoy!
 - change front page (tuner or metronome instead of beat taker)
 - add helper
 - modify title/description on each pages
+- rework beattaker (3 last pulse instead of all)
+- add repetition of pattern in follow my path
 
 ### Version 1.1.X
 
