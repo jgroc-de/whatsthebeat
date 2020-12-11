@@ -191,7 +191,7 @@ export class Audio {
 	}
 
 	repeat(time, stopDelta) {
-		console.log(time)
+		console.log("time: ", time)
 		this.lastTime = time
 		this.noise.start(time)
 		this.noise.stop(time + stopDelta)
@@ -232,12 +232,12 @@ export class Audio {
 			this.repeat(i * delta3, delta2)
 			this.nodeToDisconnect = null
 			i++
-		}
-		await this.sleep((count + 0.1) * delta3 * 100)
+		} 
+		await this.sleep(count + 0.1 * delta3 * 1000)
 	}
 
 	setCurrentNoteForRepetition(workshops, i, useSaved) {
-		console.log(i)
+		console.log("index to save", i)
 		if (useSaved) {
 			this.frequency = this.saved['frequency'][i]
 		} else {
