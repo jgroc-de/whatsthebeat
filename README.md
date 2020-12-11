@@ -11,7 +11,7 @@ Enjoy!
 
 ### SEO
 
-- >>> changes icons
+- >>> changes icons (hammer and notes / white and black)
 
 ### Features
 
