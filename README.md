@@ -9,6 +9,8 @@ Enjoy!
 
 ### Known Bugs
 
+- follow my path is dead
+
 ### SEO
 
 - >>> changes icons (hammer and notes / white and black)
@@ -17,7 +19,7 @@ Enjoy!
 
 - >>> input scale (need factory for gammes and mode)
 - page chord
-- pouvoir modifier l'affichage des pages (ex: couleurs, inputs dispo)
+- add uml class diagram
 
 ## changelog
 
@@ -31,6 +33,8 @@ Enjoy!
 - modify title/description on each pages
 - rework beattaker (3 last pulse instead of all)
 - add repetition of pattern in follow my path
+- add sass
+- add webpack
 
 ### Version 1.1.X
 
