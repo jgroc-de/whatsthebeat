@@ -6,7 +6,7 @@ export class Metronome {
 		if (!force && isPlaying) {
 			workshops.audio.stop()
 		} else {
-			if ((!isPlaying && !force)) {
+			if (!isPlaying && !force) {
 				workshops.audio.start()
 			}
 		}

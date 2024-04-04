@@ -20,7 +20,7 @@ export class AppFactory {
 		mainNodes.main.addEventListener('input', this, { passive: true })
 		window.addEventListener('popstate', this, true)
 		this.page = workshops['painter'].drawNewPage(mainNodes, workshops)
-		this.handleEvent = function(event) {
+		this.handleEvent = function (event) {
 			this.eventDispatcher(
 				event,
 				this.page,
@@ -44,7 +44,11 @@ export class AppFactory {
 			this.inputInterval = null
 			return
 		}
-		this.firstEvent = this.removeUselessListener(this.firstEvent, event, mainNodes.main)
+		this.firstEvent = this.removeUselessListener(
+			this.firstEvent,
+			event,
+			mainNodes.main
+		)
 		if (this.newPageCase(workshops, mainNodes.main, event)) {
 			return
 		}
@@ -61,12 +65,18 @@ export class AppFactory {
 		let target = null
 		let timeInterval = null
 
-		if (event.target.nodeName !== 'SELECT' || event.target.nodeName !== 'INPUT') {
+		if (
+			event.target.nodeName !== 'SELECT' ||
+			event.target.nodeName !== 'INPUT'
+		) {
 			target = event.target.parentNode.querySelector('select, input')
 		} else {
 			target = event.target
 		}
-		if (target && (target.nodeName === 'SELECT' || target.nodeName === 'INPUT')) {
+		if (
+			target &&
+			(target.nodeName === 'SELECT' || target.nodeName === 'INPUT')
+		) {
 			timeInterval = workshops[target.id].updateInput(event, target)
 			if (timeInterval) {
 				this.inputInterval = timeInterval
@@ -78,7 +88,7 @@ export class AppFactory {
 
 	buttonCase(event, workshops, page) {
 		if (event.which && event.which !== 1) {
-			return false;
+			return false
 		}
 		let target = event.target
 		if (target.nodeName !== 'BUTTON') {
@@ -125,7 +135,6 @@ export class AppFactory {
 		}
 	}
 
-
 	helpButton() {
 		let helpHTML = document.getElementById('helper')
 		let helpBox = document.getElementById('help-box')
@@ -144,7 +153,7 @@ export class AppFactory {
 		if (event.which !== 1) {
 			return false
 		}
-		let target = event.target;
+		let target = event.target
 		if (
 			target.parentNode.id === 'burger' ||
 			target.id === 'burger' ||
@@ -170,10 +179,10 @@ export class AppFactory {
 		event.preventDefault()
 		let hrefUrl = ''
 		if (event.type === 'popstate') {
-		  hrefUrl = window.location.pathname
+			hrefUrl = window.location.pathname
 		} else {
-		  hrefUrl = event.target.getAttribute('href')
-		  this.mainNodes.nav.toggleAttribute('hidden')
+			hrefUrl = event.target.getAttribute('href')
+			this.mainNodes.nav.toggleAttribute('hidden')
 		}
 
 		workshops.audio.reset()

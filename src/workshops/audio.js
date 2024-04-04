@@ -10,7 +10,7 @@ export class Audio {
 		this.waveForm = null
 		this.frequency = 0
 		this.tempo = 0
-		this.saved = {'frequency': []}
+		this.saved = { frequency: [] }
 		this.pitches = this.setPitchesConstantes()
 		this.isPlaying = false
 	}
@@ -32,7 +32,7 @@ export class Audio {
 		this.isMuted = false
 		this.waveForm = null
 		this.frequency = 0
-		this.saved = {'frequency': []}
+		this.saved = { frequency: [] }
 	}
 
 	mute() {
@@ -105,10 +105,7 @@ export class Audio {
 				frequency: this.frequency,
 				type: this.waveForm,
 			})
-			noise
-				.connect(filter)
-				.connect(gainNode)
-				.connect(this.audioCtx.destination)
+			noise.connect(filter).connect(gainNode).connect(this.audioCtx.destination)
 			this.noise = noise
 
 			return true
@@ -161,7 +158,7 @@ export class Audio {
 				window.clearTimeout(this.interval)
 			}
 			this.interval = setTimeout(
-				function(sound) {
+				function (sound) {
 					sound.reset()
 				},
 				2500,
@@ -175,7 +172,7 @@ export class Audio {
 			this.isPlaying = true
 			this.setNoiseNode()
 			this.interval = setInterval(
-				function(sound) {
+				function (sound) {
 					let delta = 60 / sound.tempo
 
 					if (sound.lastTime + delta / 2 <= sound.audioCtx.currentTime) {
@@ -191,7 +188,7 @@ export class Audio {
 	}
 
 	repeat(time, stopDelta) {
-		console.log("time: ", time)
+		console.log('time: ', time)
 		this.lastTime = time
 		this.noise.start(time)
 		this.noise.stop(time + stopDelta)
@@ -232,12 +229,12 @@ export class Audio {
 			this.repeat(i * delta3, delta2)
 			this.nodeToDisconnect = null
 			i++
-		} 
+		}
 		await this.sleep(count + 0.1 * delta3 * 1000)
 	}
 
 	setCurrentNoteForRepetition(workshops, i, useSaved) {
-		console.log("index to save", i)
+		console.log('index to save', i)
 		if (useSaved) {
 			this.frequency = this.saved['frequency'][i]
 		} else {
@@ -247,7 +244,7 @@ export class Audio {
 	}
 
 	async sleep(timeInMs) {
-		return new Promise(resolve => setTimeout(resolve, timeInMs))
+		return new Promise((resolve) => setTimeout(resolve, timeInMs))
 	}
 
 	randomNote(workshops) {

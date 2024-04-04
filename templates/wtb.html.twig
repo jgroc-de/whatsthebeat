@@ -1,0 +1,21 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+        <x-action class="flex flex-row justify-around w-full">
+            <x-secondary id="actions" class="gg-2-rows">
+                {% include "buttons/reset.html.twig" %}
+            </x-secondary>
+            {% include "buttons/start.html.twig" %}
+        </x-action>
+        <x-settings class="flex flex-col items-center">
+            <label for="tempo"><span>Tempo: </span><span>60</span><span> (BPM)</span></label>
+            <x-tempo-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+                <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]">-</button>
+                <input type="range" name="tempo" id="tempo" min="1" max="240" value="60" class="w-full">
+                <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]">+</button>
+            </x-tempo-input>
+        </x-settings>
+        {% include "help_dialog.html.twig" %}
+    </main>
+{% endblock %}

@@ -26,7 +26,7 @@ export class Beat {
 			}
 		}
 		console.log(this, beats, currentTime)
-		
+
 		return beats
 	}
 
@@ -35,7 +35,11 @@ export class Beat {
 			this.reset()
 		}
 		workshops.audio.start(false)
-		let beats = this.computeBeats(workshops.audio.audioCtx.currentTime, this.beatCount, this.fixedBeatCount)
+		let beats = this.computeBeats(
+			workshops.audio.audioCtx.currentTime,
+			this.beatCount,
+			this.fixedBeatCount
+		)
 		this.beatCount += 1
 
 		if (!isNaN(beats) && beats !== Infinity) {

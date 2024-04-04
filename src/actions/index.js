@@ -10,6 +10,6 @@
  */
 
 export { BeatTaker as whats_the_beat } from './beatTaker.js'
-export { Metronome as metronome} from './metronome.js'
-export { Tuner as tuner} from './tuner.js'
+export { Metronome as metronome } from './metronome.js'
+export { Tuner as tuner } from './tuner.js'
 export { Repeater as follow_my_path } from './repeater.js'

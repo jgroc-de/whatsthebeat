@@ -36,7 +36,6 @@ export class PagePainter {
 		this.setRobotsMeta(route)
 		this.draw(mainNodes.main, this.pages[route].content)
 
-
 		mainNodes.title.innerText = this.setTitle(id, this.regex)
 
 		let action = this.actions[id]
@@ -59,7 +58,6 @@ export class PagePainter {
 			return id.replace(regex, ' ')
 		}
 		return 'error'
-		
 	}
 
 	draw(main, content) {
@@ -70,16 +68,16 @@ export class PagePainter {
 
 	setRobotsMeta(route) {
 		let meta = document.head.querySelector('meta[name=robots]')
-		let metaRobots = document.createElement('meta');
+		let metaRobots = document.createElement('meta')
 
 		if (meta) {
 			document.head.removeChild(meta)
 		}
-		metaRobots.name = 'robots';
+		metaRobots.name = 'robots'
 		if (route === 'error') {
-    		metaRobots.content = 'noindex';
+			metaRobots.content = 'noindex'
 		}
-		document.head.appendChild(metaRobots);
+		document.head.appendChild(metaRobots)
 	}
 
 	reset() {}

@@ -1,0 +1,22 @@
+<dialog>
+    <button autofocus class="border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] ">
+        <i class="material-icons">highlight_off</i></button>
+    <p>This is a beat taker. Tap the main button to get the rythm. Switch to the metronome to
+        verify the accuracy.</p>
+</dialog>
+<script>
+	const dialog = document.querySelector("dialog");
+	const showButton = document.querySelector("#help");
+	const closeButton = document.querySelector("dialog button");
+
+	// Le bouton "Afficher la fenêtre" ouvre le dialogue
+	showButton.addEventListener("click", () => {
+		dialog.showModal();
+	});
+
+	// Le bouton "Fermer" ferme le dialogue
+	closeButton.addEventListener("click", () => {
+		dialog.close();
+	});
+
+</script>

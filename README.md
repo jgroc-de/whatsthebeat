@@ -13,13 +13,12 @@ Enjoy!
 
 ### SEO
 
-- >>> changes icons (hammer and notes / white and black)
+- changes icons (hammer and notes / white and black)
 
 ### Features
 
-- >>> input scale (need factory for gammes and mode)
+- input scale (need factory for gammes and mode)
 - page chord
-- add uml class diagram
 
 ## changelog
 

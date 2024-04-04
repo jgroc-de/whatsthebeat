@@ -42,7 +42,7 @@ export class Input {
 		this.setVisibleValue(inputNode)
 		if (add && event.type !== 'input') {
 			return window.setInterval(
-				function(that, inputNode, add) {
+				function (that, inputNode, add) {
 					that.current = that.modifyValue(inputNode, add)
 					that.setVisibleValue(inputNode)
 				},

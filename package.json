@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "webpack --mode development",
     "start": "webpack serve --open 'firefox'",
-    "build": "webpack --mode production && cp -Ru public/*.* build/ && cp public/.htaccess build/"
+    "build": "npx prettier . --write && webpack --mode production && cp -Ru public/*.* build/ && cp public/.htaccess build/ && npx tailwindcss -o public/build.css --minify",
+    "css-watch": "npx tailwindcss -i ./src/input.css -o ./public/build.css --watch",
+    "prettier": "npx prettier . --write"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,8 @@
     "webpack-dev-server": "^3.11.2",
     "cordova-android": "^12.0.1",
     "cordova-browser": "^7.0.0",
-    "cordova-ios": "^7.1.0"
+    "cordova-ios": "^7.1.0",
+    "tailwindcss": "^3.4.3"
   },
   "cordova": {
     "platforms": [
