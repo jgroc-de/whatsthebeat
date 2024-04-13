@@ -2,8 +2,8 @@
 
 {% block main %}
     <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
-        <x-action class="flex flex-row justify-around w-full">
-            <x-secondary id="actions" class="gg-2-rows">
+        <x-action class="relative flex justify-center items-center w-full">
+            <x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
                 {% include "buttons/reset.html.twig" %}
             </x-secondary>
             {% include "buttons/start.html.twig" %}
@@ -26,7 +26,7 @@
                 <option value="180"></option>
             </datalist>
         </x-settings>
-        {% include "help_dialog.html.twig" %}
+        {% include "help_dialog.html.twig" with {'help_message' : 'This is a beat taker. Tap the main button to get the rythm. Switch to the metronome to verify the accuracy.'} %}
     </main>
 {% endblock %}
 {% block script %}

@@ -10,7 +10,7 @@ $twig = new \Twig\Environment($loader, [
 
 switch ($_SERVER['REQUEST_URI']) {
     case '/tuner.html':
-        echo $twig->render('tap-the-beat.html.twig', ['current_page' => 'tuner']);
+        echo $twig->render('tuner.html.twig', ['current_page' => 'tuner']);
         return true;
     case '/tap-the-beat.html':
         echo $twig->render('tap-the-beat.html.twig', ['current_page' => 'tap']);

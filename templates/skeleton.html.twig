@@ -27,11 +27,13 @@
 
 <body class="flex flex-col-reverse bg-blue text-[3vh] text-dark items-center">
 <nav class="h-[60px] w-full pt-[8px] bg-orange border-yellow border-t-[5px] flex justify-around items-center fixed bottom-0 text-[12px]">
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen  {% if current_page == 'tuner' %}text-lightGreen{% endif %}" href="/tuner.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen  {% if current_page == 'tuner' %}text-lightGreen{% endif %}"
+       href="/tuner.html">
         <i class="material-icons" title="tuner">equalizer</i>
         tuner
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'tap' %}text-lightGreen{% endif %}" href="/tap-the-beat.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'tap' %}text-lightGreen{% endif %}"
+       href="/tap-the-beat.html">
         <i class="material-icons" title="tap the beat">touch_app</i>
         Tap the beat
     </a>
@@ -41,22 +43,121 @@
     </a>
     <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/follow_my_path.html">
         <i class="material-icons" title="follow my path game">pattern</i>
-        Pattern game
+        Pattern
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'settings' %}text-lightGreen{% endif %}" href="/settings.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'settings' %}text-lightGreen{% endif %}"
+       href="/settings.html">
         <i class="material-icons" title="settings">tune</i>
         Settings
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'about' %}text-lightGreen{% endif %}" href="/">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'about' %}text-lightGreen{% endif %}"
+       href="/">
         <i class="material-icons" title="about this app">help_outline</i>
         about
     </a>
 </nav>
 
-<button class="fixed top-[20px] right-[20px] border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] p-[4px]" id="help"><i class="material-icons gg-help">help_outline</i></button>
+<button class="fixed top-[20px] right-[20px] border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] p-[4px]"
+        id="help"><i class="material-icons gg-help">help_outline</i></button>
 {% block main %}{% endblock %}
 
 {% block script %}{% endblock %}
+
+<script>
+
+	onLinkNavigate(async ({ toPath }) => {
+		const content = await getPageContent(toPath)
+
+		startViewTransitionHelper(() => {
+			// This is a pretty heavy-handed way to update page content.
+			// In production, you'd likely be modifying DOM elements directly,
+			// or using a framework.
+			// innerHTML is used here just to keep the DOM update super simple.
+			document.body.innerHTML = content
+		})
+	})
+
+
+	// A little helper function like this is really handy
+	// to handle progressive enhancement.
+	function startViewTransitionHelper(callback) {
+		if (!document.startViewTransition) {
+			callback()
+			return
+		}
+
+		document.startViewTransition(callback)
+	}
+
+	async function getPageContent(url) {
+		// This is a really scrappy way to do this.
+		// Don't do this in production!
+		const response = await fetch(url)
+		const text = await response.text()
+		// Particularly as it uses regexp
+		return /<body[^>]*>([\w\W]*)<\/body>/.exec(text)[1]
+	}
+
+	// Intercept navigations
+	// https://developer.chrome.com/docs/web-platform/navigation-api/
+	// This is a naive usage of the navigation API, to keep things simple.
+	async function onLinkNavigate(callback) {
+		navigation.addEventListener('navigate', (event) => {
+			const toUrl = new URL(event.destination.url)
+
+			if (location.origin !== toUrl.origin) return
+
+			const fromPath = location.pathname
+			const isBack = false
+
+			event.intercept({
+				async handler() {
+					if (event.info === 'ignore') return
+
+					await callback({
+						toPath: toUrl.pathname,
+						fromPath,
+						isBack,
+					})
+				},
+			})
+		})
+	}
+
+	// This helper function returns a View-Transition-like object, even for browsers that don't support view transitions.
+	// It won't do the transition in unsupported browsers, it'll act as if the transition is skipped.
+	// It also makes it easier to add class names to the document element.
+	function transitionHelper({
+        skipTransition = false,
+        classNames = '',
+        updateDOM,
+    }) {
+		if (skipTransition || !document.startViewTransition) {
+			const updateCallbackDone = Promise.resolve(updateDOM()).then(() => undefined)
+
+			return {
+				ready: Promise.reject(Error('View transitions unsupported')),
+				domUpdated: updateCallbackDone,
+				updateCallbackDone,
+				finished: updateCallbackDone,
+			}
+		}
+
+		const classNamesArray = classNames.split(/\s+/g).filter(Boolean)
+
+		document.documentElement.classList.add(...classNamesArray)
+
+		const transition = document.startViewTransition(updateDOM)
+
+		transition.finished.finally(() =>
+			document.documentElement.classList.remove(...classNamesArray),
+		)
+
+		return transition
+	}
+
+
+</script>
 
 <template route id="metronome">
     <div>
@@ -340,9 +441,9 @@
 					//console.log('Service worker registered.', worker)
 					navigator.serviceWorker.addEventListener(
 						'message',
-						function (event) {
+						function(event) {
 							document.getElementById('version').textContent = event.data
-						}
+						},
 					)
 					if (navigator.serviceWorker.controller) {
 						navigator.serviceWorker.controller.postMessage('set_version')
@@ -350,6 +451,7 @@
 				})
 		})
 	}
+
 	class NoteSelect extends HTMLElement {
 		constructor() {
 			super()

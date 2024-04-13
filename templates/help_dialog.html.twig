@@ -1,8 +1,21 @@
-<dialog>
-    <button autofocus class="border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] ">
-        <i class="material-icons">highlight_off</i></button>
-    <p>This is a beat taker. Tap the main button to get the rythm. Switch to the metronome to
-        verify the accuracy.</p>
+<dialog class="
+    w-[90vw] h-[50vh]
+    bg-lightOrange
+    border-orange border-[5px] rounded-[24px]
+    p-[12px]
+">
+    <x-content class="flex flex-col justify-between block h-full">
+       <button autofocus class="
+            border-[5px] rounded-[12px]
+            bg-orange
+            w-[4em]
+            self-end
+        ">
+            <i class="material-icons text-[24px]">highlight_off</i>
+        </button>
+        <p>{{ help_message }}</p>
+        <x-pusher></x-pusher>
+    </x-content>
 </dialog>
 <script>
 	const dialog = document.querySelector("dialog");
