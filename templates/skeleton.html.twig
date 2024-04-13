@@ -27,11 +27,11 @@
 
 <body class="flex flex-col-reverse bg-blue text-[3vh] text-dark items-center">
 <nav class="h-[60px] w-full pt-[8px] bg-orange border-yellow border-t-[5px] flex justify-around items-center fixed bottom-0 text-[12px]">
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/tuner.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen  {% if current_page == 'tuner' %}text-lightGreen{% endif %}" href="/tuner.html">
         <i class="material-icons" title="tuner">equalizer</i>
         tuner
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/tap-the-beat.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'tap' %}text-lightGreen{% endif %}" href="/tap-the-beat.html">
         <i class="material-icons" title="tap the beat">touch_app</i>
         Tap the beat
     </a>
@@ -43,11 +43,11 @@
         <i class="material-icons" title="follow my path game">pattern</i>
         Pattern game
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/settings.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'settings' %}text-lightGreen{% endif %}" href="/settings.html">
         <i class="material-icons" title="settings">tune</i>
         Settings
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'about' %}text-lightGreen{% endif %}" href="/">
         <i class="material-icons" title="about this app">help_outline</i>
         about
     </a>
