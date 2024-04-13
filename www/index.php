@@ -9,11 +9,14 @@ $twig = new \Twig\Environment($loader, [
 ]);
 
 switch ($_SERVER['REQUEST_URI']) {
-    case '/wtb.html':
-        echo $twig->render('wtb.html.twig');
+    case '/tap-the-beat.html':
+        echo $twig->render('tap-the-beat.html.twig');
         return true;
     case '/':
         echo $twig->render('index.html.twig');
+        return true;
+    case '/settings.html':
+        echo $twig->render('settings.html.twig');
         return true;
     default:
         return false;

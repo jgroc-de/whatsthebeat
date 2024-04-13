@@ -1,0 +1,66 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+        <x-action class="flex flex-row justify-around w-full">
+            <x-secondary id="actions" class="gg-2-rows">
+                {% include "buttons/reset.html.twig" %}
+            </x-secondary>
+        </x-action>
+        <x-settings class="flex flex-col items-center">
+            <label for="tempo">Tempo: <span id="tempoDisplayed">60</span> (BPM)</label>
+            <x-tempo-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+                <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+                        onclick="
+                            document.getElementById('tempo').valueAsNumber -= 1
+                                        // we dispatch event so that we can update the label too
+            inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
+"
+                >-
+                </button>
+                <input type="range" name="tempo" id="tempo" min="1" max="240" value="60" class="w-full"
+                       oninput="
+                            document.getElementById('tempoDisplayed').textContent = this.valueAsNumber
+                            localStorage.setItem('tempo', this.valueAsNumber)
+                        "
+                       list="markers"
+                >
+                <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+                        onclick="
+                            document.getElementById('tempo').valueAsNumber += 1
+                                        // we dispatch event so that we can update the label too
+            inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
+"
+                >+
+                </button>
+            </x-tempo-input>
+            <datalist id="markers">
+                <option value="60"></option>
+                <option value="90"></option>
+                <option value="120"></option>
+                <option value="180"></option>
+            </datalist>
+        </x-settings>
+        {% include "help_dialog.html.twig" %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+			let inputTempoNode = document.getElementById('tempo')
+			if (localStorage.getItem('tempo')
+			) {
+				inputTempoNode.valueAsNumber = localStorage.getItem('tempo')
+				inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
+			}
+
+			function reset() {
+				inputTempoNode.value = 60
+				// we dispatch event so that we can update the label too
+				inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
+			}
+
+			document.getElementById('reset').addEventListener('click', reset)
+			document.getElementById('reset').addEventListener('touchstart', reset)
+
+    </script>
+{% endblock %}

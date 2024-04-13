@@ -1,7 +1,6 @@
 import * as Actions from './actions/index.js'
 import * as Workshop from './workshops/workshopIndex.js'
 import { AppFactory } from './appFactory.js'
-//import './styles.scss'
 
 const mainNodes = {
 	main: document.querySelector('main'),

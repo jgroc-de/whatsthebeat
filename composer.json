@@ -19,6 +19,6 @@
 		}
 	},
 	"scripts": {
-		"dev": "cd public && php -S localhost:8000 index.php"
+		"dev": "cd www && php -S localhost:8000 index.php"
 	}
 }

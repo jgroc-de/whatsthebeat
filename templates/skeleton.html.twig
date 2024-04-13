@@ -27,47 +27,36 @@
 
 <body class="flex flex-col-reverse bg-blue text-[3vh] text-dark items-center">
 <nav class="h-[60px] w-full pt-[8px] bg-orange border-yellow border-t-[5px] flex justify-around items-center fixed bottom-0 text-[12px]">
-    <a class="" href="/tuner.html">tuner</a>
-    <a class="" href="/wtb.html">Whats the beat</a>
-    <a class="" href="/metronome.html">Metronome</a>
-    <a class="" href="/follow_my_path.html">Follow my path</a>
-    <a class="" href="/config.html">Config</a>
-    <a class="" href="/">about</a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/tuner.html">
+        <i class="material-icons" title="tuner">equalizer</i>
+        tuner
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/tap-the-beat.html">
+        <i class="material-icons" title="tap the beat">touch_app</i>
+        Tap the beat
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/metronome.html">
+        <i class="material-icons" title="metronome">notifications</i>
+        Metronome
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/follow_my_path.html">
+        <i class="material-icons" title="follow my path game">pattern</i>
+        Pattern game
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/settings.html">
+        <i class="material-icons" title="settings">tune</i>
+        Settings
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/">
+        <i class="material-icons" title="about this app">help_outline</i>
+        about
+    </a>
 </nav>
 
 <button class="fixed top-[20px] right-[20px] border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] p-[4px]" id="help"><i class="material-icons gg-help">help_outline</i></button>
 {% block main %}{% endblock %}
 
-<template route id="whats_the_beat">
-    <div>
-        <form class="gg-3-rows">
-            <div></div>
-            <tempo-input></tempo-input>
-        </form>
-    </div>
-    <div class="gg-2-cols">
-        <div id="actions" class="gg-2-rows">
-            <button-reset></button-reset>
-        </div>
-        <button-start></button-start>
-    </div>
-    <div hidden>
-        <div id="helper">
-            <p>
-                This is a beat taker. Tap the main button to get the rythm. Switch
-                to the metronome to verify the accuracy.
-            </p>
-        </div>
-        <span id="wtb-title"
-        >What's the B**t? music tools for wind instruments</span
-        >
-        <span id="wtb-description"
-        >Here is some free music tools for wind instruments as a tuner, a
-					metronome, a beat taker and more. Enjoy, download if you want and
-					share!</span
-        >
-    </div>
-</template>
+{% block script %}{% endblock %}
 
 <template route id="metronome">
     <div>
@@ -187,19 +176,6 @@
         </div>
         <span id="wtb-title">Config - What's the B**t?</span>
         <span id="wtb-description">Configure your app!</span>
-    </div>
-</template>
-
-<template route id="error">
-    <div class="gg-pad gg-error">
-        <span>Error 404: Not Found!!!</span>
-    </div>
-    <div hidden>
-        <div id="helper">
-            <p>this page does not exist</p>
-        </div>
-        <span id="wtb-title">wtb - 404 not found</span>
-        <span id="wtb-description">error page</span>
     </div>
 </template>
 
@@ -343,21 +319,9 @@
     </div>
 </template>
 
-<template id="startButton">
-    <button id="start" class="gg-button" aria-label="start">
-        <i class="material-icons gg-font-xl" title="start">touch_app</i>
-    </button>
-</template>
-
 <template id="randomButton">
     <button id="random" class="gg-button-m">
         <i class="material-icons gg-font-l" title="random">shuffle</i>
-    </button>
-</template>
-
-<template id="resetButton">
-    <button id="reset" class="gg-button-m">
-        <i class="material-icons gg-font-l" title="refresh"> replay</i>
     </button>
 </template>
 
@@ -366,6 +330,7 @@
         <i class="material-icons gg-font-l" title="mute">volume_off</i>
     </button>
 </template>
+
 <script>
 	if ('serviceWorker' in navigator) {
 		window.addEventListener('load', () => {
