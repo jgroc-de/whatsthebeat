@@ -31,6 +31,12 @@
 {% endblock %}
 {% block script %}
     <script>
+        window.updateTempo = function(tempo) {
+            document.getElementById('js-tempo').value = tempo
+            // we dispatch event so that we can update the label too
+            document.getElementById('js-tempo').dispatchEvent(new Event('input', { bubbles: true }))
+        }
+
         let beatCount, savedTime, savedTick, audioCtx, interval, fixedBeatCount
         let inputTempoNode = document.getElementById("js-tempo")
 

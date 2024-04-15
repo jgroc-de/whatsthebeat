@@ -52,13 +52,11 @@ export class Audio {
 			pitches[note] = Math.pow(rConstante, note)
 			++note
 		}
-		console.log(pitches)
 
 		return pitches
 	}
 
 	setFrequency(note, pitch, octave) {
-		console.log(pitch, octave, note, this.pitches[note])
 		this.frequency = (pitch * this.pitches[note]) / Math.pow(2, 3 - octave)
 	}
 
@@ -196,8 +194,6 @@ export class Audio {
 			parseInt(localStorage.getItem('pitch')),
 			parseInt(localStorage.getItem('octave'))
 		)
-		console.log(localStorage)
-		console.log(this.frequency)
 
 		if (!this.audioCtx) {
 			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()

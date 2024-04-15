@@ -2,12 +2,12 @@
 
 {% block main %}
     <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
-        <x-action class="relative flex justify-center items-center w-full">
-            <x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
-                {% include "buttons/reset.html.twig" %}
-            </x-secondary>
-            {% include "buttons/start.html.twig" %}
-        </x-action>
+		<x-action class="relative flex justify-center items-center w-full">
+			<x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
+				{% include "buttons/reset.html.twig" %}
+			</x-secondary>
+			{% include "buttons/start.html.twig" %}
+		</x-action>
         <x-settings class="flex flex-col items-center">
             {% include "inputs/tempo.html.twig" %}
 			{% include "inputs/octave.html.twig" %}
@@ -22,13 +22,11 @@
 			let inputTempoNode = document.getElementById("js-tempo")
 			let inputNoteNode = document.getElementById("js-note")
 
-
-
 			// init to previously saved tempo
 			let octave = localStorage.getItem("octave")
 			let tempo = localStorage.getItem("tempo")
 			let note = localStorage.getItem("note")
-			if (pitch) {
+			if (octave) {
 				window.updateOctave(octave)
 			}
 			if (tempo) {
@@ -62,7 +60,7 @@
 			document.getElementById('js-start').addEventListener('click', playAndStop)
 			document.getElementById('js-start').addEventListener('touchend', playAndStop)
 
-			inputPitchNode.addEventListener('input', update)
+			inputOctaveNode.addEventListener('input', update)
 			inputTempoNode.addEventListener('input', update)
 			inputNoteNode.addEventListener('input', update)
     </script>

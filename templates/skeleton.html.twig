@@ -39,11 +39,13 @@
         <i class="material-icons" title="tap the beat">touch_app</i>
         Tap the beat
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/metronome.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'metronome' %}text-lightGreen{% endif %}"
+       href="/metronome.html">
         <i class="material-icons" title="metronome">notifications</i>
         Metronome
     </a>
-    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen" href="/follow_my_path.html">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'game' %}text-lightGreen{% endif %}"
+       href="/follow_my_path.html">
         <i class="material-icons" title="follow my path game">pattern</i>
         Pattern
     </a>
