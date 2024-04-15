@@ -8,7 +8,7 @@
     "dev": "webpack --mode development",
     "start": "webpack serve --open 'firefox'",
     "build": "npx prettier . --write && webpack --mode production && cp -Ru public/*.* build/ && cp public/.htaccess build/ && npx tailwindcss -o public/build.css --minify",
-    "css-watch": "npx tailwindcss -i ./src/input.css -o ./www/build.css --watch",
+    "css-watch": "npx tailwindcss -i src_old/input.css -o ./www/build.css --watch",
     "prettier": "npx prettier . --write"
   },
   "repository": {
@@ -52,5 +52,8 @@
       "android",
       "browser"
     ]
+  },
+  "dependencies": {
+    "dialog-polyfill": "^0.5.6"
   }
 }

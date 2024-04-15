@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ['./src/**/*.{html,js}', './public/index.html', './templates/**/*'],
+	content: ['./src_old/**/*.{html,js}', './public/index.html', './templates/**/*'],
 	theme: {
 		colors: {
 			lightOrange: '#f7e3d4',
@@ -9,6 +9,7 @@ module.exports = {
 			yellow: '#fddc22',
 			dark: '#342e09',
 			lightGreen: '#90ee90',
+			black: '#000000'
 		},
 		extend: {
 			boxShadow: {

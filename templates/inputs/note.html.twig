@@ -1,0 +1,59 @@
+<label for="js-note">Note: <span id="js-noteDisplayed">A</span></label>
+<x-note-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                let node = document.getElementById('js-note')
+                if (0 === node.selectedIndex) {
+                    node.selectedIndex = node.childElementCount - 1
+                    document.getElementById('js-octave').valueAsNumber -= 1
+                    document.getElementById('js-octave').dispatchEvent(new Event('input', { bubbles: true }))
+                    return
+                }
+                node.selectedIndex -= 1
+                // we dispatch event so that we can update the label too
+                node.dispatchEvent(new Event('input', { bubbles: true }))
+            "
+    >-</button>
+    <select name="wavefrom" id="js-note" class="bg-orange w-full rounded-full text-center" data-default="A"
+            oninput="
+                document.getElementById('js-noteDisplayed').textContent = this.value
+                localStorage.setItem('note', this.selectedIndex)
+            "
+    >
+        <option>A</option>
+        <option>A#</option>
+        <option>B</option>
+        <option>C</option>
+        <option>C#</option>
+        <option>D</option>
+        <option>D#</option>
+        <option>E</option>
+        <option>F</option>
+        <option>F#</option>
+        <option>G</option>
+        <option>G#</option>
+
+    </select>
+
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                let node = document.getElementById('js-note')
+                if (node.childElementCount - 1 === node.selectedIndex) {
+                    node.selectedIndex = 0
+                    document.getElementById('js-octave').valueAsNumber += 1
+                    document.getElementById('js-octave').dispatchEvent(new Event('input', { bubbles: true }))
+                    return
+                }
+                node.selectedIndex += 1
+                // we dispatch event so that we can update the label too
+                node.dispatchEvent(new Event('input', { bubbles: true }))
+            "
+    >+</button>
+    <script>
+			window.updateNote = function(note) {
+				document.getElementById('js-note').selectedIndex = note
+				// we dispatch event so that we can update the label too
+				document.getElementById('js-note').dispatchEvent(new Event('input', { bubbles: true }))
+			}
+    </script>
+</x-note-input>

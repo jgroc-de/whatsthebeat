@@ -1,0 +1,69 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+        <x-action class="relative flex justify-center items-center w-full">
+            <x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
+                {% include "buttons/reset.html.twig" %}
+            </x-secondary>
+            {% include "buttons/start.html.twig" %}
+        </x-action>
+        <x-settings class="flex flex-col items-center">
+            {% include "inputs/tempo.html.twig" %}
+			{% include "inputs/octave.html.twig" %}
+			{% include "inputs/note.html.twig" %}
+		</x-settings>
+        {% include "help_dialog.html.twig" with {'help_message' : 'This is a metronome. Change the input to modify what you want.'} %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+			let inputOctaveNode = document.getElementById("js-octave")
+			let inputTempoNode = document.getElementById("js-tempo")
+			let inputNoteNode = document.getElementById("js-note")
+
+
+
+			// init to previously saved tempo
+			let octave = localStorage.getItem("octave")
+			let tempo = localStorage.getItem("tempo")
+			let note = localStorage.getItem("note")
+			if (pitch) {
+				window.updateOctave(octave)
+			}
+			if (tempo) {
+				window.updateTempo(tempo)
+			}
+			if (note) {
+				window.updateNote(note)
+			}
+
+			function reset() {
+				window.updateOctave(inputOctaveNode.dataset.default)
+				window.updateTempo(inputTempoNode.dataset.default)
+				window.updateNote(inputNoteNode.dataset.default)
+			}
+
+			function playAndStop() {
+				if (window.audio.isPlaying()) {
+					window.audio.stop()
+				} else {
+					window.audio.toggle()
+				}
+			}
+
+			function update() {
+				window.audio.updateNoiseNode()
+			}
+
+			document.getElementById('reset').addEventListener('click', reset)
+			document.getElementById('reset').addEventListener('touchstart', reset)
+
+			document.getElementById('js-start').addEventListener('click', playAndStop)
+			document.getElementById('js-start').addEventListener('touchend', playAndStop)
+
+			inputPitchNode.addEventListener('input', update)
+			inputTempoNode.addEventListener('input', update)
+			inputNoteNode.addEventListener('input', update)
+    </script>
+{% endblock %}

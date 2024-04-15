@@ -1,0 +1,31 @@
+<label for="js-octave">Octave: <span id="js-octaveDisplayed">3</span></label>
+<x-pitch-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                document.getElementById('js-octave').valueAsNumber -= 1
+                // we dispatch event so that we can update the label too
+                document.getElementById('js-octave').dispatchEvent(new Event('input', { bubbles: true }))
+            "
+    >-</button>
+    <input type="range" name="octave" id="js-octave" min="0" max="7" value="3" class="w-full" data-default="3"
+           oninput="
+                document.getElementById('js-octaveDisplayed').textContent = this.value
+                localStorage.setItem('octave', this.valueAsNumber)
+            "
+    >
+
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                document.getElementById('js-octave').valueAsNumber += 1
+                // we dispatch event so that we can update the label too
+                document.getElementById('js-octave').dispatchEvent(new Event('input', { bubbles: true }))
+            "
+    >+</button>
+    <script>
+        window.updateOctave = function(octave) {
+            document.getElementById('js-octave').value = octave
+            // we dispatch event so that we can update the label too
+            document.getElementById('js-octave').dispatchEvent(new Event('input', { bubbles: true }))
+        }
+    </script>
+</x-pitch-input>

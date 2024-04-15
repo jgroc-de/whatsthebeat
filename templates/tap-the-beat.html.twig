@@ -9,11 +9,11 @@
             {% include "buttons/start.html.twig" %}
         </x-action>
         <x-settings class="flex flex-col items-center">
-            <label for="tempo">Tempo: <span id="tempoDisplayed">60</span> (BPM)</label>
+            <label for="js-tempo">Tempo: <span id="js-tempoDisplayed">60</span> (BPM)</label>
             <x-tempo-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
                 {# <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]">-</button>  #}
-                <input type="range" name="tempo" id="tempo" min="1" max="240" value="60" class="w-full"
-                       oninput="document.getElementById('tempoDisplayed').textContent = this.value"
+                <input type="range" name="tempo" id="js-tempo" min="1" max="240" value="60" class="w-full"
+                       oninput="document.getElementById('js-tempoDisplayed').textContent = this.valueAsNumber"
                        list="markers"
                        disabled
                 >
@@ -32,14 +32,12 @@
 {% block script %}
     <script>
         let beatCount, savedTime, savedTick, audioCtx, interval, fixedBeatCount
-        let inputTempoNode = document.getElementById("tempo")
+        let inputTempoNode = document.getElementById("js-tempo")
 
         // init to previously saved tempo
         let beats = localStorage.getItem("tempo")
         if (beats) {
-            inputTempoNode.value = beats
-            // we dispatch event so that we can update the label too
-            inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
+            window.updateTempo(beats)
         }
 
         function reset() {
@@ -86,18 +84,15 @@
 
             if (!isNaN(beats) && beats !== Infinity) {
                 beats = Math.floor(beats)
-                inputTempoNode.value = beats
-                // we dispatch event so that we can update the label too
-                inputTempoNode.dispatchEvent(new Event('input', { bubbles: true }))
-                localStorage.setItem("tempo", beats);
+                window.updateTempo(beats)
             }
         }
 
         document.getElementById('reset').addEventListener('click', reset)
         document.getElementById('reset').addEventListener('touchstart', reset)
 
-        document.getElementById('start').addEventListener('click', countTapedBeat)
-        document.getElementById('start').addEventListener('touchend', countTapedBeat)
+        document.getElementById('js-start').addEventListener('click', countTapedBeat)
+        document.getElementById('js-start').addEventListener('touchend', countTapedBeat)
 
     </script>
 {% endblock %}

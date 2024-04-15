@@ -15,6 +15,9 @@ switch ($_SERVER['REQUEST_URI']) {
     case '/tap-the-beat.html':
         echo $twig->render('tap-the-beat.html.twig', ['current_page' => 'tap']);
         return true;
+    case '/metronome.html':
+        echo $twig->render('metronome.html.twig', ['current_page' => 'metronome']);
+        return true;
     case '/':
         echo $twig->render('index.html.twig', ['current_page' => 'about']);
         return true;

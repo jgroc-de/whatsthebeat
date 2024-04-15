@@ -23,6 +23,8 @@
     <meta property="og:title" content="What's the B**t?" />
     <meta property="og:type" content="website" />
     <link rel="stylesheet" href="./build.css" />
+    <script defer type="module" src="./src/main.js"></script>
+
 </head>
 
 <body class="flex flex-col-reverse bg-blue text-[3vh] text-dark items-center">
@@ -58,8 +60,10 @@
 </nav>
 
 <button class="fixed top-[20px] right-[20px] border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] p-[4px]"
-        id="help"><i class="material-icons gg-help">help_outline</i></button>
+        id="js-help"><i class="material-icons gg-help">help_outline</i></button>
 {% block main %}{% endblock %}
+
+<x-version class="hidden" id="js-version">2.0.0</x-version>
 
 {% block script %}{% endblock %}
 
@@ -346,7 +350,7 @@
 					navigator.serviceWorker.addEventListener(
 						'message',
 						function(event) {
-							document.getElementById('version').textContent = event.data
+							document.getElementById('js-version').textContent = event.data
 						},
 					)
 					if (navigator.serviceWorker.controller) {
