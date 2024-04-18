@@ -15,9 +15,15 @@ export class Repeater {
 			if (isPlaying) {
 				workshops.audio.stop()
 			} else {
-				await workshops.audio.repeatXTimes(workshops, parseInt(workshops.repeat.current), this.repeat)
+				await workshops.audio.repeatXTimes(
+					workshops,
+					parseInt(workshops.repeat.current),
+					this.repeat
+				)
 				this.repeat = true
-				document.getElementById('start').dispatchEvent(new Event('input', { bubbles: true }))
+				document
+					.getElementById('start')
+					.dispatchEvent(new Event('input', { bubbles: true }))
 			}
 		}
 	}

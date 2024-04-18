@@ -8,11 +8,10 @@ export class Audio {
 		this.noise = null
 		this.isMuted = false
 		this.waveForm = null
-		this.frequency = 0
+		this.frequency = 442
 		this.tempo = 0
-		this.saved = {'frequency': []}
+		this.saved = { frequency: [] }
 		this.pitches = this.setPitchesConstantes()
-		this.isPlaying = false
 	}
 
 	setAudioParams(workshops) {
@@ -23,8 +22,6 @@ export class Audio {
 		)
 		this.setTempo(workshops.tempo.current)
 		this.setWaveForm(workshops.waveForm.current)
-
-		return this.isPlaying
 	}
 
 	reset() {
@@ -32,7 +29,7 @@ export class Audio {
 		this.isMuted = false
 		this.waveForm = null
 		this.frequency = 0
-		this.saved = {'frequency': []}
+		this.saved = { frequency: [] }
 	}
 
 	mute() {
@@ -89,7 +86,6 @@ export class Audio {
 		this.noise = null
 		this.gainNode = null
 		this.filterNode = null
-		this.isPlaying = false
 		if (this.nodeToDisconnect) {
 			this.nodeToDisconnect.disconnect()
 			this.nodeToDisconnect = null
@@ -97,26 +93,31 @@ export class Audio {
 		this.audioCtx = null
 	}
 
+	updateNoiseNode() {
+		this.waveForm = localStorage.getItem('waveForm')
+		this.setFrequency(
+			localStorage.getItem('note'),
+			parseInt(localStorage.getItem('pitch')),
+			parseInt(localStorage.getItem('octave'))
+		)
+		if (this.noise) {
+			this.noise.frequency.value = this.frequency
+			this.noise.type = this.waveForm
+		}
+	}
+
 	setNoiseNode(noise) {
 		let gainNode = this.setGainNode(this.audioCtx, this.gainNode, this.isMuted)
-		if (!noise) {
-			let filter = this.setFilter(this.audioCtx, this.filterNode)
-			noise = new OscillatorNode(this.audioCtx, {
-				frequency: this.frequency,
-				type: this.waveForm,
-			})
-			noise
-				.connect(filter)
-				.connect(gainNode)
-				.connect(this.audioCtx.destination)
-			this.noise = noise
-
-			return true
-		}
-		noise.frequency.value = this.frequency
-		noise.type = this.waveForm
-
-		return false
+		//let filter = this.setFilter(this.audioCtx, this.filterNode)
+		noise = new OscillatorNode(this.audioCtx, {
+			frequency: this.frequency,
+			//type: this.waveForm,
+		})
+		noise
+			//.connect(filter)
+			.connect(gainNode)
+			.connect(this.audioCtx.destination)
+		this.noise = noise
 	}
 
 	setGainNode(audioCtx, gainNode, isMuted) {
@@ -146,36 +147,19 @@ export class Audio {
 		return this.filterNode
 	}
 
-	start(shouldPlay = true) {
-		if (!this.audioCtx) {
-			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-		}
-		if (shouldPlay) {
-			if (this.tempo === 0) {
-				this.play()
-			} else {
-				this.toggle(this.interval)
-			}
-		} else {
-			if (this.interval) {
-				window.clearTimeout(this.interval)
-			}
-			this.interval = setTimeout(
-				function(sound) {
-					sound.reset()
-				},
-				2500,
-				this
-			)
-		}
+	start() {
+		this.toggle(this.interval)
 	}
 
 	toggle(interval) {
+		if (!this.audioCtx) {
+			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+		}
+
 		if (!interval) {
-			this.isPlaying = true
 			this.setNoiseNode()
 			this.interval = setInterval(
-				function(sound) {
+				function (sound) {
 					let delta = 60 / sound.tempo
 
 					if (sound.lastTime + delta / 2 <= sound.audioCtx.currentTime) {
@@ -191,7 +175,7 @@ export class Audio {
 	}
 
 	repeat(time, stopDelta) {
-		console.log("time: ", time)
+		//console.log('time: ', time)
 		this.lastTime = time
 		this.noise.start(time)
 		this.noise.stop(time + stopDelta)
@@ -203,13 +187,27 @@ export class Audio {
 		this.setNoiseNode(null)
 	}
 
-	play() {
-		this.setNoiseNode(this.noise)
-		if (!this.isPlaying) {
-			this.lastTime = this.audioCtx.currentTime
-			this.noise.start()
-			this.isPlaying = true
+	playContinuousSound() {
+		this.waveForm = localStorage.getItem('waveForm')
+		this.setFrequency(
+			localStorage.getItem('note'),
+			parseInt(localStorage.getItem('pitch')),
+			parseInt(localStorage.getItem('octave'))
+		)
+
+		if (!this.audioCtx) {
+			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 		}
+
+		this.tempo = 0
+		this.setNoiseNode(this.noise)
+
+		this.lastTime = this.audioCtx.currentTime
+		this.noise.start()
+	}
+
+	isPlaying() {
+		return this.noise !== null
 	}
 
 	async repeatXTimes(workshops, count, useSaved) {
@@ -218,7 +216,6 @@ export class Audio {
 		console.log(this.saved, count, useSaved)
 		let delta2 = 2 * delta
 		let delta3 = 3 * delta
-		this.isPlaying = true
 		if (!this.audioCtx) {
 			this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 		}
@@ -232,12 +229,12 @@ export class Audio {
 			this.repeat(i * delta3, delta2)
 			this.nodeToDisconnect = null
 			i++
-		} 
+		}
 		await this.sleep(count + 0.1 * delta3 * 1000)
 	}
 
 	setCurrentNoteForRepetition(workshops, i, useSaved) {
-		console.log("index to save", i)
+		console.log('index to save', i)
 		if (useSaved) {
 			this.frequency = this.saved['frequency'][i]
 		} else {
@@ -247,7 +244,7 @@ export class Audio {
 	}
 
 	async sleep(timeInMs) {
-		return new Promise(resolve => setTimeout(resolve, timeInMs))
+		return new Promise((resolve) => setTimeout(resolve, timeInMs))
 	}
 
 	randomNote(workshops) {

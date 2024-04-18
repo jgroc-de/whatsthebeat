@@ -1,0 +1,45 @@
+<dialog
+        id="js-helper-button"
+        class="
+    backdrop:bg-black
+    backdrop:opacity-75
+    w-[min(100%,512px)]
+    border-orange border-[5px] rounded-[24px]
+    bg-lightOrange
+    p-[12px]
+">
+    <x-content class="
+        flex flex-col justify-between
+    ">
+       <button autofocus class="
+            border-[5px] rounded-[12px]
+            bg-orange
+            w-[4em]
+            self-end
+        ">
+            <i class="material-icons text-[24px]">highlight_off</i>
+        </button>
+        <p class="text-center">{{ help_message }}</p>
+        <x-pusher></x-pusher>
+    </x-content>
+</dialog>
+<script>
+	const dialog = document.querySelector("#js-helper-button");
+	const showButton = document.querySelector("#js-help");
+	const closeButton = document.querySelector("#js-helper-button button");
+
+    if (typeof dialog.showModal !== "function") {
+        //dialogPolyfill.registerDialog(dialog);
+    }
+
+	// Le bouton "Afficher la fenêtre" ouvre le dialogue
+	showButton.addEventListener("click", () => {
+		dialog.showModal();
+	});
+
+	// Le bouton "Fermer" ferme le dialogue
+	closeButton.addEventListener("click", () => {
+		dialog.close();
+	});
+
+</script>

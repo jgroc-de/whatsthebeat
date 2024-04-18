@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's the B**t? music tools for wind instruments</title>
+    <meta
+            name="description"
+            content="Here is some free music tools for wind instruments as a tuner, a metronome, a beat taker and more. Enjoy, download if you want and share!"
+    />
+    <link rel="icon" href="/icons/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="What's the B**t?" />
+    <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
+    <meta name="description" content="Take the beat of any music" />
+    <meta name="theme-color" content="#55b9f3" />
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
+    />
+    <meta property="og:title" content="What's the B**t?" />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="./build.css" />
+    <script defer type="module" src="./src/main.js"></script>
+
+</head>
+
+<body class="flex flex-col-reverse bg-blue text-[3vh] text-dark items-center">
+<nav class="h-[60px] w-full pt-[8px] bg-orange border-yellow border-t-[5px] flex justify-around items-center fixed bottom-0 text-[12px]">
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen  {% if current_page == 'tuner' %}text-lightGreen{% endif %}"
+       href="/tuner.html">
+        <i class="material-icons" title="tuner">equalizer</i>
+        tuner
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'tap' %}text-lightGreen{% endif %}"
+       href="/tap-the-beat.html">
+        <i class="material-icons" title="tap the beat">touch_app</i>
+        Tap the beat
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'metronome' %}text-lightGreen{% endif %}"
+       href="/metronome.html">
+        <i class="material-icons" title="metronome">notifications</i>
+        Metronome
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'game' %}text-lightGreen{% endif %}"
+       href="/follow_my_path.html">
+        <i class="material-icons" title="follow my path game">pattern</i>
+        Pattern
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'settings' %}text-lightGreen{% endif %}"
+       href="/settings.html">
+        <i class="material-icons" title="settings">tune</i>
+        Settings
+    </a>
+    <a class="w-0 grow flex flex-col justify-center items-center hover:text-lightGreen {% if current_page == 'about' %}text-lightGreen{% endif %}"
+       href="/">
+        <i class="material-icons" title="about this app">help_outline</i>
+        about
+    </a>
+</nav>
+
+<button class="fixed top-[20px] right-[20px] border-[1px] rounded-full shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db] p-[4px]"
+        id="js-help"><i class="material-icons gg-help">help_outline</i></button>
+{% block main %}{% endblock %}
+
+<x-version class="hidden" id="js-version">2.0.0</x-version>
+
+{% block script %}{% endblock %}
+
+
+<template route id="follow_my_path">
+    <div>
+        <form class="gg-2-rows">
+            <repeat-input></repeat-input>
+            <tempo-input></tempo-input>
+        </form>
+    </div>
+    <div class="gg-2-cols">
+        <div id="actions" class="gg-2-rows">
+            <button-mute></button-mute>
+            <button-reset></button-reset>
+        </div>
+        <button-start></button-start>
+    </div>
+    <div hidden>
+        <div id="helper">
+            <p>
+                This is a little hear game. Listen to the path and try to reproduce
+                it! You can modify the scales and octave in the config tab.
+            </p>
+        </div>
+        <span id="wtb-title">Follow My Path - What's the B**t?</span>
+        <span id="wtb-description"
+        >This is a little hear game. Listen to the path and try to reproduce
+					it!</span
+        >
+    </div>
+</template>
+
+<template id="repeatInput">
+    <label for="repeat"><span>Repeat: </span><span>times</span></label>
+    <div class="gg-3-cols">
+        <div class="gg-range-div">-</div>
+        <input
+                type="range"
+                name="repeat"
+                id="repeat"
+                min="0"
+                max="12"
+                value="1"
+        />
+        <div class="gg-range-div">+</div>
+    </div>
+</template>
+
+<template id="randomButton">
+    <button id="random" class="gg-button-m">
+        <i class="material-icons gg-font-l" title="random">shuffle</i>
+    </button>
+</template>
+
+<template id="muteButton">
+    <button id="mute" class="gg-button-m">
+        <i class="material-icons gg-font-l" title="mute">volume_off</i>
+    </button>
+</template>
+
+<script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker
+				.register('/service-worker.js')
+				.then((worker) => {
+					//console.log('Service worker registered.', worker)
+					navigator.serviceWorker.addEventListener(
+						'message',
+						function(event) {
+							document.getElementById('js-version').textContent = event.data
+						},
+					)
+					if (navigator.serviceWorker.controller) {
+						navigator.serviceWorker.controller.postMessage('set_version')
+					}
+				})
+		})
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<label for="js-waveform">Wave: <span id="js-waveformDisplayed">sine</span></label>
+<x-waveform-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                let node = document.getElementById('js-waveform')
+                if (0 === node.selectedIndex) {
+                    node.selectedIndex = node.childElementCount - 1
+                    return
+                }
+                node.selectedIndex -= 1
+                // we dispatch event so that we can update the label too
+                node.dispatchEvent(new Event('input', { bubbles: true }))
+                "
+    >-</button>
+    <select name="wavefrom" id="js-waveform" class="bg-orange w-full rounded-full text-center" data-default="sine"
+            oninput="
+					   		document.getElementById('js-waveformDisplayed').textContent = this.value
+							localStorage.setItem('waveform', this.value)
+						"
+    >
+        <option>sine</option>
+        <option>square</option>
+        <option>sawtooth</option>
+        <option>triangle</option>
+    </select>
+
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                let node = document.getElementById('js-waveform')
+                if (node.childElementCount === node.selectedIndex) {
+                    node.selectedIndex = 0
+                    return
+                }
+                node.selectedIndex += 1
+                // we dispatch event so that we can update the label too
+                node.dispatchEvent(new Event('input', { bubbles: true }))
+                "
+    >+</button>
+    <script>
+			window.updateWaveForm = function(waveForm) {
+				document.getElementById('js-waveform').value = waveForm
+				// we dispatch event so that we can update the label too
+				document.getElementById('js-waveform').dispatchEvent(new Event('input', { bubbles: true }))
+			}
+    </script>
+</x-waveform-input>

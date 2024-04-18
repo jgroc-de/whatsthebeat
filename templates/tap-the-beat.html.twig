@@ -1,0 +1,104 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+        <x-action class="relative flex justify-center items-center w-full">
+            <x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
+                {% include "buttons/reset.html.twig" %}
+            </x-secondary>
+            {% include "buttons/start.html.twig" %}
+        </x-action>
+        <x-settings class="flex flex-col items-center">
+            <label for="js-tempo">Tempo: <span id="js-tempoDisplayed">60</span> (BPM)</label>
+            <x-tempo-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+                {# <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]">-</button>  #}
+                <input type="range" name="tempo" id="js-tempo" min="1" max="240" value="60" class="w-full"
+                       oninput="document.getElementById('js-tempoDisplayed').textContent = this.valueAsNumber"
+                       list="markers"
+                       disabled
+                >
+                {# <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]">+</button>  #}
+            </x-tempo-input>
+            <datalist id="markers">
+                <option value="60"></option>
+                <option value="90"></option>
+                <option value="120"></option>
+                <option value="180"></option>
+            </datalist>
+        </x-settings>
+        {% include "help_dialog.html.twig" with {'help_message' : 'This is a beat taker. Tap the main button to get the rythm. Switch to the metronome to verify the accuracy.'} %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+        window.updateTempo = function(tempo) {
+            document.getElementById('js-tempo').value = tempo
+            // we dispatch event so that we can update the label too
+            document.getElementById('js-tempo').dispatchEvent(new Event('input', { bubbles: true }))
+        }
+
+        let beatCount, savedTime, savedTick, audioCtx, interval, fixedBeatCount
+        let inputTempoNode = document.getElementById("js-tempo")
+
+        // init to previously saved tempo
+        let beats = localStorage.getItem("tempo")
+        if (beats) {
+            window.updateTempo(beats)
+        }
+
+        function reset() {
+            beatCount = 0
+            savedTime = [0, 0, 0]
+            savedTick = 0
+            fixedBeatCount = savedTime.length * 60
+            audioCtx = null
+        }
+        reset()
+
+        function setAutoReset() {
+            // clear interval if already existing
+            if (interval) {
+                window.clearTimeout(interval)
+            }
+
+            // set a new one to reset everything if the user stop tapping
+            // so that we can clear all the data
+            interval = setTimeout(function () { reset() }, 2500)
+        }
+
+        function countTapedBeat() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+            }
+            setAutoReset()
+
+            let currentTime = audioCtx.currentTime
+            let beats
+
+            if (beatCount < savedTime.length) {
+                beats = (beatCount * 60) / currentTime
+                savedTime[beatCount] = currentTime
+            } else {
+                beats = fixedBeatCount / (currentTime - savedTime[savedTick])
+                savedTime[savedTick] = currentTime
+                savedTick += 1
+                if (savedTick === savedTime.length) {
+                    savedTick = 0
+                }
+            }
+            beatCount += 1
+
+            if (!isNaN(beats) && beats !== Infinity) {
+                beats = Math.floor(beats)
+                window.updateTempo(beats)
+            }
+        }
+
+        document.getElementById('reset').addEventListener('click', reset)
+        document.getElementById('reset').addEventListener('touchstart', reset)
+
+        document.getElementById('js-start').addEventListener('click', countTapedBeat)
+        document.getElementById('js-start').addEventListener('touchend', countTapedBeat)
+
+    </script>
+{% endblock %}

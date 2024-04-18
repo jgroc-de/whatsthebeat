@@ -1,0 +1,63 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+        <x-action class="flex flex-row justify-around w-full">
+            <x-secondary id="actions" class="gg-2-rows">
+                {% include "buttons/reset.html.twig" %}
+            </x-secondary>
+        </x-action>
+        <x-settings class="flex flex-col items-center">
+
+            {% include "inputs/tempo.html.twig" %}
+            {% include "inputs/pitch.html.twig" %}
+            {% include "inputs/waveform.html.twig" %}
+            {% include "inputs/octave.html.twig" %}
+			{% include "inputs/note.html.twig" %}
+
+		</x-settings>
+        {% include "help_dialog.html.twig" with {'help_message': 'This is the config window. Everything that you will set here will impact all other tab.'} %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+		let inputPitchNode = document.getElementById("js-pitch")
+		let inputWaveNode = document.getElementById("js-waveform")
+		let inputOctaveNode = document.getElementById("js-octave")
+		let inputNoteNode = document.getElementById("js-note")
+		let inputTempoNode = document.getElementById("js-tempo")
+
+		// init to previously saved tempo
+		let wave = localStorage.getItem("waveform")
+		let pitch = localStorage.getItem("pitch")
+		let octave = localStorage.getItem("octave")
+		let note = localStorage.getItem("note")
+		let tempo = localStorage.getItem("tempo")
+		if (pitch) {
+			window.updatePitch(pitch)
+		}
+		if (wave) {
+			window.updateWaveForm(wave)
+		}
+		if (note) {
+			window.updateNote(note)
+		}
+		if (octave) {
+			window.updateOctave(octave)
+		}
+		if (tempo) {
+			window.updateTempo(tempo)
+		}
+
+		function reset() {
+			window.updatePitch(inputPitchNode.dataset.default)
+			window.updateOctave(inputOctaveNode.dataset.default)
+			window.updateWaveForm(inputWaveNode.dataset.default)
+			window.updateNote(inputNoteNode.dataset.default)
+			window.updateTempo(inputTempoNode.dataset.default)
+		}
+
+		document.getElementById('reset').addEventListener('click', reset)
+		document.getElementById('reset').addEventListener('touchstart', reset)
+    </script>
+{% endblock %}

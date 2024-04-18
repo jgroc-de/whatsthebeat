@@ -1,0 +1,35 @@
+<label for="js-pitch">Pitch: <span id="js-pitchDisplayed">440</span> Hz</label>
+<x-pitch-input class="flex h-[30px] w-full items-center justify-between space-x-[8px]">
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                            document.getElementById('js-pitch').valueAsNumber -= 1
+							// we dispatch event so that we can update the label too
+                            document.getElementById('js-pitch').dispatchEvent(new Event('input', { bubbles: true }))
+                "
+    >-</button>
+    <input type="range" name="pitch" id="js-pitch" min="350" max="500" value="442" class="w-full" data-default="442"
+           oninput="
+					   		document.getElementById('js-pitchDisplayed').textContent = this.value
+							localStorage.setItem('pitch', this.valueAsNumber)
+						"
+           list="pitch-markers"
+    >
+
+    <button class="border-orange border-[1px] rounded-[20px] w-[120px] shadow-lg bg-gradient-to-br from-[#5bc6ff] to-[#4da7db]"
+            onclick="
+                            document.getElementById('js-pitch').valueAsNumber += 1
+							// we dispatch event so that we can update the label too
+                            document.getElementById('js-pitch').dispatchEvent(new Event('input', { bubbles: true }))
+                "
+    >+</button>
+    <datalist id="pitch-markers">
+        <option value="442"></option>
+    </datalist>
+    <script>
+			window.updatePitch = function(pitch) {
+				document.getElementById('js-pitch').value = pitch
+				// we dispatch event so that we can update the label too
+				document.getElementById('js-pitch').dispatchEvent(new Event('input', { bubbles: true }))
+			}
+    </script>
+</x-pitch-input>

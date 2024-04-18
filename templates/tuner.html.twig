@@ -1,0 +1,79 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+    <main class="flex flex-col justify-around items-center min-h-[70vh] px-[16px] mt-[20vh] max-w-[960px]">
+		<x-action class="relative flex justify-center items-center w-full">
+			<x-secondary id="actions" class="absolute -top-[125px] -left-[15px]">
+				{% include "buttons/reset.html.twig" %}
+			</x-secondary>
+			{% include "buttons/start.html.twig" %}
+		</x-action>
+        <x-settings class="flex flex-col items-center">
+			{% include "inputs/pitch.html.twig" %}
+			{% include "inputs/waveform.html.twig" %}
+			{% include "inputs/octave.html.twig" %}
+			{% include "inputs/note.html.twig" %}
+
+		</x-settings>
+        {% include "help_dialog.html.twig" with {'help_message' : 'This is a "tuner" helper. It plays a note and it\'s up to you to feel
+    if you are in tune or not.'} %}
+    </main>
+{% endblock %}
+{% block script %}
+    <script>
+		let inputPitchNode = document.getElementById("js-pitch")
+		let inputWaveNode = document.getElementById("js-waveform")
+		let inputOctaveNode = document.getElementById("js-octave")
+		let inputNoteNode = document.getElementById("js-note")
+
+
+		// init to previously saved tempo
+		let wave = localStorage.getItem("waveform")
+		let pitch = localStorage.getItem("pitch")
+		let octave = localStorage.getItem("octave")
+		let note = localStorage.getItem("note")
+		if (pitch) {
+			window.updatePitch(pitch)
+		}
+		if (wave) {
+			window.updateWaveForm(wave)
+		}
+		if (note) {
+			window.updateNote(note)
+		}
+		if (octave) {
+			window.updateOctave(octave)
+		}
+
+		function reset() {
+			window.updatePitch(inputPitchNode.dataset.default)
+			window.updateOctave(inputOctaveNode.dataset.default)
+			window.updateWaveForm(inputWaveNode.dataset.default)
+			window.updateNote(inputNodeNode.dataset.default)
+		}
+
+		function playAndStop() {
+			if (window.audio.isPlaying()) {
+				window.audio.stop()
+			} else {
+				window.audio.playContinuousSound()
+			}
+		}
+
+		function update() {
+			window.audio.updateNoiseNode()
+		}
+
+		document.getElementById('reset').addEventListener('click', reset)
+		document.getElementById('reset').addEventListener('touchstart', reset)
+
+		document.getElementById('js-start').addEventListener('click', playAndStop)
+		document.getElementById('js-start').addEventListener('touchend', playAndStop)
+
+		inputPitchNode.addEventListener('input', update)
+		inputWaveNode.addEventListener('input', update)
+		inputOctaveNode.addEventListener('input', update)
+		inputNoteNode.addEventListener('input', update)
+
+	</script>
+{% endblock %}

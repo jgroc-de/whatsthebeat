@@ -1,0 +1,16 @@
+{% extends "skeleton.html.twig" %}
+
+{% block main %}
+	<main class="flex justify-center items-center min-h-[80vh] px-[16px]">
+		<p class="gg-pad">
+			Welcome on this webApp!<br />
+			<br />You can find here some very basic music tools as something to
+			give you the current beat you are tapping, a metronome and a sound
+			emitter to help you to tune you instrument. <br />If ever you would
+			like to discuss about this work, click
+			<a href="https://jgroc-de.github.io/" class="underline">here to access my github page</a
+			><br /><br />Enjoy!
+		</p>
+	</main>
+	{% include "help_dialog.html.twig" with {'help_message' : 'some info about this app.'} %}
+{% endblock %}
